@@ -1386,99 +1386,6 @@ function MonitorSection() {
 }
 
 /* ─────────────────────────────────────────
-   Testimonials Section
-   ───────────────────────────────────────── */
-function TestimonialsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.1 });
-
-  const TESTIMONIALS = [
-    {
-      quote: "Generé mi primer presupuesto profesional en 3 minutos. Ya no uso Excel para nada.",
-      name: "Arq. Marco R.",
-      location: "CDMX",
-      gradient: "linear-gradient(135deg, #0f4c75 0%, #1b6ca8 50%, #16a085 100%)",
-    },
-    {
-      quote: "El desglose por partidas con precios CMIC me salvó en una licitación pública. Gané el contrato.",
-      name: "Ing. Sofía M.",
-      location: "Guadalajara",
-      gradient: "linear-gradient(135deg, #1a3a5c 0%, #2980b9 100%)",
-    },
-    {
-      quote: "El agente IA resolvió mis dudas sobre NTC-RCDF en segundos. Tardaba horas buscando en PDFs.",
-      name: "Arq. Carlos V.",
-      location: "Monterrey",
-      gradient: "linear-gradient(135deg, #2d1b69 0%, #6c5ce7 60%, #a29bfe 100%)",
-    },
-  ] as const;
-
-  return (
-    <section ref={ref} style={{ background: "#080a0c", padding: "140px 40px" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 300,
-            fontSize: "clamp(36px, 4.5vw, 56px)",
-            color: "#fff",
-            letterSpacing: "-0.02em",
-            textAlign: "center",
-            marginBottom: 56,
-          }}
-        >
-          <em style={{ fontStyle: "italic" }}>Lo que dicen</em> nuestros usuarios
-        </motion.h2>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, ease: EASE, delay: i * 0.1 }}
-              style={{
-                background: t.gradient,
-                borderRadius: 16,
-                padding: "36px 28px",
-                display: "flex",
-                flexDirection: "column",
-                gap: 20,
-                minHeight: 220,
-              }}
-            >
-              {/* Stars */}
-              <div style={{ display: "flex", gap: 3 }}>
-                {[0,1,2,3,4].map(s => (
-                  <span key={s} style={{ color: "#fff", fontSize: 14 }}>★</span>
-                ))}
-              </div>
-              <p style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 15,
-                color: "rgba(255,255,255,0.9)",
-                lineHeight: 1.7,
-                flex: 1,
-                fontStyle: "italic",
-              }}>
-                "{t.quote}"
-              </p>
-              <div>
-                <p style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "#fff", marginBottom: 2 }}>{t.name}</p>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{t.location}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─────────────────────────────────────────
    Forecast Section — Proyección de costos
    ───────────────────────────────────────── */
 function ForecastSection() {
@@ -1751,7 +1658,6 @@ export default function Home() {
         <AskSection />
         <MonitorSection />
         <ToolsSection />
-        <TestimonialsSection />
         <ForecastSection />
         <FinalCtaSection />
       </main>
