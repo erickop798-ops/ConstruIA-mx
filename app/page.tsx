@@ -826,58 +826,66 @@ function SimplifySection() {
               </div>
             </div>
 
-            {/* Right panel — HUD */}
-            <div style={{
-              flex: 1,
-              padding: "28px 28px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "24px",
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            {/* Right panel — PRESUPUESTO ACTIVO (Mockup 1) */}
+            <div style={{ flex: 1, padding: "20px", display: "flex", flexDirection: "column" }}>
+              <div style={{ background: "#2e2e2e", borderRadius: 16, padding: "18px 18px 14px", display: "flex", flexDirection: "column", gap: 12, height: "100%" }}>
+                {/* Card header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
+                    Presupuesto activo
+                  </span>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <span style={{ fontSize: 13, color: "rgba(255,255,255,0.3)", cursor: "pointer" }}>⊞</span>
+                    <span style={{ fontSize: 13, color: "#00b3dd", cursor: "pointer" }}>⬚</span>
+                  </div>
+                </div>
+                {/* Big number */}
                 <div>
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 8 }}>Estimado estándar</p>
-                  <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px,4vw,52px)", color: "#847dff", letterSpacing: "-0.02em", lineHeight: 1 }}>$1,112,100</p>
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(255,255,255,0.35)", marginTop: 6 }}>MXN · Sin IVA · CMIC 2026</p>
-                </div>
-                <div style={{ background: "rgba(132,125,255,0.12)", borderRadius: 8, padding: "6px 12px" }}>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "#847dff", fontWeight: 600 }}>CDMX</span>
-                </div>
-              </div>
-              {/* 3 scenario bars */}
-              {[
-                { label: "Económico", val: 68, color: "#4ade80", amount: "$756,800" },
-                { label: "Estándar",  val: 100, color: "#847dff", amount: "$1,112,100" },
-                { label: "Premium",  val: 138, color: "#f472b6", amount: "$1,534,500" },
-              ].map(s => (
-                <div key={s.label}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{s.label}</span>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(255,255,255,0.7)" }}>{s.amount}</span>
-                  </div>
-                  <div style={{ height: 6, background: "rgba(255,255,255,0.06)", borderRadius: 9999 }}>
-                    <div style={{ width: `${s.val}%`, maxWidth: "100%", height: "100%", background: s.color, borderRadius: 9999, opacity: 0.85 }} />
+                  <p style={{ fontFamily: "var(--font-display)", fontSize: 32, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1 }}>$1,112,100</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#00b3dd", display: "inline-block" }} />
+                    <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(255,255,255,0.45)" }}>Jun 2026 · CDMX</span>
                   </div>
                 </div>
-              ))}
-              {/* Partidas preview */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-                {[
-                  { name: "Cimentación", pct: "18%", amt: "$200,178" },
-                  { name: "Estructura",  pct: "24%", amt: "$266,904" },
-                  { name: "Albañilería", pct: "21%", amt: "$233,541" },
-                ].map(p => (
-                  <div key={p.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#847dff", opacity: 0.7 }} />
-                      <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(255,255,255,0.5)" }}>{p.name}</span>
+                {/* SVG mini chart — 2 lines */}
+                <svg viewBox="0 0 280 72" width="100%" style={{ display: "block", margin: "0 -2px" }}>
+                  <defs>
+                    <linearGradient id="spendFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#00b3dd" stopOpacity="0.18" />
+                      <stop offset="100%" stopColor="#00b3dd" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  {/* Area */}
+                  <path d="M0 55 C35 50 55 36 85 42 C115 48 130 28 165 22 C195 16 215 30 245 22 C258 18 272 12 280 8 L280 72 L0 72 Z" fill="url(#spendFill)" />
+                  {/* Actual (ocean glimmer) */}
+                  <path d="M0 55 C35 50 55 36 85 42 C115 48 130 28 165 22 C195 16 215 30 245 22 C258 18 272 12 280 8" fill="none" stroke="#00b3dd" strokeWidth="2" strokeLinecap="round" />
+                  {/* Estimado (gray) */}
+                  <path d="M0 62 C35 58 55 47 85 50 C115 53 130 40 165 38 C195 36 215 43 245 37 C258 33 272 29 280 26" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 3" />
+                  {/* End dot */}
+                  <circle cx="280" cy="8" r="4" fill="#00b3dd" />
+                  <circle cx="280" cy="8" r="8" fill="rgba(0,179,221,0.2)" />
+                </svg>
+                {/* Period tabs */}
+                <div style={{ display: "flex", gap: 6 }}>
+                  {["1M","3M","6M","1A","ALL"].map((t,i) => (
+                    <span key={t} style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: i===4 ? "#00b3dd" : "rgba(255,255,255,0.3)", background: i===4 ? "rgba(0,179,221,0.12)" : "transparent", borderRadius: 4, padding: "3px 7px", cursor: "pointer" }}>{t}</span>
+                  ))}
+                </div>
+                {/* 2x2 partidas grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 4 }}>
+                  {[
+                    { label: "Cimentación", amt: "$150k", color: "#847dff" },
+                    { label: "Estructura",  amt: "$280k", color: "#00b3dd" },
+                    { label: "Instalaciones", amt: "$198k", color: "#dd90d8" },
+                    { label: "Acabados",    amt: "$241k", color: "#90b8f0" },
+                  ].map(p => (
+                    <div key={p.label} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 8, padding: "8px 10px" }}>
+                      <div style={{ width: 6, height: 2, background: p.color, borderRadius: 9999, marginBottom: 5 }} />
+                      <p style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.4)", marginBottom: 2 }}>{p.label}</p>
+                      <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#fff", fontWeight: 500 }}>{p.amt}</p>
                     </div>
-                    <div style={{ display: "flex", gap: 12 }}>
-                      <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{p.pct}</span>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(255,255,255,0.6)" }}>{p.amt}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -980,25 +988,42 @@ function TrackSection() {
             transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
             style={{ background: "#111216", borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.07)" }}
           >
-            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 12 }}>Escenarios</p>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 12 }}>Costos</p>
             <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: 22, color: "#fff", letterSpacing: "-0.01em", marginBottom: 10 }}>Compara escenarios</h3>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.6, marginBottom: 24 }}>
               Económico, estándar y premium lado a lado para decidir con datos.
             </p>
-            {/* Mini mockup — 3 bars */}
-            <div style={{ background: "#0d0e10", borderRadius: 10, padding: "16px 14px", display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Mockup 2 — DESGLOSE */}
+            <div style={{ background: "#0d0e10", borderRadius: 12, padding: "16px 14px", display: "flex", flexDirection: "column", gap: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Desglose</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "rgba(255,255,255,0.4)" }}>74.1%</span>
+              </div>
+              {/* Total progress bar */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.45)" }}>Presupuesto total  <span style={{ color: "#fff" }}>$1,112,100</span> de $1,500,000</span>
+                </div>
+                <div style={{ height: 5, background: "rgba(255,255,255,0.06)", borderRadius: 9999 }}>
+                  <div style={{ width: "74.1%", height: "100%", background: "linear-gradient(90deg,#00b3dd,#847dff)", borderRadius: 9999 }} />
+                </div>
+              </div>
+              {/* 3 categorías */}
               {[
-                { label: "Económico", color: "#4ade80", w: "62%", val: "$756k" },
-                { label: "Estándar",  color: "#847dff", w: "86%", val: "$1.1M" },
-                { label: "Premium",  color: "#f472b6", w: "100%", val: "$1.5M" },
+                { label: "Materiales directos", pct: "58.2%", w: "58.2%", color: "#00b3dd", amt: "$647,040" },
+                { label: "Mano de obra",        pct: "22.4%", w: "22.4%", color: "#847dff", amt: "$249,110" },
+                { label: "Indirectos",          pct: "19.4%", w: "19.4%", color: "#dd90d8", amt: "$215,950" },
               ].map(s => (
                 <div key={s.label}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{s.label}</span>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "rgba(255,255,255,0.6)" }}>{s.val}</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                    <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.3)" }}>{s.pct}</span>
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "rgba(255,255,255,0.55)" }}>{s.amt}</span>
+                    </div>
                   </div>
-                  <div style={{ height: 20, background: "rgba(255,255,255,0.04)", borderRadius: 6, overflow: "hidden" }}>
-                    <div style={{ width: s.w, height: "100%", background: s.color, opacity: 0.75, borderRadius: 6 }} />
+                  <div style={{ height: 6, background: "rgba(255,255,255,0.05)", borderRadius: 9999 }}>
+                    <div style={{ width: s.w, height: "100%", background: s.color, borderRadius: 9999, opacity: 0.85 }} />
                   </div>
                 </div>
               ))}
@@ -1012,28 +1037,38 @@ function TrackSection() {
             transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
             style={{ background: "#111216", borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.07)" }}
           >
-            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 12 }}>Exportación</p>
-            <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: 22, color: "#fff", letterSpacing: "-0.01em", marginBottom: 10 }}>Exporta profesional</h3>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", marginBottom: 12 }}>Programa</p>
+            <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 400, fontSize: 22, color: "#fff", letterSpacing: "-0.01em", marginBottom: 10 }}>Próximas entregas</h3>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.6, marginBottom: 24 }}>
-              PDF LOPSRM con membrete, partidas y firma. Listo para licitaciones.
+              Hitos críticos de obra con fecha y monto. Control del programa de ejecución.
             </p>
-            {/* Mini mockup — PDF preview */}
-            <div style={{ background: "#0d0e10", borderRadius: 10, padding: "14px", display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: 6, padding: "8px 10px", display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 20, height: 24, background: "#ef4444", borderRadius: 3, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: 8, color: "#fff", fontWeight: 700 }}>PDF</span>
-                </div>
-                <div>
-                  <div style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(255,255,255,0.7)" }}>Presupuesto_LOPSRM.pdf</div>
-                  <div style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.3)" }}>248 KB · 12 páginas</div>
-                </div>
+            {/* Mockup 3 — PRÓXIMAS ENTREGAS */}
+            <div style={{ background: "linear-gradient(145deg, #0a1628 0%, #1a2a4a 100%)", borderRadius: 12, padding: "16px 14px", display: "flex", flexDirection: "column", gap: 0, border: "1px solid rgba(144,184,240,0.12)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(144,184,240,0.6)" }}>Próximas entregas</span>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(144,184,240,0.45)" }}>3 hitos</span>
               </div>
-              {["Portada con membrete", "Catálogo de partidas", "Análisis de precios", "Firma y sello"].map(line => (
-                <div key={line} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 6px" }}>
-                  <span style={{ color: "#4ade80", fontSize: 10 }}>✓</span>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{line}</span>
+              {[
+                { icon: "⬡", label: "Cimentación",   fecha: "15 Jun", amt: "$150,000", color: "#847dff", done: false },
+                { icon: "⬡", label: "Estructura",     fecha: "30 Jul", amt: "$280,000", color: "#00b3dd", done: false },
+                { icon: "⬡", label: "Instalaciones",  fecha: "20 Sep", amt: "$198,000", color: "#dd90d8", done: false },
+              ].map((h, i) => (
+                <div key={h.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                  {/* Timeline dot */}
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: `${h.color}22`, border: `1.5px solid ${h.color}66`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: h.color, opacity: 0.8 }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#fff", fontWeight: 500, marginBottom: 2 }}>{h.label}</p>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(144,184,240,0.5)" }}>{h.fecha} · 2026</p>
+                  </div>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: h.color, fontWeight: 600 }}>{h.amt}</span>
                 </div>
               ))}
+              <div style={{ marginTop: 10, height: 3, background: "rgba(255,255,255,0.04)", borderRadius: 9999 }}>
+                <div style={{ width: "33%", height: "100%", background: "linear-gradient(90deg,#847dff,#00b3dd)", borderRadius: 9999 }} />
+              </div>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 9, color: "rgba(144,184,240,0.4)", marginTop: 6, textAlign: "right", letterSpacing: "0.05em" }}>1 de 3 hitos completados</p>
             </div>
           </motion.div>
         </div>
@@ -1198,6 +1233,153 @@ function AskSection() {
             </div>
           </div>
         </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────
+   Monitor Section — Mockups 4 y 5
+   ───────────────────────────────────────── */
+function MonitorSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.1 });
+
+  /* SVG line for Mockup 4 */
+  const W4 = 260, H4 = 90;
+  const pts4: [number,number][] = [[0,80],[52,65],[104,48],[156,30],[208,16],[260,5]];
+  const path4 = pts4.map(([x,y],i) => `${i===0?"M":"L"} ${x} ${y}`).join(" ");
+  const area4 = `${path4} L ${W4} ${H4} L 0 ${H4} Z`;
+
+  return (
+    <section ref={ref} style={{ background: "#080a0c", padding: "140px 40px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(480px, 1fr))", gap: 20 }}>
+
+          {/* LEFT — Monitorea tu proyecto + Mockup 4 (Portfolio/Proyección) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: EASE }}
+            style={{ background: "#111216", borderRadius: 20, padding: 36, border: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", gap: 20 }}
+          >
+            <div>
+              <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontSize: "clamp(28px,3vw,38px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 10 }}>
+                <em style={{ fontStyle: "italic" }}>Monitorea</em> tu proyecto
+              </h2>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 340 }}>
+                Rastrea el costo real de tu obra en tiempo real y compáralo con el estimado original.
+              </p>
+            </div>
+
+            {/* Mockup 4 — PROYECCIÓN DE COSTOS (Portfolio style) */}
+            <div style={{ background: "#0d0e10", borderRadius: 14, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Proyección de costos</span>
+              <div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                  <span style={{ fontFamily: "var(--font-display)", fontSize: 28, color: "#fff", letterSpacing: "-0.02em" }}>$1,112,100</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#00b3dd", fontWeight: 600 }}>+$156,800 ↑</span>
+                </div>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 3 }}>Costo base · +14.1% inflación a 5 años</p>
+              </div>
+              {/* SVG chart */}
+              <div style={{ position: "relative" }}>
+                <svg viewBox={`0 0 ${W4} ${H4+12}`} width="100%" style={{ display: "block", overflow: "visible" }}>
+                  <defs>
+                    <linearGradient id="portFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#00b3dd" stopOpacity="0.20" />
+                      <stop offset="100%" stopColor="#00b3dd" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  {/* Grid */}
+                  {[20,50,80].map(y => <line key={y} x1={0} y1={y} x2={W4} y2={y} stroke="rgba(255,255,255,0.04)" strokeWidth={1} />)}
+                  {/* Area */}
+                  <path d={area4} fill="url(#portFill)" />
+                  {/* Line */}
+                  <path d={path4} fill="none" stroke="#00b3dd" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+                  {/* Dots */}
+                  {pts4.map(([x,y],i) => (
+                    <g key={i}>
+                      <circle cx={x} cy={y} r={3.5} fill="#00b3dd" />
+                      {i===pts4.length-1 && <circle cx={x} cy={y} r={7} fill="rgba(0,179,221,0.2)" />}
+                    </g>
+                  ))}
+                  {/* X labels */}
+                  {(["HOY","6M","1A","2A","3A","5A"] as const).map((l,i) => (
+                    <text key={l} x={pts4[i][0]} y={H4+11} textAnchor="middle" fontFamily="var(--font-mono)" fontSize={8} fill="rgba(255,255,255,0.28)" letterSpacing="0.06em">{l}</text>
+                  ))}
+                </svg>
+              </div>
+              {/* Period tabs */}
+              <div style={{ display: "flex", gap: 6 }}>
+                {["1M","3M","6M","1A","5A"].map((t,i) => (
+                  <span key={t} style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: i===4 ? "#00b3dd" : "rgba(255,255,255,0.28)", background: i===4 ? "rgba(0,179,221,0.12)" : "rgba(255,255,255,0.04)", borderRadius: 4, padding: "3px 8px", cursor: "pointer" }}>{t}</span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — Visualiza distribución + Mockup 5 (Asset & Risk) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+            style={{ background: "#111216", borderRadius: 20, padding: 36, border: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", gap: 20 }}
+          >
+            <div>
+              <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontSize: "clamp(28px,3vw,38px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 10 }}>
+                <em style={{ fontStyle: "italic" }}>Visualiza</em> tu distribución
+              </h2>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 340 }}>
+                Conoce si tu presupuesto está alineado con los estándares CMIC por tipo de partida.
+              </p>
+            </div>
+
+            {/* Mockup 5 — DISTRIBUCIÓN DE PARTIDAS (Asset & Risk style) */}
+            <div style={{ background: "#0d0e10", borderRadius: 14, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 18 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Distribución de partidas</span>
+              {[
+                { label: "Materiales",    actual: 58, modelo: 62, color: "#847dff" },
+                { label: "Mano de obra",  actual: 22, modelo: 20, color: "#00b3dd" },
+                { label: "Instalaciones", actual: 11, modelo: 10, color: "#dd90d8" },
+                { label: "Acabados",      actual:  9, modelo:  8, color: "#90b8f0" },
+              ].map(r => (
+                <div key={r.label}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                    <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#fff" }}>{r.label}</span>
+                    <div style={{ display: "flex", gap: 12 }}>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.4)" }}>Actual ({r.actual}%)</span>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.28)" }}>Modelo ({r.modelo}%)</span>
+                    </div>
+                  </div>
+                  {/* Solid bar — actual */}
+                  <div style={{ height: 6, background: "rgba(255,255,255,0.05)", borderRadius: 9999, marginBottom: 4, position: "relative" }}>
+                    <div style={{ width: `${r.actual}%`, height: "100%", background: r.color, borderRadius: 9999, opacity: 0.85 }} />
+                  </div>
+                  {/* Dashed bar — modelo */}
+                  <div style={{ height: 4, background: "rgba(255,255,255,0.03)", borderRadius: 9999, position: "relative", overflow: "hidden" }}>
+                    <div style={{
+                      width: `${r.modelo}%`, height: "100%", borderRadius: 9999,
+                      background: `repeating-linear-gradient(90deg, ${r.color}55 0px, ${r.color}55 6px, transparent 6px, transparent 10px)`,
+                    }} />
+                  </div>
+                </div>
+              ))}
+              {/* Legend */}
+              <div style={{ display: "flex", gap: 16, paddingTop: 4, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <div style={{ width: 16, height: 3, background: "rgba(255,255,255,0.4)", borderRadius: 9999 }} />
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 9, color: "rgba(255,255,255,0.35)" }}>Actual</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <div style={{ width: 16, height: 3, background: "repeating-linear-gradient(90deg,rgba(255,255,255,0.3) 0,rgba(255,255,255,0.3) 4px,transparent 4px,transparent 7px)", borderRadius: 9999 }} />
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 9, color: "rgba(255,255,255,0.35)" }}>Modelo CMIC</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
@@ -1567,6 +1749,7 @@ export default function Home() {
         <SimplifySection />
         <TrackSection />
         <AskSection />
+        <MonitorSection />
         <ToolsSection />
         <TestimonialsSection />
         <ForecastSection />
