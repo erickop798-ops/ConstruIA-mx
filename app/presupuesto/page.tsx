@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Navbar from "../_components/Navbar";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 
 /* ═══════════════════════════════════════════════════════
    TIPOS
@@ -83,6 +86,41 @@ const ESTADOS = [
   { id: "yucatan",             nombre: "Yucatán" },
   { id: "zacatecas",           nombre: "Zacatecas" },
 ] as const;
+
+const FACTOR_SICT: Record<string, { mat: number; mo: number }> = {
+  "aguascalientes":      { mat: 0.99, mo: 0.98 },
+  "baja_california":     { mat: 1.38, mo: 1.46 },
+  "baja_california_sur": { mat: 1.55, mo: 1.50 },
+  "campeche":            { mat: 1.16, mo: 1.07 },
+  "chiapas":             { mat: 1.07, mo: 1.00 },
+  "chihuahua":           { mat: 1.12, mo: 1.16 },
+  "cdmx":                { mat: 1.00, mo: 1.00 },
+  "coahuila":            { mat: 1.11, mo: 1.14 },
+  "colima":              { mat: 1.06, mo: 1.06 },
+  "durango":             { mat: 0.99, mo: 0.99 },
+  "estado_de_mexico":    { mat: 0.92, mo: 0.91 },
+  "guanajuato":          { mat: 1.05, mo: 1.05 },
+  "guerrero":            { mat: 1.15, mo: 1.08 },
+  "hidalgo":             { mat: 0.99, mo: 0.98 },
+  "jalisco":             { mat: 1.03, mo: 1.03 },
+  "michoacan":           { mat: 1.19, mo: 1.13 },
+  "morelos":             { mat: 1.10, mo: 1.10 },
+  "nayarit":             { mat: 1.15, mo: 1.10 },
+  "nuevo_leon":          { mat: 0.98, mo: 1.01 },
+  "oaxaca":              { mat: 1.11, mo: 1.04 },
+  "puebla":              { mat: 1.14, mo: 1.15 },
+  "queretaro":           { mat: 1.07, mo: 1.06 },
+  "quintana_roo":        { mat: 1.30, mo: 1.22 },
+  "san_luis_potosi":     { mat: 1.12, mo: 1.08 },
+  "sinaloa":             { mat: 1.08, mo: 1.10 },
+  "sonora":              { mat: 0.95, mo: 0.98 },
+  "tabasco":             { mat: 1.11, mo: 1.05 },
+  "tamaulipas":          { mat: 1.11, mo: 1.14 },
+  "tlaxcala":            { mat: 0.99, mo: 0.98 },
+  "veracruz":            { mat: 1.19, mo: 1.14 },
+  "yucatan":             { mat: 1.11, mo: 1.03 },
+  "zacatecas":           { mat: 1.00, mo: 1.01 },
+};
 
 const ALTURAS = [
   { id: "2.30", label: "2.30 m (mínimo NTC)" },
@@ -496,6 +534,216 @@ export default function PresupuestoPage() {
     calcular(form);
   };
 
+  /* ─── PDF ─── */
+  const generarPDF = () => {
+    if (!result) return;
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const W = 210;
+
+    // Header dark bar
+    doc.setFillColor(15, 16, 17);
+    doc.rect(0, 0, W, 38, "F");
+    doc.setTextColor(132, 125, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(17);
+    doc.text("PRESUPUESTO DE OBRA", W / 2, 15, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(180, 180, 180);
+    doc.text("ConstruIA.mx · Precios CEICO-CMIC 2026 + Factores SICT 2025", W / 2, 23, { align: "center" });
+    doc.text(`Emitido: ${new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" })}`, W / 2, 30, { align: "center" });
+
+    // Project data
+    const tipLabel  = TIPOS.find(t => t.id === form.tipologia)?.label ?? "";
+    const estLabel  = ESTADOS.find(e => e.id === form.estado)?.nombre ?? "";
+    const calLabel  = CALIDADES.find(c => c.id === form.calidad)?.label ?? "";
+    const cimLabel  = CIMENTACIONES.find(c => c.id === form.cimentacion)?.label ?? "";
+    const factor    = FACTOR_SICT[form.estado];
+
+    let y = 46;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
+    doc.text("DATOS DEL PROYECTO", 20, y); y += 5;
+
+    const infoRows: [string, string][] = [
+      ["Tipo de proyecto",  tipLabel],
+      ["Estado / Región",   estLabel],
+      ["Factor SICT mat/mo", factor ? `${factor.mat.toFixed(2)} / ${factor.mo.toFixed(2)}` : "—"],
+      ["Superficie total",  `${form.metros} m²`],
+      ["Número de niveles", `${form.niveles}`],
+      ["Cimentación",  cimLabel],
+      ["Acabados",          calLabel],
+    ];
+    infoRows.forEach(([label, val]) => {
+      doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(110, 110, 110);
+      doc.text(label + ":", 22, y);
+      doc.setTextColor(20, 20, 20);
+      doc.text(val, 105, y);
+      y += 6.5;
+    });
+
+    // Total highlight
+    y += 3;
+    doc.setFillColor(132, 125, 255);
+    doc.roundedRect(20, y, W - 40, 20, 3, 3, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10);
+    doc.text("PRESUPUESTO TOTAL SIN IVA", W / 2, y + 7.5, { align: "center" });
+    doc.setFontSize(15);
+    doc.text(fmt(result.principal.presupuesto_total_mxn) + " MXN", W / 2, y + 16, { align: "center" });
+    y += 28;
+
+    // Desglose table
+    const tot = result.principal.presupuesto_total_mxn;
+    const mat = result.principal.costo_directo_materiales;
+    const mo  = result.principal.costo_directo_mano_obra;
+    const eq  = result.principal.equipamiento_especial;
+    const ind = result.principal.indirectos_y_ganancia;
+
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
+    doc.text("DESGLOSE DE PARTIDAS", 20, y); y += 3;
+
+    autoTable(doc, {
+      startY: y,
+      head: [["Partida", "Monto (MXN sin IVA)", "% del Total"]],
+      body: [
+        ["Materiales directos",    fmt(mat),  `${pct(mat, tot)}%`],
+        ["Mano de obra directa",   fmt(mo),   `${pct(mo, tot)}%`],
+        ["Equipamiento especial",  fmt(eq),   `${pct(eq, tot)}%`],
+        ["Indirectos + Utilidad",  fmt(ind),  `${pct(ind, tot)}%`],
+      ],
+      foot: [["TOTAL SIN IVA", fmt(tot), "100%"]],
+      headStyles: { fillColor: [132, 125, 255], textColor: 255, fontStyle: "bold", fontSize: 9 },
+      footStyles: { fillColor: [35, 35, 45], textColor: [132, 125, 255], fontStyle: "bold", fontSize: 9 },
+      bodyStyles: { fontSize: 9 },
+      columnStyles: { 1: { halign: "right" }, 2: { halign: "right" } },
+      theme: "grid",
+      margin: { left: 20, right: 20 },
+    });
+    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 6;
+
+    doc.setFont("helvetica", "italic"); doc.setFontSize(8); doc.setTextColor(130, 130, 130);
+    doc.text(`Costo paramétrico: ${fmt(result.principal.costo_parametrico_m2)}/m²`, 20, y);
+    y += 10;
+
+    // Equipamiento especial
+    if (result.principal.desglose_especial.length > 0) {
+      doc.setFont("helvetica", "bold"); doc.setFontSize(9.5); doc.setTextColor(0, 155, 200);
+      doc.text("EQUIPAMIENTO ESPECIAL INCLUIDO:", 20, y); y += 5;
+      result.principal.desglose_especial.forEach(d => {
+        doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(60, 60, 60);
+        doc.text(`• ${d.concepto}`, 24, y);
+        doc.text(fmt(d.costo), W - 20, y, { align: "right" });
+        y += 6;
+      });
+      y += 4;
+    }
+
+    // Comparativa table
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
+    doc.text("COMPARATIVA DE ESCENARIOS", 20, y); y += 3;
+
+    autoTable(doc, {
+      startY: y,
+      head: [["Escenario", "Total MXN", "Costo/m²", "Materiales", "Mano de Obra"]],
+      body: [
+        ["Económico", fmt(result.economico.presupuesto_total_mxn), fmt(result.economico.costo_parametrico_m2)+"/m²", fmt(result.economico.costo_directo_materiales), fmt(result.economico.costo_directo_mano_obra)],
+        ["Estándar",  fmt(result.estandar.presupuesto_total_mxn),  fmt(result.estandar.costo_parametrico_m2)+"/m²",  fmt(result.estandar.costo_directo_materiales),  fmt(result.estandar.costo_directo_mano_obra)],
+        ["Premium",        fmt(result.premium.presupuesto_total_mxn),   fmt(result.premium.costo_parametrico_m2)+"/m²",   fmt(result.premium.costo_directo_materiales),   fmt(result.premium.costo_directo_mano_obra)],
+      ],
+      headStyles: { fillColor: [50, 50, 60], textColor: 255, fontStyle: "bold", fontSize: 9 },
+      bodyStyles: { fontSize: 9 },
+      columnStyles: { 1: { halign: "right" }, 2: { halign: "right" }, 3: { halign: "right" }, 4: { halign: "right" } },
+      theme: "striped",
+      margin: { left: 20, right: 20 },
+    });
+    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+
+    // NTC badge
+    doc.setFillColor(240, 253, 244);
+    doc.roundedRect(20, y, W - 40, 16, 2, 2, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(22, 163, 74);
+    doc.text("✓ Verificación NTC-RCDF 2023 / CMIC 2026", 25, y + 6);
+    doc.setFont("helvetica", "normal"); doc.setTextColor(80, 80, 80);
+    doc.text("Indirectos 18% + Utilidad 10% incluidos. Sin IVA, sin terreno, sin proyecto ejecutivo.", 25, y + 12);
+    y += 22;
+
+    // Footer
+    doc.setFont("helvetica", "italic"); doc.setFontSize(8); doc.setTextColor(150, 150, 150);
+    doc.text("Presupuesto con vigencia de 30 días. Precios sujetos a variaciones del mercado.", W / 2, y, { align: "center" });
+    doc.text("Fuentes: CEICO-CMIC 2026 · SICT 2025 · SOyS CDMX 2026 · NTC 2026", W / 2, y + 5, { align: "center" });
+    doc.text("ConstruIA.mx — construia.mx", W / 2, y + 10, { align: "center" });
+
+    doc.save(`presupuesto-${form.estado}-${form.metros}m2-construia.pdf`);
+  };
+
+  /* ─── Excel ─── */
+  const generarExcel = () => {
+    if (!result) return;
+
+    const tipLabel = TIPOS.find(t => t.id === form.tipologia)?.label ?? "";
+    const estLabel = ESTADOS.find(e => e.id === form.estado)?.nombre ?? "";
+    const calLabel = CALIDADES.find(c => c.id === form.calidad)?.label ?? "";
+    const tot = result.principal.presupuesto_total_mxn;
+    const mat = result.principal.costo_directo_materiales;
+    const mo  = result.principal.costo_directo_mano_obra;
+    const eq  = result.principal.equipamiento_especial;
+    const ind = result.principal.indirectos_y_ganancia;
+    const metros = typeof form.metros === "number" ? form.metros : 0;
+
+    const wb = XLSX.utils.book_new();
+
+    // Sheet 1: Presupuesto
+    const ws1Data: (string | number)[][] = [
+      ["PRESUPUESTO DE OBRA - ConstruIA.mx"],
+      ["Precios CEICO-CMIC 2026 + Factores SICT 2025"],
+      [],
+      ["DATOS DEL PROYECTO"],
+      ["Tipo de proyecto:", tipLabel],
+      ["Estado / Region:", estLabel],
+      ["Superficie total (m2):", metros],
+      ["Numero de niveles:", parseInt(form.niveles)],
+      ["Nivel de acabados:", calLabel],
+      ["Fecha:", new Date().toLocaleDateString("es-MX")],
+      [],
+      ["DESGLOSE DE PARTIDAS"],
+      ["Partida", "Monto (MXN sin IVA)", "% del Total"],
+      ["Materiales directos",    mat,  pct(mat, tot) / 100],
+      ["Mano de obra directa",   mo,   pct(mo,  tot) / 100],
+      ["Equipamiento especial",  eq,   pct(eq,  tot) / 100],
+      ["Indirectos + Utilidad",  ind,  pct(ind, tot) / 100],
+      ["TOTAL SIN IVA",          tot,  1],
+      [],
+      ["Costo parametrico (MXN/m2)", result.principal.costo_parametrico_m2],
+    ];
+
+    if (result.principal.desglose_especial.length > 0) {
+      ws1Data.push([]);
+      ws1Data.push(["EQUIPAMIENTO ESPECIAL"]);
+      result.principal.desglose_especial.forEach(d => {
+        ws1Data.push([d.concepto, d.costo]);
+      });
+    }
+
+    const ws1 = XLSX.utils.aoa_to_sheet(ws1Data);
+    ws1["!cols"] = [{ wch: 38 }, { wch: 22 }, { wch: 14 }];
+    XLSX.utils.book_append_sheet(wb, ws1, "Presupuesto");
+
+    // Sheet 2: Comparativa
+    const ws2Data: (string | number)[][] = [
+      ["COMPARATIVA DE ESCENARIOS"],
+      [],
+      ["Escenario", "Total MXN", "Costo/m2", "Materiales", "Mano de Obra"],
+      ["Economico", result.economico.presupuesto_total_mxn, result.economico.costo_parametrico_m2, result.economico.costo_directo_materiales, result.economico.costo_directo_mano_obra],
+      ["Estandar",  result.estandar.presupuesto_total_mxn,  result.estandar.costo_parametrico_m2,  result.estandar.costo_directo_materiales,  result.estandar.costo_directo_mano_obra],
+      ["Premium",   result.premium.presupuesto_total_mxn,   result.premium.costo_parametrico_m2,   result.premium.costo_directo_materiales,   result.premium.costo_directo_mano_obra],
+    ];
+    const ws2 = XLSX.utils.aoa_to_sheet(ws2Data);
+    ws2["!cols"] = [{ wch: 14 }, { wch: 22 }, { wch: 14 }, { wch: 22 }, { wch: 22 }];
+    XLSX.utils.book_append_sheet(wb, ws2, "Comparativa");
+
+    XLSX.writeFile(wb, `presupuesto-${form.estado}-${metros}m2-construia.xlsx`);
+  };
+
   /* ─── HUD values ─── */
   const total = result?.principal.presupuesto_total_mxn ?? 0;
   const mat   = result?.principal.costo_directo_materiales ?? 0;
@@ -566,6 +814,17 @@ export default function PresupuestoPage() {
               {ESTADOS.map((e) => <option key={e.id} value={e.id}>{e.nombre}</option>)}
             </select>
             {errors.estado && <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "#f87171", marginTop: 6 }}>{errors.estado}</p>}
+            {form.estado && FACTOR_SICT[form.estado] && (
+              <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+                <span style={{ padding: "4px 12px", borderRadius: 9999, background: "rgba(132,125,255,0.12)", border: "1px solid rgba(132,125,255,0.3)", fontFamily: "var(--font-mono)", fontSize: 11, color: "#847dff" }}>
+                  Mat ×{FACTOR_SICT[form.estado].mat.toFixed(2)}
+                </span>
+                <span style={{ padding: "4px 12px", borderRadius: 9999, background: "rgba(0,179,221,0.10)", border: "1px solid rgba(0,179,221,0.25)", fontFamily: "var(--font-mono)", fontSize: 11, color: "#00b3dd" }}>
+                  M.O. ×{FACTOR_SICT[form.estado].mo.toFixed(2)}
+                </span>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "rgba(255,255,255,0.3)", alignSelf: "center" }}>FIC SICT 2025</span>
+              </div>
+            )}
           </div>
         </div>
       );
@@ -804,8 +1063,11 @@ export default function PresupuestoPage() {
               <button onClick={() => { setShowResults(false); setStep(5); }} style={{ padding: "11px 20px", borderRadius: 9999, border: "1px solid #444", background: "#2e2e2e", color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-body)", fontSize: 13, cursor: "pointer" }}>
                 ← Nueva Cotización
               </button>
-              <button onClick={() => window.print()} style={{ padding: "11px 20px", borderRadius: 9999, border: "none", background: "#847dff", color: "#fff", fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-                📄 Ver y Descargar PDF
+              <button onClick={generarPDF} style={{ padding: "11px 20px", borderRadius: 9999, border: "none", background: "#847dff", color: "#fff", fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                📄 Descargar PDF
+              </button>
+              <button onClick={generarExcel} style={{ padding: "11px 20px", borderRadius: 9999, border: "1px solid rgba(74,222,128,0.4)", background: "rgba(74,222,128,0.10)", color: "#4ade80", fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                📊 Descargar Excel
               </button>
             </div>
           </div>
