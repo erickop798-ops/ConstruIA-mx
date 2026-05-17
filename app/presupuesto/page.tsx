@@ -1248,7 +1248,7 @@ export default function PresupuestoPage() {
     <div style={{ minHeight: "100vh", background: "#0f1011", display: "flex", flexDirection: "column" }}>
       <Navbar />
 
-      <div style={{ display: "flex", flex: 1, paddingTop: 64, height: "calc(100vh - 64px)" }}>
+      <div style={{ display: "flex", flex: 1, padding: "64px 0 0 0", height: "calc(100vh - 64px)" }}>
 
         {/* ══ 65% FORMULARIO ══ */}
         <div style={{ flex: "0 0 65%", display: "flex", flexDirection: "column", height: "100%", overflow: "hidden", borderRight: "1px solid rgba(255,255,255,0.07)" }}>
