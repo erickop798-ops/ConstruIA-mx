@@ -537,209 +537,396 @@ export default function PresupuestoPage() {
   /* ─── PDF ─── */
   const generarPDF = () => {
     if (!result) return;
+    type LastTable = { lastAutoTable: { finalY: number } };
+    const lastY = () => (doc as unknown as LastTable).lastAutoTable.finalY;
+
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-    const W = 210;
+    const W = 210, ML = 14, MR = 14;
+    const metros = typeof form.metros === "number" ? form.metros : 0;
+    const tipLabel = TIPOS.find(t => t.id === form.tipologia)?.label ?? "";
+    const estLabel = ESTADOS.find(e => e.id === form.estado)?.nombre ?? "";
+    const calLabel = CALIDADES.find(c => c.id === form.calidad)?.label ?? "";
+    const factor   = FACTOR_SICT[form.estado];
+    const fecha    = new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" });
 
-    // Header dark bar
-    doc.setFillColor(15, 16, 17);
-    doc.rect(0, 0, W, 38, "F");
-    doc.setTextColor(132, 125, 255);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(17);
-    doc.text("PRESUPUESTO DE OBRA", W / 2, 15, { align: "center" });
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
-    doc.setTextColor(180, 180, 180);
-    doc.text("ConstruIA.mx · Precios CEICO-CMIC 2026 + Factores SICT 2025", W / 2, 23, { align: "center" });
-    doc.text(`Emitido: ${new Date().toLocaleDateString("es-MX", { day: "2-digit", month: "long", year: "numeric" })}`, W / 2, 30, { align: "center" });
+    const r = result.principal;
+    const costo_base = r.costo_directo_materiales + r.costo_directo_mano_obra;
+    const esp_total  = r.equipamiento_especial;
+    const costo_dir  = costo_base + esp_total;
+    const honor      = r.presupuesto_total_mxn * 0.08;
+    const subtHon    = r.presupuesto_total_mxn + honor;
+    const ivaTotal   = subtHon * 0.16;
+    const totalIVA   = subtHon + ivaTotal;
 
-    // Project data
-    const tipLabel  = TIPOS.find(t => t.id === form.tipologia)?.label ?? "";
-    const estLabel  = ESTADOS.find(e => e.id === form.estado)?.nombre ?? "";
-    const calLabel  = CALIDADES.find(c => c.id === form.calidad)?.label ?? "";
-    const cimLabel  = CIMENTACIONES.find(c => c.id === form.cimentacion)?.label ?? "";
-    const factor    = FACTOR_SICT[form.estado];
-
-    let y = 46;
-    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
-    doc.text("DATOS DEL PROYECTO", 20, y); y += 5;
-
-    const infoRows: [string, string][] = [
-      ["Tipo de proyecto",  tipLabel],
-      ["Estado / Región",   estLabel],
-      ["Factor SICT mat/mo", factor ? `${factor.mat.toFixed(2)} / ${factor.mo.toFixed(2)}` : "—"],
-      ["Superficie total",  `${form.metros} m²`],
-      ["Número de niveles", `${form.niveles}`],
-      ["Cimentación",  cimLabel],
-      ["Acabados",          calLabel],
+    // Partidas con % del costo_base (sin especiales)
+    const PARTS = [
+      { code: "PRE", nombre: "Trabajos Preliminares",    pct: 0.03, items: [
+          { sub: "Limpieza general y preparación del terreno",        cant: metros, split: 0.50 },
+          { sub: "Trazo, nivelación y referencias topográficas",      cant: metros, split: 0.50 },
+        ]},
+      { code: "CIM", nombre: "Cimentación",               pct: 0.10, items: [
+          { sub: "Excavación y plantilla de cimentación fc=100",      cant: metros, split: 0.40 },
+          { sub: "Zapatas corridas + trabes de liga fc=200 kg/cm²",   cant: metros, split: 0.35 },
+          { sub: "Relleno, compactación y drenaje perimetral",        cant: metros, split: 0.25 },
+        ]},
+      { code: "EST", nombre: "Estructura",                pct: 0.27, items: [
+          { sub: "Acero de refuerzo corrugado No.3 (3/8\") y No.4 (1/2\")", cant: metros * 5, split: 0.55 },
+          { sub: "Concreto premezclado fc=250 kg/cm² en columnas y trabes",  cant: Math.round(metros * 0.15), split: 0.30 },
+          { sub: "Losa maciza e=10 cm fc=200 + cimbra y apuntalamiento",    cant: metros, split: 0.15 },
+        ]},
+      { code: "ALB", nombre: "Albañilería",               pct: 0.20, items: [
+          { sub: "Block hueco de concreto 15×20×40 cm + mano de obra",      cant: metros, split: 0.55 },
+          { sub: "Cemento, cal y arena para mezclas y morteros",             cant: metros, split: 0.30 },
+          { sub: "Castillos, dalas y cerramientos de concreto armado",       cant: Math.round(metros * 0.8), split: 0.15 },
+        ]},
+      { code: "ACB", nombre: "Acabados",                  pct: 0.15, items: [
+          { sub: `Piso ${calLabel} instalado (cerámico / porcelanato)`,      cant: metros, split: 0.45 },
+          { sub: "Aplanados de cemento-arena + yeso fino interior",          cant: metros, split: 0.30 },
+          { sub: "Pintura vinílica 2 manos + puertas, ventanas y herrería",  cant: metros, split: 0.25 },
+        ]},
+      { code: "HID", nombre: "Hidráulica y Sanitaria",    pct: 0.10, items: [
+          { sub: "Instalación hidráulica PVC/PPR agua fría y caliente",      cant: metros, split: 0.55 },
+          { sub: "Instalación sanitaria PVC drenaje + registros",            cant: metros, split: 0.45 },
+        ]},
+      { code: "ELE", nombre: "Instalación Eléctrica",     pct: 0.15, items: [
+          { sub: "Cable THW cal.12 + poliducto y salidas eléctricas",        cant: metros, split: 0.55 },
+          { sub: "Tablero de distribución + contactos y apagadores",         cant: metros, split: 0.25 },
+          { sub: "Mano de obra electricista + verificación NOM-001-SEDE",    cant: metros, split: 0.20 },
+        ]},
     ];
-    infoRows.forEach(([label, val]) => {
-      doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(110, 110, 110);
-      doc.text(label + ":", 22, y);
-      doc.setTextColor(20, 20, 20);
-      doc.text(val, 105, y);
-      y += 6.5;
+
+    // ─── PÁGINA 1: PORTADA ────────────────────────────────────
+    doc.setFillColor(12, 12, 20);
+    doc.rect(0, 0, W, 297, "F");
+
+    doc.setFont("helvetica", "bold"); doc.setFontSize(30); doc.setTextColor(132, 125, 255);
+    doc.text("ConstruIA.mx", W / 2, 48, { align: "center" });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(120, 115, 170);
+    doc.text("Plataforma de Estimación de Costos de Construcción · CEICO-CMIC 2026", W / 2, 58, { align: "center" });
+
+    doc.setDrawColor(132, 125, 255); doc.setLineWidth(0.4);
+    doc.line(ML, 65, W - MR, 65);
+
+    doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(255, 255, 255);
+    doc.text("PRESUPUESTO DE OBRA", W / 2, 80, { align: "center" });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(170, 165, 210);
+    doc.text("Estimación Paramétrica · Precios SICT 2025 · NTC-RCDF 2023", W / 2, 89, { align: "center" });
+
+    // Tarjeta datos
+    doc.setFillColor(18, 18, 32);
+    doc.roundedRect(ML, 100, W - ML - MR, 82, 4, 4, "F");
+    doc.setDrawColor(80, 75, 140); doc.setLineWidth(0.3);
+    doc.roundedRect(ML, 100, W - ML - MR, 82, 4, 4, "S");
+
+    const filas: [string, string][] = [
+      ["Tipo de proyecto:", tipLabel],
+      ["Estado / Región:", estLabel],
+      ["Factor SICT mat/mo:", factor ? `${factor.mat.toFixed(2)} / ${factor.mo.toFixed(2)}` : "—"],
+      ["Superficie construida:", `${metros} m²`],
+      ["Número de niveles:", form.niveles],
+      ["Nivel de acabados:", calLabel],
+      ["Fecha de emisión:", fecha],
+    ];
+    let dy = 111;
+    filas.forEach(([lb, vl]) => {
+      doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(130, 125, 170);
+      doc.text(lb, ML + 6, dy);
+      doc.setFont("helvetica", "bold"); doc.setTextColor(220, 218, 255);
+      doc.text(vl, 105, dy);
+      dy += 9;
     });
 
-    // Total highlight
-    y += 3;
-    doc.setFillColor(132, 125, 255);
-    doc.roundedRect(20, y, W - 40, 20, 3, 3, "F");
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(10);
-    doc.text("PRESUPUESTO TOTAL SIN IVA", W / 2, y + 7.5, { align: "center" });
-    doc.setFontSize(15);
-    doc.text(fmt(result.principal.presupuesto_total_mxn) + " MXN", W / 2, y + 16, { align: "center" });
-    y += 28;
+    // Caja total sin IVA
+    doc.setFillColor(50, 30, 100);
+    doc.roundedRect(ML, 196, W - ML - MR, 32, 4, 4, "F");
+    doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(190, 185, 240);
+    doc.text("COSTO DE CONSTRUCCIÓN SIN IVA", W / 2, 207, { align: "center" });
+    doc.setFont("helvetica", "bold"); doc.setFontSize(21); doc.setTextColor(255, 255, 255);
+    doc.text(fmt(r.presupuesto_total_mxn) + " MXN", W / 2, 220, { align: "center" });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(190, 185, 240);
+    doc.text(`${fmt(r.costo_parametrico_m2)}/m²  ·  Indirectos 18% + Utilidad 10% incluidos`, W / 2, 226, { align: "center" });
 
-    // Desglose table
-    const tot = result.principal.presupuesto_total_mxn;
-    const mat = result.principal.costo_directo_materiales;
-    const mo  = result.principal.costo_directo_mano_obra;
-    const eq  = result.principal.equipamiento_especial;
-    const ind = result.principal.indirectos_y_ganancia;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(132, 125, 255);
+    doc.text(`TOTAL CON IVA (Hon. 8% + IVA 16%): ${fmt(totalIVA)} MXN`, W / 2, 243, { align: "center" });
 
-    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
-    doc.text("DESGLOSE DE PARTIDAS", 20, y); y += 3;
+    doc.setFont("helvetica", "italic"); doc.setFontSize(7); doc.setTextColor(60, 58, 90);
+    doc.text("Sin terreno · Sin proyecto ejecutivo · Sin permisos · Vigencia 30 días", W / 2, 280, { align: "center" });
+    doc.text("Precios de referencia para estimación inicial · Para contratos formales elaborar APUs analíticos", W / 2, 285, { align: "center" });
 
-    autoTable(doc, {
-      startY: y,
-      head: [["Partida", "Monto (MXN sin IVA)", "% del Total"]],
-      body: [
-        ["Materiales directos",    fmt(mat),  `${pct(mat, tot)}%`],
-        ["Mano de obra directa",   fmt(mo),   `${pct(mo, tot)}%`],
-        ["Equipamiento especial",  fmt(eq),   `${pct(eq, tot)}%`],
-        ["Indirectos + Utilidad",  fmt(ind),  `${pct(ind, tot)}%`],
-      ],
-      foot: [["TOTAL SIN IVA", fmt(tot), "100%"]],
-      headStyles: { fillColor: [132, 125, 255], textColor: 255, fontStyle: "bold", fontSize: 9 },
-      footStyles: { fillColor: [35, 35, 45], textColor: [132, 125, 255], fontStyle: "bold", fontSize: 9 },
-      bodyStyles: { fontSize: 9 },
-      columnStyles: { 1: { halign: "right" }, 2: { halign: "right" } },
-      theme: "grid",
-      margin: { left: 20, right: 20 },
-    });
-    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 6;
+    // ─── PÁGINA 2: DESGLOSE POR PARTIDAS ─────────────────────
+    doc.addPage();
+    doc.setFillColor(12, 12, 20); doc.rect(0, 0, W, 297, "F");
+    doc.setFillColor(22, 20, 45); doc.rect(0, 0, W, 20, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(132, 125, 255);
+    doc.text("DESGLOSE POR PARTIDAS", ML, 13);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(140, 135, 185);
+    doc.text(`${tipLabel} · ${metros} m² · ${estLabel} · ${calLabel}`, W - MR, 13, { align: "right" });
 
-    doc.setFont("helvetica", "italic"); doc.setFontSize(8); doc.setTextColor(130, 130, 130);
-    doc.text(`Costo paramétrico: ${fmt(result.principal.costo_parametrico_m2)}/m²`, 20, y);
-    y += 10;
+    let y = 24;
 
-    // Equipamiento especial
-    if (result.principal.desglose_especial.length > 0) {
-      doc.setFont("helvetica", "bold"); doc.setFontSize(9.5); doc.setTextColor(0, 155, 200);
-      doc.text("EQUIPAMIENTO ESPECIAL INCLUIDO:", 20, y); y += 5;
-      result.principal.desglose_especial.forEach(d => {
-        doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(60, 60, 60);
-        doc.text(`• ${d.concepto}`, 24, y);
-        doc.text(fmt(d.costo), W - 20, y, { align: "right" });
-        y += 6;
+    PARTS.forEach(p => {
+      const tp = costo_base * p.pct;
+
+      // Cabecera de partida
+      doc.setFillColor(42, 38, 75);
+      doc.rect(ML, y, W - ML - MR, 7, "F");
+      doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(190, 185, 240);
+      doc.text(`${p.code} — ${p.nombre}`, ML + 3, y + 5);
+      doc.setTextColor(132, 125, 255);
+      doc.text(fmt(tp), W - MR - 2, y + 5, { align: "right" });
+      y += 7;
+
+      // Tabla de ítems
+      autoTable(doc, {
+        startY: y,
+        head: [["CÓDIGO", "CONCEPTO", "UNIDAD", "CANTIDAD", "P.UNITARIO", "IMPORTE"]],
+        body: p.items.map((it, i) => {
+          const imp = tp * it.split;
+          const pu  = it.cant > 0 ? imp / it.cant : 0;
+          return [
+            `${p.code}-${String(i + 1).padStart(3, "0")}`,
+            it.sub,
+            "m²",
+            Math.round(it.cant).toLocaleString("es-MX"),
+            "$" + Math.round(pu).toLocaleString("es-MX"),
+            "$" + Math.round(imp).toLocaleString("es-MX"),
+          ];
+        }),
+        headStyles:  { fillColor: [28, 25, 55], textColor: [150, 145, 205], fontSize: 7,   fontStyle: "bold", cellPadding: 1.8 },
+        bodyStyles:  { fillColor: [16, 15, 28], textColor: [210, 208, 235], fontSize: 7.5, cellPadding: 1.8 },
+        alternateRowStyles: { fillColor: [20, 19, 35] },
+        columnStyles: {
+          0: { halign: "center", cellWidth: 18 },
+          2: { halign: "center", cellWidth: 14 },
+          3: { halign: "right",  cellWidth: 20 },
+          4: { halign: "right",  cellWidth: 25 },
+          5: { halign: "right",  cellWidth: 28 },
+        },
+        theme: "plain",
+        margin: { left: ML, right: MR },
       });
-      y += 4;
+      y = lastY() + 4;
+    });
+
+    // ESP — Equipamiento Especial
+    {
+      doc.setFillColor(42, 38, 75); doc.rect(ML, y, W - ML - MR, 7, "F");
+      doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(190, 185, 240);
+      doc.text("ESP — Equipamiento Especial", ML + 3, y + 5);
+      doc.setTextColor(132, 125, 255);
+      doc.text(fmt(esp_total), W - MR - 2, y + 5, { align: "right" });
+      y += 7;
+
+      const espBody = r.desglose_especial.length > 0
+        ? r.desglose_especial.map((d, i) => [
+            `ESP-${String(i + 1).padStart(3, "0")}`, d.concepto, "equipo", "1",
+            "$" + Math.round(d.costo).toLocaleString("es-MX"),
+            "$" + Math.round(d.costo).toLocaleString("es-MX"),
+          ])
+        : [["ESP-001", "Sin equipamiento especial requerido", "—", "—", "—", "$0"]];
+
+      autoTable(doc, {
+        startY: y,
+        head: [["CÓDIGO", "CONCEPTO", "UNIDAD", "CANTIDAD", "P.UNITARIO", "IMPORTE"]],
+        body: espBody,
+        headStyles:  { fillColor: [28, 25, 55], textColor: [150, 145, 205], fontSize: 7,   fontStyle: "bold", cellPadding: 1.8 },
+        bodyStyles:  { fillColor: [16, 15, 28], textColor: [210, 208, 235], fontSize: 7.5, cellPadding: 1.8 },
+        columnStyles: {
+          0: { halign: "center", cellWidth: 18 },
+          2: { halign: "center", cellWidth: 14 },
+          3: { halign: "right",  cellWidth: 20 },
+          4: { halign: "right",  cellWidth: 25 },
+          5: { halign: "right",  cellWidth: 28 },
+        },
+        theme: "plain",
+        margin: { left: ML, right: MR },
+      });
+      y = lastY() + 5;
     }
 
-    // Comparativa table
-    doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(60, 60, 60);
-    doc.text("COMPARATIVA DE ESCENARIOS", 20, y); y += 3;
+    // Total Costo Directo
+    doc.setFillColor(18, 16, 40); doc.rect(ML, y, W - ML - MR, 10, "F");
+    doc.setDrawColor(132, 125, 255); doc.setLineWidth(0.3);
+    doc.rect(ML, y, W - ML - MR, 10, "S");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(190, 185, 240);
+    doc.text("COSTO DIRECTO TOTAL", ML + 4, y + 6.8);
+    doc.setTextColor(132, 125, 255); doc.setFontSize(10);
+    doc.text(fmt(costo_dir), W - MR - 4, y + 6.8, { align: "right" });
+
+    // ─── PÁGINA 3: FINANCIERO + COMPARATIVA + FIRMAS ─────────
+    doc.addPage();
+    doc.setFillColor(12, 12, 20); doc.rect(0, 0, W, 297, "F");
+    doc.setFillColor(22, 20, 45); doc.rect(0, 0, W, 20, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(13); doc.setTextColor(132, 125, 255);
+    doc.text("INTEGRACIÓN FINANCIERA", ML, 13);
+
+    y = 26;
+
+    // Tabla financiera
+    autoTable(doc, {
+      startY: y,
+      head: [["Concepto", "Monto MXN sin IVA"]],
+      body: [
+        ["Costo Directo (materiales + mano de obra + equipamiento)", fmt(costo_dir)],
+        [`Indirectos (18%)`, fmt(costo_dir * 0.18)],
+        ["Utilidad del contratista (10%)", fmt(costo_dir * 1.18 * 0.10)],
+        ["Costo de Construcción (sin honorarios)", fmt(r.presupuesto_total_mxn)],
+        ["Honorarios Profesionales del Arquitecto / D.R.O. (8%)", fmt(honor)],
+        ["Subtotal sin IVA", fmt(subtHon)],
+        ["IVA 16%", fmt(ivaTotal)],
+      ],
+      foot: [["TOTAL CON IVA", fmt(totalIVA)]],
+      headStyles: { fillColor: [42, 38, 75], textColor: [190, 185, 240], fontSize: 8.5, fontStyle: "bold" },
+      bodyStyles: { fillColor: [16, 15, 28], textColor: [210, 208, 235], fontSize: 9 },
+      alternateRowStyles: { fillColor: [20, 19, 35] },
+      footStyles: { fillColor: [60, 30, 120], textColor: 255, fontSize: 12, fontStyle: "bold" },
+      columnStyles: { 1: { halign: "right", fontStyle: "bold", cellWidth: 55 } },
+      theme: "plain",
+      margin: { left: ML, right: MR },
+    });
+    y = lastY() + 8;
+
+    // Comparativa escenarios
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(170, 165, 215);
+    doc.text("COMPARATIVA DE ESCENARIOS", ML, y); y += 4;
 
     autoTable(doc, {
       startY: y,
-      head: [["Escenario", "Total MXN", "Costo/m²", "Materiales", "Mano de Obra"]],
-      body: [
-        ["Económico", fmt(result.economico.presupuesto_total_mxn), fmt(result.economico.costo_parametrico_m2)+"/m²", fmt(result.economico.costo_directo_materiales), fmt(result.economico.costo_directo_mano_obra)],
-        ["Estándar",  fmt(result.estandar.presupuesto_total_mxn),  fmt(result.estandar.costo_parametrico_m2)+"/m²",  fmt(result.estandar.costo_directo_materiales),  fmt(result.estandar.costo_directo_mano_obra)],
-        ["Premium",        fmt(result.premium.presupuesto_total_mxn),   fmt(result.premium.costo_parametrico_m2)+"/m²",   fmt(result.premium.costo_directo_materiales),   fmt(result.premium.costo_directo_mano_obra)],
-      ],
-      headStyles: { fillColor: [50, 50, 60], textColor: 255, fontStyle: "bold", fontSize: 9 },
-      bodyStyles: { fontSize: 9 },
-      columnStyles: { 1: { halign: "right" }, 2: { halign: "right" }, 3: { halign: "right" }, 4: { halign: "right" } },
-      theme: "striped",
-      margin: { left: 20, right: 20 },
+      head: [["Escenario", "Costo Directo", "Costo de Obra", "TOTAL CON IVA", "Costo/m² c/IVA"]],
+      body: (["economico", "estandar", "premium"] as const).map(k => {
+        const rk = result[k];
+        const base = rk.costo_directo_materiales + rk.costo_directo_mano_obra + rk.equipamiento_especial;
+        const tot  = rk.presupuesto_total_mxn * 1.08 * 1.16;
+        const labels: Record<string, string> = { economico: "Económico", estandar: "Estándar", premium: "Premium" };
+        return [labels[k], fmt(base), fmt(rk.presupuesto_total_mxn), fmt(tot), fmt(tot / metros)];
+      }),
+      headStyles: { fillColor: [32, 30, 60], textColor: [160, 155, 210], fontSize: 8, fontStyle: "bold" },
+      bodyStyles: { fillColor: [16, 15, 28], textColor: [210, 208, 235], fontSize: 8.5 },
+      alternateRowStyles: { fillColor: [20, 19, 35] },
+      columnStyles: { 0: { fontStyle: "bold" }, 1: { halign: "right" }, 2: { halign: "right" }, 3: { halign: "right" }, 4: { halign: "right" } },
+      theme: "plain",
+      margin: { left: ML, right: MR },
     });
-    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+    y = lastY() + 8;
 
-    // NTC badge
-    doc.setFillColor(240, 253, 244);
-    doc.roundedRect(20, y, W - 40, 16, 2, 2, "F");
-    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(22, 163, 74);
-    doc.text("✓ Verificación NTC-RCDF 2023 / CMIC 2026", 25, y + 6);
-    doc.setFont("helvetica", "normal"); doc.setTextColor(80, 80, 80);
-    doc.text("Indirectos 18% + Utilidad 10% incluidos. Sin IVA, sin terreno, sin proyecto ejecutivo.", 25, y + 12);
-    y += 22;
+    // Badge NTC
+    doc.setFillColor(12, 35, 18); doc.roundedRect(ML, y, W - ML - MR, 14, 3, 3, "F");
+    doc.setDrawColor(22, 163, 74); doc.setLineWidth(0.3);
+    doc.roundedRect(ML, y, W - ML - MR, 14, 3, 3, "S");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8); doc.setTextColor(34, 197, 94);
+    doc.text("✓ Verificación NTC-RCDF 2023 / CEICO-CMIC 2026 / SICT 2025", ML + 5, y + 5.5);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(80, 185, 100);
+    doc.text("Indirectos 18% + Utilidad 10% incluidos · Sin terreno · Sin proyecto ejecutivo · Sin licencias", ML + 5, y + 10.5);
+    y += 20;
 
-    // Footer
-    doc.setFont("helvetica", "italic"); doc.setFontSize(8); doc.setTextColor(150, 150, 150);
-    doc.text("Presupuesto con vigencia de 30 días. Precios sujetos a variaciones del mercado.", W / 2, y, { align: "center" });
-    doc.text("Fuentes: CEICO-CMIC 2026 · SICT 2025 · SOyS CDMX 2026 · NTC 2026", W / 2, y + 5, { align: "center" });
-    doc.text("ConstruIA.mx — construia.mx", W / 2, y + 10, { align: "center" });
+    // Firmas
+    y = Math.max(y, 228);
+    doc.setFont("helvetica", "bold"); doc.setFontSize(9); doc.setTextColor(160, 155, 210);
+    doc.text("FIRMAS DE ACEPTACIÓN", ML, y); y += 10;
 
-    doc.save(`presupuesto-${form.estado}-${form.metros}m2-construia.pdf`);
+    const fw2 = (W - ML - MR - 16) / 2;
+    [["Elaboró — Director de Proyecto / Arquitecto", ML], ["Acepta — Propietario / Cliente", ML + fw2 + 16]].forEach(([label, x]) => {
+      const xn = x as number;
+      doc.setDrawColor(90, 85, 140); doc.setLineWidth(0.3);
+      doc.line(xn, y + 18, xn + fw2, y + 18);
+      doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(130, 125, 170);
+      doc.text(label as string, xn + fw2 / 2, y + 24, { align: "center" });
+      doc.text("Nombre y firma", xn + fw2 / 2, y + 30, { align: "center" });
+      doc.text("Fecha: ___________________", xn + fw2 / 2, y + 36, { align: "center" });
+    });
+
+    doc.setFont("helvetica", "italic"); doc.setFontSize(6.5); doc.setTextColor(55, 52, 80);
+    doc.text(`ConstruIA.mx · ${fecha} · Vigencia 30 días · Precios sujetos a variaciones del mercado`, W / 2, 290, { align: "center" });
+
+    doc.save(`presupuesto-${form.estado}-${metros}m2-construia.pdf`);
   };
 
   /* ─── Excel ─── */
   const generarExcel = () => {
     if (!result) return;
-
+    const metros   = typeof form.metros === "number" ? form.metros : 0;
     const tipLabel = TIPOS.find(t => t.id === form.tipologia)?.label ?? "";
     const estLabel = ESTADOS.find(e => e.id === form.estado)?.nombre ?? "";
     const calLabel = CALIDADES.find(c => c.id === form.calidad)?.label ?? "";
-    const tot = result.principal.presupuesto_total_mxn;
-    const mat = result.principal.costo_directo_materiales;
-    const mo  = result.principal.costo_directo_mano_obra;
-    const eq  = result.principal.equipamiento_especial;
-    const ind = result.principal.indirectos_y_ganancia;
-    const metros = typeof form.metros === "number" ? form.metros : 0;
+
+    const r         = result.principal;
+    const cb        = r.costo_directo_materiales + r.costo_directo_mano_obra;
+    const esp       = r.equipamiento_especial;
+    const cDir      = cb + esp;
+    const honor     = r.presupuesto_total_mxn * 0.08;
+    const subtHon   = r.presupuesto_total_mxn + honor;
+    const totalIVA  = subtHon * 1.16;
+
+    const PARTS_XLS = [
+      { code: "PRE", nombre: "Trabajos Preliminares",  pct: 0.03 },
+      { code: "CIM", nombre: "Cimentación",             pct: 0.10 },
+      { code: "EST", nombre: "Estructura",              pct: 0.27 },
+      { code: "ALB", nombre: "Albañilería",             pct: 0.20 },
+      { code: "ACB", nombre: "Acabados",                pct: 0.15 },
+      { code: "HID", nombre: "Hidráulica y Sanitaria",  pct: 0.10 },
+      { code: "ELE", nombre: "Instalación Eléctrica",   pct: 0.15 },
+    ];
 
     const wb = XLSX.utils.book_new();
 
-    // Sheet 1: Presupuesto
-    const ws1Data: (string | number)[][] = [
-      ["PRESUPUESTO DE OBRA - ConstruIA.mx"],
+    // ── Hoja 1: Presupuesto ─────────────────────────────────
+    const ws1: (string | number)[][] = [
+      ["PRESUPUESTO DE OBRA — ConstruIA.mx"],
       ["Precios CEICO-CMIC 2026 + Factores SICT 2025"],
       [],
-      ["DATOS DEL PROYECTO"],
-      ["Tipo de proyecto:", tipLabel],
-      ["Estado / Region:", estLabel],
-      ["Superficie total (m2):", metros],
-      ["Numero de niveles:", parseInt(form.niveles)],
-      ["Nivel de acabados:", calLabel],
-      ["Fecha:", new Date().toLocaleDateString("es-MX")],
+      ["Tipo de proyecto:", tipLabel, "", "Estado:", estLabel],
+      ["Superficie:", metros, "m²", "Niveles:", parseInt(form.niveles)],
+      ["Acabados:", calLabel, "", "Fecha:", new Date().toLocaleDateString("es-MX")],
       [],
-      ["DESGLOSE DE PARTIDAS"],
-      ["Partida", "Monto (MXN sin IVA)", "% del Total"],
-      ["Materiales directos",    mat,  pct(mat, tot) / 100],
-      ["Mano de obra directa",   mo,   pct(mo,  tot) / 100],
-      ["Equipamiento especial",  eq,   pct(eq,  tot) / 100],
-      ["Indirectos + Utilidad",  ind,  pct(ind, tot) / 100],
-      ["TOTAL SIN IVA",          tot,  1],
-      [],
-      ["Costo parametrico (MXN/m2)", result.principal.costo_parametrico_m2],
+      ["CÓDIGO", "PARTIDA", "IMPORTE MXN"],
     ];
 
-    if (result.principal.desglose_especial.length > 0) {
-      ws1Data.push([]);
-      ws1Data.push(["EQUIPAMIENTO ESPECIAL"]);
-      result.principal.desglose_especial.forEach(d => {
-        ws1Data.push([d.concepto, d.costo]);
+    PARTS_XLS.forEach(p => {
+      ws1.push([p.code, p.nombre, Math.round(cb * p.pct)]);
+    });
+
+    if (esp > 0) {
+      ws1.push(["ESP", "Equipamiento Especial", Math.round(esp)]);
+      r.desglose_especial.forEach((d, i) => {
+        ws1.push([`  ESP-${String(i + 1).padStart(3, "0")}`, `  ${d.concepto}`, Math.round(d.costo)]);
       });
+    } else {
+      ws1.push(["ESP", "Equipamiento Especial", 0]);
     }
 
-    const ws1 = XLSX.utils.aoa_to_sheet(ws1Data);
-    ws1["!cols"] = [{ wch: 38 }, { wch: 22 }, { wch: 14 }];
-    XLSX.utils.book_append_sheet(wb, ws1, "Presupuesto");
+    ws1.push([]);
+    ws1.push(["", "COSTO DIRECTO TOTAL",              Math.round(cDir)]);
+    ws1.push(["", "Indirectos 18%",                   Math.round(cDir * 0.18)]);
+    ws1.push(["", "Utilidad del contratista 10%",     Math.round(cDir * 1.18 * 0.10)]);
+    ws1.push(["", "Costo de Construcción (sin hon.)", Math.round(r.presupuesto_total_mxn)]);
+    ws1.push(["", "Honorarios profesionales 8%",      Math.round(honor)]);
+    ws1.push(["", "Subtotal sin IVA",                 Math.round(subtHon)]);
+    ws1.push(["", "IVA 16%",                          Math.round(subtHon * 0.16)]);
+    ws1.push(["", "TOTAL CON IVA",                    Math.round(totalIVA)]);
+    ws1.push([]);
+    ws1.push(["", "Costo paramétrico sin IVA (MXN/m²):", Math.round(r.costo_parametrico_m2)]);
+    ws1.push(["", "Costo paramétrico con IVA (MXN/m²):", Math.round(totalIVA / metros)]);
 
-    // Sheet 2: Comparativa
-    const ws2Data: (string | number)[][] = [
+    const ws1Sheet = XLSX.utils.aoa_to_sheet(ws1);
+    ws1Sheet["!cols"] = [{ wch: 8 }, { wch: 36 }, { wch: 20 }];
+    XLSX.utils.book_append_sheet(wb, ws1Sheet, "Presupuesto");
+
+    // ── Hoja 2: Comparativa ─────────────────────────────────
+    const ws2: (string | number)[][] = [
       ["COMPARATIVA DE ESCENARIOS"],
       [],
-      ["Escenario", "Total MXN", "Costo/m2", "Materiales", "Mano de Obra"],
-      ["Economico", result.economico.presupuesto_total_mxn, result.economico.costo_parametrico_m2, result.economico.costo_directo_materiales, result.economico.costo_directo_mano_obra],
-      ["Estandar",  result.estandar.presupuesto_total_mxn,  result.estandar.costo_parametrico_m2,  result.estandar.costo_directo_materiales,  result.estandar.costo_directo_mano_obra],
-      ["Premium",   result.premium.presupuesto_total_mxn,   result.premium.costo_parametrico_m2,   result.premium.costo_directo_materiales,   result.premium.costo_directo_mano_obra],
+      ["Escenario", "Costo Directo", "Costo de Obra", "Total con IVA", "Costo/m² c/IVA"],
     ];
-    const ws2 = XLSX.utils.aoa_to_sheet(ws2Data);
-    ws2["!cols"] = [{ wch: 14 }, { wch: 22 }, { wch: 14 }, { wch: 22 }, { wch: 22 }];
-    XLSX.utils.book_append_sheet(wb, ws2, "Comparativa");
+    (["economico", "estandar", "premium"] as const).forEach(k => {
+      const rk   = result[k];
+      const base = rk.costo_directo_materiales + rk.costo_directo_mano_obra + rk.equipamiento_especial;
+      const tot  = rk.presupuesto_total_mxn * 1.08 * 1.16;
+      const lbl  = k === "economico" ? "Económico" : k === "estandar" ? "Estándar" : "Premium";
+      ws2.push([lbl, Math.round(base), Math.round(rk.presupuesto_total_mxn), Math.round(tot), Math.round(tot / metros)]);
+    });
+    const ws2Sheet = XLSX.utils.aoa_to_sheet(ws2);
+    ws2Sheet["!cols"] = [{ wch: 12 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 18 }];
+    XLSX.utils.book_append_sheet(wb, ws2Sheet, "Comparativa");
 
     XLSX.writeFile(wb, `presupuesto-${form.estado}-${metros}m2-construia.xlsx`);
   };
