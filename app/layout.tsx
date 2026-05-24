@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Montserrat, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import "./snaptrude.css";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
