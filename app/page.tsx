@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 export default function Home() {
   useEffect(() => {
+    // Scroll reveal
     const els = document.querySelectorAll('.snap-reveal');
     const obs = new IntersectionObserver(
       (entries) => {
@@ -14,17 +15,36 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
-    els.forEach((el) => {
-      const r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight + 50) {
-        el.classList.add('visible');
+    els.forEach((el) => obs.observe(el));
+
+    // Section dividers
+    const secs = document.querySelectorAll('.sec');
+    const secObs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      }),
+      { threshold: 0.05 }
+    );
+    secs.forEach((s) => secObs.observe(s));
+
+    // Navbar scroll
+    const nav = document.querySelector('.nav') as HTMLElement;
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        nav?.classList.add('scrolled');
       } else {
-        obs.observe(el);
+        nav?.classList.remove('scrolled');
       }
-    });
-    return () => obs.disconnect();
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      obs.disconnect();
+      secObs.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const accToggle = (el: HTMLElement) => {
@@ -59,96 +79,24 @@ export default function Home() {
 
       {/* ═══ HERO ═══ */}
       <section className="hero">
-        <p className="hero-eye snap-reveal">El copiloto de construcci&#243;n para M&#233;xico</p>
-        <h1 className="hero-h1 snap-reveal snap-d1">
+        <div className="hero-badge">Precios CMIC 2026 &#183; 33 estados &#183; PDF LOPSRM</div>
+        <h1 className="hero-h1">
           Del brief al presupuesto,<br />en un modelo conectado
         </h1>
-        <p className="hero-sub snap-reveal snap-d2">
+        <p className="hero-sub">
           Deja de presupuestar con Excel. ConstruIA aplica precios CEICO-CMIC 2026
           con factores regionales SICT, genera tres escenarios y produce el PDF
           LOPSRM en minutos, no en d&#237;as.
         </p>
-        <div className="hero-cta snap-reveal snap-d3">
-          <button className="btn-gold-lg">Iniciar presupuesto gratis</button>
-        </div>
+        <button className="hero-cta">Iniciar presupuesto gratis &#8594;</button>
 
-        {/* Monitor Mockup */}
-        <div className="monitor-wrap snap-reveal">
-          <div className="monitor">
-            <div className="monitor-screen">
-              <div className="monitor-bar">
-                <div className="dots">
-                  <span></span><span></span><span></span>
-                </div>
-                <span className="bar-title">Presupuesto &#183; Tlaxcala 2026</span>
-              </div>
-              <div className="m-sidebar">
-                <div className="m-step"><span className="snum">&#10003;</span>Tipo</div>
-                <div className="m-step active"><span className="snum">2</span>Generales</div>
-                <div className="m-step"><span className="snum">3</span>Estructura</div>
-                <div className="m-step"><span className="snum">4</span>Acabados</div>
-                <div className="m-step"><span className="snum">5</span>Instalaciones</div>
-              </div>
-              <div className="m-main">
-                <h4>&#191;Qu&#233; vas a construir?</h4>
-                <div className="m-cards">
-                  <div className="m-card sel">
-                    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="#C8973A" strokeWidth="1">
-                      <polyline points="2,20 16,6 30,20"/>
-                      <rect x="6" y="20" width="20" height="4"/>
-                      <rect x="13" y="20" width="6" height="4"/>
-                    </svg>
-                    <div className="m-card-label">Casa</div>
-                  </div>
-                  <div className="m-card">
-                    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="#888" strokeWidth="1">
-                      <rect x="2" y="8" width="28" height="16"/>
-                      <rect x="2" y="3" width="28" height="5"/>
-                      <line x1="11" y1="8" x2="11" y2="24" opacity=".4"/>
-                      <line x1="21" y1="8" x2="21" y2="24" opacity=".4"/>
-                    </svg>
-                    <div className="m-card-label">Comercial</div>
-                  </div>
-                  <div className="m-card">
-                    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="#888" strokeWidth="1">
-                      <rect x="6" y="2" width="20" height="22"/>
-                      <line x1="6" y1="10" x2="26" y2="10" opacity=".4"/>
-                      <line x1="6" y1="17" x2="26" y2="17" opacity=".4"/>
-                      <line x1="16" y1="2" x2="16" y2="24" opacity=".3"/>
-                    </svg>
-                    <div className="m-card-label">Deptos</div>
-                  </div>
-                </div>
-                <div style={{marginTop:'8px'}}>
-                  <div style={{fontSize:'9px',color:'#888',marginBottom:'4px',fontWeight:500}}>Estado</div>
-                  <div style={{padding:'6px 10px',border:'1px solid #D4D0C8',borderRadius:'6px',fontSize:'10px',color:'#444',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                    <span>Tlaxcala</span>
-                    <span style={{color:'var(--gold)',fontSize:'8px'}}>&#9662;</span>
-                  </div>
-                </div>
-                <div style={{marginTop:'8px'}}>
-                  <div style={{fontSize:'9px',color:'#888',marginBottom:'4px',fontWeight:500}}>Superficie</div>
-                  <div style={{padding:'6px 10px',border:'1px solid #D4D0C8',borderRadius:'6px',fontSize:'10px',color:'#444',fontWeight:600,fontFamily:'monospace'}}>
-                    120 m&#178;
-                  </div>
-                </div>
-              </div>
-              <div className="m-panel">
-                <div className="m-panel-title">Presupuesto en vivo</div>
-                <div className="m-panel-val">$1,112,100</div>
-                <div className="m-panel-sub">Jun 2026 &#183; Tlaxcala</div>
-                <div style={{height:'1px',background:'#D4D0C8',margin:'8px 0'}}></div>
-                <div className="m-panel-row"><span>Materiales</span><span>$578,292</span></div>
-                <div className="m-panel-row"><span>Mano de obra</span><span>$422,598</span></div>
-                <div className="m-panel-row"><span>Imprevistos</span><span>$111,210</span></div>
-                <div style={{height:'1px',background:'#D4D0C8',margin:'8px 0'}}></div>
-                <div className="m-panel-row" style={{fontWeight:700,color:'var(--gold)'}}>
-                  <span>Total</span><span>$1,112,100</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="monitor-stand"></div>
+        {/* Mockup estilo Snaptrude */}
+        <div className="hero-mockup-wrap">
+          <img
+            src="/screenshots/hero-mockup.jpeg"
+            alt="ConstruIA &#8212; Presupuestador profesional"
+            className="hero-mockup-img"
+          />
         </div>
       </section>
 
@@ -176,9 +124,9 @@ export default function Home() {
             <div className="card-vis" style={{padding:0,minHeight:'220px'}}>
               <img
                 className="card-vis-img"
-                src="/screenshots/wizard-paso2.png"
+                src="/screenshots/card-wizard.jpeg"
                 alt="Wizard paso 2 — Generales"
-                style={{filter:'brightness(0.92)',objectPosition:'top center'}}
+                style={{filter:'brightness(0.95)',objectPosition:'top center'}}
               />
               <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
             </div>
@@ -193,7 +141,7 @@ export default function Home() {
                 className="card-vis-img"
                 src="/screenshots/tabla-precios.png"
                 alt="Tabla de precios por estado"
-                style={{filter:'brightness(0.88)',objectPosition:'top center'}}
+                style={{filter:'brightness(0.92)',objectPosition:'top center'}}
               />
               <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
             </div>
@@ -206,9 +154,9 @@ export default function Home() {
             <div className="card-vis" style={{padding:0,minHeight:'220px'}}>
               <img
                 className="card-vis-img"
-                src="/screenshots/agente-ia.png"
+                src="/screenshots/card-agente.jpeg"
                 alt="Agente IA ConstruIA"
-                style={{filter:'brightness(0.90)',objectPosition:'top center'}}
+                style={{filter:'brightness(0.95)',objectPosition:'top center'}}
               />
               <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
             </div>
@@ -588,19 +536,39 @@ export default function Home() {
       </section>
 
       {/* ═══ PULLQUOTE TESTIMONIAL ═══ */}
-      <section className="sec">
-        <div className="pullquote snap-reveal">
-          <svg width="40" height="32" viewBox="0 0 40 32" fill="none" style={{marginBottom:'24px',opacity:.35}}>
-            <path d="M0 32V20C0 12 4 6 12 2L15 6C10 9 8 13 8 18H16V32H0ZM24 32V20C24 12 28 6 36 2L39 6C34 9 32 13 32 18H40V32H24Z" fill="var(--gold)"/>
-          </svg>
-          <p className="pullquote-text">
-            &#8220;ConstruIA nos permiti&#243; ganar una licitaci&#243;n con el gobierno municipal de Tlaxcala.
-            El PDF sali&#243; en formato LOPSRM correcto al primer intento &#8212; algo que antes
-            nos tomaba dos d&#237;as de trabajo con Excel.&#8221;
+      <section className="sec" style={{
+        padding:'100px 40px',
+        borderTop:'1px solid var(--line)',
+        borderBottom:'1px solid var(--line)'
+      }}>
+        <div style={{maxWidth:'800px',margin:'0 auto',textAlign:'center'}}>
+          <div style={{
+            fontSize:'80px',lineHeight:0.6,color:'var(--gold)',opacity:0.25,
+            fontFamily:'Georgia, serif',marginBottom:'28px',display:'block'
+          }}>&ldquo;</div>
+          <p className="snap-reveal" style={{
+            fontSize:'clamp(22px,3.2vw,38px)',fontWeight:400,fontStyle:'italic',
+            color:'#fff',lineHeight:1.45,marginBottom:'36px',letterSpacing:'-0.01em'
+          }}>
+            ConstruIA nos permiti&oacute; ganar una licitaci&oacute;n
+            municipal en Tlaxcala. El PDF sali&oacute; en formato
+            LOPSRM correcto al primer intento &mdash; algo que
+            antes nos tomaba dos d&iacute;as con Excel.
           </p>
-          <p className="pullquote-author">
-            &#8212; <strong>Arq. Roberto P.</strong> &#183; Despacho RPA Arquitectos, Tlaxcala
-          </p>
+          <div className="snap-reveal snap-d1" style={{
+            display:'flex',alignItems:'center',justifyContent:'center',gap:'12px'
+          }}>
+            <div style={{
+              width:'36px',height:'36px',borderRadius:'50%',
+              background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.3)',
+              display:'flex',alignItems:'center',justifyContent:'center',
+              fontSize:'14px',fontWeight:'700',color:'var(--gold)'
+            }}>R</div>
+            <div style={{textAlign:'left'}}>
+              <div style={{fontSize:'14px',fontWeight:600,color:'#fff'}}>Arq. Roberto P.</div>
+              <div style={{fontSize:'12px',color:'var(--muted)'}}>Despacho RPA Arquitectos &middot; Tlaxcala</div>
+            </div>
+          </div>
         </div>
       </section>
 
