@@ -120,45 +120,101 @@ export default function Home() {
           <button className="btn-gold snap-reveal snap-d1">Empezar gratis</button>
         </div>
         <div className="hw-grid">
+          {/* Card 1 — Describe el proyecto */}
           <div className="card snap-reveal snap-d1">
-            <div className="card-vis" style={{padding:0,minHeight:'220px'}}>
+            <div className="card-vis" style={{padding:0,minHeight:'240px',position:'relative'}}>
               <img
                 className="card-vis-img"
-                src="/screenshots/card-wizard.jpeg"
-                alt="Wizard paso 2 — Generales"
-                style={{filter:'brightness(0.95)',objectPosition:'top center'}}
+                src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80"
+                alt="Arquitecto trabajando"
+                style={{filter:'brightness(0.45)',objectPosition:'center'}}
               />
-              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
+              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.3) 100%)'}}></div>
+              <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'18px',zIndex:3}}>
+                <div style={{background:'rgba(18,18,18,0.92)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,0.10)',borderRadius:'12px',padding:'14px',display:'flex',flexDirection:'column',gap:'9px'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                    <div style={{width:'22px',height:'22px',borderRadius:'6px',background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.35)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:700,color:'var(--gold)',flexShrink:0}}>C</div>
+                    <span style={{fontSize:'11px',color:'var(--muted)',fontWeight:500}}>ConstruIA &middot; Describe tu proyecto</span>
+                  </div>
+                  <div style={{display:'flex',gap:'5px'}}>
+                    {[['Casa',true],['Comercial',false],['Deptos',false]].map(([t,sel]) => (
+                      <span key={t as string} style={{flex:1,textAlign:'center',padding:'5px 4px',fontSize:'10px',background:sel?'rgba(200,151,58,0.14)':'#191919',border:`1px solid ${sel?'rgba(200,151,58,0.4)':'#282828'}`,borderRadius:'6px',color:sel?'var(--gold)':'#555',fontWeight:sel?600:400}}>{t as string}</span>
+                    ))}
+                  </div>
+                  <div style={{display:'flex',gap:'5px'}}>
+                    <div style={{flex:1,background:'#191919',border:'1px solid #282828',borderRadius:'6px',padding:'5px 9px',fontSize:'10px',color:'var(--muted)'}}>Tlaxcala</div>
+                    <div style={{flex:1,background:'#191919',border:'1px solid #282828',borderRadius:'6px',padding:'5px 9px',fontSize:'10px',color:'var(--muted)'}}>120 m&#178;</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="card-body">
               <h3 className="card-title">1. Describe tu proyecto</h3>
               <p className="card-desc">Selecciona Casa, Local o Departamentos. Elige tu estado &#8212; el motor ajusta autom&#225;ticamente los 33 factores regionales FIC SICT 2025.</p>
             </div>
           </div>
+
+          {/* Card 2 — El motor calcula */}
           <div className="card snap-reveal snap-d2">
-            <div className="card-vis" style={{padding:0,minHeight:'220px'}}>
+            <div className="card-vis" style={{padding:0,minHeight:'240px',position:'relative'}}>
               <img
                 className="card-vis-img"
-                src="/screenshots/tabla-precios.png"
-                alt="Tabla de precios por estado"
-                style={{filter:'brightness(0.92)',objectPosition:'top center'}}
+                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80"
+                alt="Obra en construcci&#243;n"
+                style={{filter:'brightness(0.40)',objectPosition:'center'}}
               />
-              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
+              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.3) 100%)'}}></div>
+              <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'18px',zIndex:3}}>
+                <div style={{background:'rgba(18,18,18,0.92)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,0.10)',borderRadius:'12px',padding:'14px'}}>
+                  <div style={{fontSize:'9px',fontWeight:700,letterSpacing:'.12em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'10px'}}>Tres escenarios &middot; CMIC 2026</div>
+                  {[['Econ&#243;mico','$834,075','65%','#555'],['Est&#225;ndar','$1,112,100','80%','var(--gold)'],['Premium','$1,557,540','100%','#4A6FA5']].map(([label,val,w,c]) => (
+                    <div key={label as string} style={{marginBottom:'7px'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',fontSize:'10px',marginBottom:'3px'}}>
+                        <span style={{color:c==='var(--gold)'?'var(--white)':'#888',fontWeight:c==='var(--gold)'?600:400}} dangerouslySetInnerHTML={{__html:label as string}}></span>
+                        <span style={{fontFamily:'monospace',color:c as string,fontSize:'10px'}}>{val as string}</span>
+                      </div>
+                      <div style={{height:'3px',background:'#222',borderRadius:'2px',overflow:'hidden'}}>
+                        <div style={{height:'100%',width:w as string,background:c as string,borderRadius:'2px'}}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="card-body">
               <h3 className="card-title">2. El motor calcula</h3>
               <p className="card-desc">Precios unitarios CEICO-CMIC actualizados a marzo 2026. Materiales, mano de obra e imprevistos desglosados por partida. Sin f&#243;rmulas manuales.</p>
             </div>
           </div>
+
+          {/* Card 3 — Descarga y presenta */}
           <div className="card snap-reveal snap-d3">
-            <div className="card-vis" style={{padding:0,minHeight:'220px'}}>
+            <div className="card-vis" style={{padding:0,minHeight:'240px',position:'relative'}}>
               <img
                 className="card-vis-img"
-                src="/screenshots/card-agente.jpeg"
-                alt="Agente IA ConstruIA"
-                style={{filter:'brightness(0.95)',objectPosition:'top center'}}
+                src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=800&q=80"
+                alt="Arquitectura moderna"
+                style={{filter:'brightness(0.40)',objectPosition:'center'}}
               />
-              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(19,19,19,0.75) 0%,transparent 55%)'}}></div>
+              <div className="card-vis-overlay" style={{background:'linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.3) 100%)'}}></div>
+              <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'flex-end',padding:'18px',zIndex:3}}>
+                <div style={{background:'rgba(18,18,18,0.92)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid rgba(255,255,255,0.10)',borderRadius:'12px',padding:'14px'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'9px'}}>
+                    <svg width="13" height="15" viewBox="0 0 13 17" fill="none" stroke="var(--gold)" strokeWidth="1.2"><rect x="1" y="1" width="11" height="15" rx="1.5"/><line x1="3" y1="5" x2="10" y2="5"/><line x1="3" y1="8" x2="10" y2="8"/><line x1="3" y1="11" x2="7.5" y2="11"/></svg>
+                    <span style={{fontSize:'10px',color:'var(--gold)',fontWeight:700,letterSpacing:'.06em'}}>PRESUPUESTO &middot; LOPSRM</span>
+                  </div>
+                  {[['Cimentaci&#243;n','$98,500'],['Estructura','$156,800'],['Acabados','$41,200']].map(([k,v]) => (
+                    <div key={k as string} style={{display:'flex',justifyContent:'space-between',fontSize:'10px',color:'#666',paddingBottom:'4px',borderBottom:'1px solid #1E1E1E',marginBottom:'3px'}}>
+                      <span dangerouslySetInnerHTML={{__html:k as string}}></span>
+                      <span style={{fontFamily:'monospace'}}>{v as string}</span>
+                    </div>
+                  ))}
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:'11px',paddingTop:'5px'}}>
+                    <span style={{color:'var(--white)',fontWeight:600}}>TOTAL</span>
+                    <span style={{fontFamily:'monospace',color:'var(--gold)',fontWeight:700}}>$1,112,100</span>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="card-body">
               <h3 className="card-title">3. Descarga y presenta</h3>

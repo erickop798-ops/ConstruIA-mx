@@ -6,8 +6,9 @@
   --line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.05);
 }
 img{display:block;max-width:100%}a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}
-body{font-family:'Inter',sans-serif}
-.snap-reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s cubic-bezier(0.16,1,0.3,1),transform 0.65s cubic-bezier(0.16,1,0.3,1)}
+html{overflow-x:hidden}
+body{font-family:'Inter',sans-serif;overflow-x:hidden}
+.snap-reveal{opacity:0;transform:translateY(16px);transition:opacity 0.55s cubic-bezier(0.16,1,0.3,1),transform 0.55s cubic-bezier(0.16,1,0.3,1);will-change:opacity,transform}
 .snap-reveal.visible{opacity:1;transform:translateY(0)}
 .snap-d1{transition-delay:.08s}.snap-d2{transition-delay:.16s}.snap-d3{transition-delay:.24s}.snap-d4{transition-delay:.32s}
 
@@ -25,27 +26,28 @@ body{font-family:'Inter',sans-serif}
 .nav-center a:hover{color:var(--desc)}
 .nav-right{display:flex;align-items:center;gap:12px}
 .btn-login{font-size:14px;font-weight:500;color:var(--white);background:none;border:none;padding:8px 12px}
-.btn-gold{padding:8px 18px;font-size:13px;font-weight:600;color:#000;background:var(--gold);border:none;border-radius:100px;transition:opacity .15s}
-.btn-gold:hover{opacity:.85}
+.btn-gold{padding:8px 18px;font-size:13px;font-weight:600;color:#000;background:var(--gold);border:none;border-radius:100px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1)}
+.btn-gold:hover{opacity:.88;transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,151,58,0.25)}
 .btn-gold-lg{padding:14px 28px;font-size:15px;font-weight:600;color:#000;background:var(--gold);border:none;border-radius:100px;transition:all .2s}
 .btn-gold-lg:hover{opacity:.9;transform:translateY(-1px)}
 .btn-ghost{padding:9px 20px;font-size:13px;font-weight:500;color:var(--white);background:transparent;border:1px solid var(--cbdr2);border-radius:100px;transition:all .2s}
 .btn-ghost:hover{border-color:var(--goldbdr);color:var(--gold)}
 
 /* --- Hero --- */
-.hero{background:#000;padding:120px 40px 0;text-align:center;min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.hero{background:#000;padding:120px 0 0;text-align:center;min-height:100vh;display:flex;flex-direction:column;align-items:center;position:relative}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(200,151,58,0.10);border:1px solid rgba(200,151,58,0.25);border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:32px}
 .hero-eye{font-size:14px;font-weight:400;color:var(--muted);letter-spacing:.03em;margin-bottom:24px}
 .hero-h1{font-size:clamp(40px,5.5vw,72px);font-weight:600;line-height:1.08;letter-spacing:-1px;color:#fff;max-width:760px;margin:0 auto 20px}
 .hero-sub{font-size:16px;font-weight:400;line-height:1.65;color:#AEAEAE;max-width:520px;margin:0 auto 36px}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--gold);border:none;border-radius:100px;font-size:14px;font-weight:700;color:#000;cursor:pointer;transition:all 0.2s;text-decoration:none;margin-bottom:60px}
-.hero-cta:hover{background:#d4a43e;transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,151,58,0.28)}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--gold);border:none;border-radius:100px;font-size:14px;font-weight:700;color:#000;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);text-decoration:none;margin-bottom:0}
+.hero-cta:hover{background:#d4a43e;transform:translateY(-2px);box-shadow:0 12px 36px rgba(200,151,58,0.35)}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:180px;background:linear-gradient(to bottom,rgba(200,151,58,0.5),transparent);pointer-events:none;z-index:0}
 
 /* --- Hero Mockup (estilo Snaptrude) --- */
-.hero-mockup-wrap{width:100%;max-width:1100px;margin:0 auto;position:relative}
-.hero-mockup-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:280px;background:linear-gradient(to top,#0A0A0A 0%,#0A0A0A 15%,transparent 100%);pointer-events:none;z-index:2}
-.hero-mockup-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,#0A0A0A 0%,transparent 100%);pointer-events:none;z-index:2}
-.hero-mockup-img{width:100%;display:block;transform:perspective(2500px) rotateX(6deg);transform-origin:top center;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,0.12);border-bottom:none}
+.hero-mockup-wrap{width:100%;position:relative;margin-top:48px;overflow:hidden}
+.hero-mockup-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,#000 0%,transparent 100%);pointer-events:none;z-index:2}
+.hero-mockup-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(to top,#0A0A0A 0%,#0A0A0A 30%,transparent 100%);pointer-events:none;z-index:2}
+.hero-mockup-img{width:100%;display:block;transform:perspective(3000px) rotateX(5deg);transform-origin:50% 0%;filter:brightness(0.95);border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,0.12);border-bottom:none}
 
 /* --- Monitor derecho (accordion section) --- */
 .m-sidebar{background:#EFEDE8;padding:16px 12px;display:flex;flex-direction:column;gap:6px;border-right:1px solid #D4D0C8}
@@ -76,8 +78,8 @@ body{font-family:'Inter',sans-serif}
 .sec-h2-left{text-align:left}
 
 /* --- Cards (universal) --- */
-.card{background:rgba(23,23,23,0.5);border:0.8px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:border-color 0.2s ease,transform 0.2s cubic-bezier(0.16,1,0.3,1),box-shadow 0.2s ease}
-.card:hover{border-color:rgba(200,151,58,0.30);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+.card{background:rgba(23,23,23,0.5);border:0.8px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:border-color 0.35s cubic-bezier(0.16,1,0.3,1),transform 0.35s cubic-bezier(0.16,1,0.3,1),box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);will-change:transform}
+.card:hover{border-color:rgba(200,151,58,0.30);transform:translateY(-3px);box-shadow:0 20px 48px rgba(0,0,0,0.5)}
 .card-vis{min-height:220px;display:flex;align-items:center;justify-content:center;padding:32px;position:relative;overflow:hidden}
 .card-vis-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.4s ease}
 .card:hover .card-vis-img{transform:scale(1.03)}
@@ -91,8 +93,9 @@ body{font-family:'Inter',sans-serif}
 
 /* --- 50/50 cards --- */
 .duo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.duo-card{display:flex;flex-direction:column}
-.duo-vis{flex:1;min-height:300px;padding:32px;display:flex;flex-direction:column;justify-content:center}
+.duo-card{display:flex;flex-direction:column;min-height:480px}
+.duo-card:hover{transform:translateY(-4px)!important;box-shadow:0 24px 60px rgba(200,151,58,0.14),0 0 0 1px rgba(200,151,58,0.20)!important;border-color:rgba(200,151,58,0.35)!important}
+.duo-vis{flex:1;min-height:280px;padding:28px;display:flex;flex-direction:column;justify-content:center}
 
 /* --- Chat mockup in card --- */
 .chat-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#222;border-radius:100px;font-size:13px;color:var(--desc);margin-bottom:24px}
@@ -144,7 +147,7 @@ body{font-family:'Inter',sans-serif}
 .acc-icon{color:var(--muted);flex-shrink:0}
 
 /* --- Monitor (right side) --- */
-.monitor-r-wrap{perspective:1000px}
+.monitor-r-wrap{perspective:1000px;overflow:hidden}
 .monitor-r{background:#111;border-radius:12px;overflow:hidden;padding:8px;transform:rotateY(-6deg) rotateX(2deg);box-shadow:0 32px 64px rgba(0,0,0,.5)}
 .monitor-r-screen{background:#F5F4F0;border-radius:6px;overflow:hidden;min-height:320px;display:grid;grid-template-columns:140px 1fr 160px;font-size:10px;color:#333}
 .monitor-r-stand{width:60px;height:32px;margin:0 auto;background:linear-gradient(to bottom,#111,#0A0A0A);clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
