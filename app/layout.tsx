@@ -1,19 +1,11 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat, Roboto_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import "./snaptrude.css";
 
-const playfair = Playfair_Display({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-body",
   display: "swap",
 });
@@ -39,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${playfair.variable} ${montserrat.variable} ${robotoMono.variable}`}
+      className={`${inter.variable} ${robotoMono.variable}`}
     >
       <body className="antialiased">{children}</body>
     </html>

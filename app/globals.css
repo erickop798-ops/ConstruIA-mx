@@ -64,9 +64,9 @@ html {
 }
 
 body {
-  background-color: var(--color-midnight-ink);
+  background-color: #0A0A0A;
   color: var(--color-ghost-white);
-  font-family: var(--font-body);
+  font-family: 'Inter', var(--font-body), sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
