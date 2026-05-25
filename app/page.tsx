@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 
 export default function Home() {
   useEffect(() => {
-    // Scroll reveal
     const els = document.querySelectorAll('.snap-reveal');
     const obs = new IntersectionObserver(
       (entries) => {
@@ -19,7 +18,6 @@ export default function Home() {
     );
     els.forEach((el) => obs.observe(el));
 
-    // Section dividers
     const secs = document.querySelectorAll('.sec');
     const secObs = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
@@ -29,7 +27,6 @@ export default function Home() {
     );
     secs.forEach((s) => secObs.observe(s));
 
-    // Navbar scroll
     const nav = document.querySelector('.nav') as HTMLElement;
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -66,7 +63,7 @@ export default function Home() {
       <nav className="nav">
         <div className="nav-logo">CONSTRUIA<b>.</b></div>
         <div className="nav-center">
-          <a href="#how">Herramientas</a>
+          <a href="#tools">Herramientas</a>
           <a href="#table-sec">Blog</a>
           <a href="#table-sec">Precios</a>
           <a href="#acc-sec">M&#225;s</a>
@@ -90,7 +87,6 @@ export default function Home() {
         </p>
         <button className="hero-cta">Iniciar presupuesto gratis &#8594;</button>
 
-        {/* Mockup estilo Snaptrude */}
         <div className="hero-mockup-wrap">
           <img
             src="/screenshots/hero-mockup.jpeg"
@@ -110,53 +106,235 @@ export default function Home() {
         <span className="trust-badge">LOPSRM</span>
       </div>
 
-      {/* ═══ HOW IT WORKS ═══ */}
-      <section className="sec" id="how">
+      {/* ═══ 6 HERRAMIENTAS ═══ */}
+      <section className="sec" id="tools">
         <div className="sec-header">
           <div>
-            <h2 className="sec-h2 sec-h2-left snap-reveal">C&#243;mo funciona</h2>
-            <p className="sec-h2-sub sec-h2-left snap-reveal snap-d1">Del brief al presupuesto en 3 pasos</p>
+            <h2 className="sec-h2 sec-h2-left snap-reveal">6 herramientas para tu obra</h2>
+            <p className="sec-h2-sub sec-h2-left snap-reveal snap-d1">Desde el presupuesto hasta la tesis</p>
           </div>
-          <button className="btn-gold snap-reveal snap-d1">Empezar gratis</button>
+          <button className="btn-gold snap-reveal snap-d1">Explorar herramientas</button>
         </div>
-        <div className="hw-grid">
-          {/* Card 1 — Describe el proyecto */}
-          <div className="card snap-reveal snap-d1">
-            <img
-              src="/ss/card1-wizard.png"
-              alt="ConstruIA — Describe tu proyecto"
-              style={{width:'100%',height:'248px',objectFit:'cover',objectPosition:'center 18%',display:'block'}}
-            />
-            <div className="card-body" style={{padding:'16px 32px 32px'}}>
-              <h3 className="card-title">1. Describe tu proyecto</h3>
-              <p className="card-desc">Selecciona Casa, Local o Departamentos. Elige tu estado &#8212; el motor ajusta autom&#225;ticamente los 33 factores regionales FIC SICT 2025.</p>
-            </div>
-          </div>
 
-          {/* Card 2 — El motor calcula */}
-          <div className="card snap-reveal snap-d2">
-            <img
-              src="/ss/card2-agente.png"
-              alt="ConstruIA — El motor calcula"
-              style={{width:'100%',height:'248px',objectFit:'cover',objectPosition:'center 22%',display:'block'}}
-            />
-            <div className="card-body" style={{padding:'16px 32px 32px'}}>
-              <h3 className="card-title">2. El motor calcula</h3>
-              <p className="card-desc">Precios unitarios CEICO-CMIC actualizados a marzo 2026. Materiales, mano de obra e imprevistos desglosados por partida. Sin f&#243;rmulas manuales.</p>
-            </div>
-          </div>
+        <div className="tools-grid">
 
-          {/* Card 3 — Descarga y presenta */}
-          <div className="card snap-reveal snap-d3">
-            <img
-              src="/ss/card3-precios.png"
-              alt="ConstruIA — Precios por estado"
-              style={{width:'100%',height:'248px',objectFit:'cover',objectPosition:'center 20%',display:'block'}}
-            />
-            <div className="card-body" style={{padding:'16px 32px 32px'}}>
-              <h3 className="card-title">3. Descarga y presenta</h3>
-              <p className="card-desc">PDF profesional formato LOPSRM con membrete, tabla de partidas y tres escenarios: Econ&#243;mico ($834K), Est&#225;ndar ($1.1M) y Premium ($1.5M).</p>
+          {/* ── CARD 1: Presupuestador Pro ── */}
+          <a href="/presupuesto" className="card tool-card snap-reveal snap-d1" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              {/* Selector de tipo */}
+              <div style={{display:'flex',gap:'6px',marginBottom:'12px'}}>
+                <span style={{padding:'4px 10px',background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.35)',borderRadius:'100px',fontSize:'10px',fontWeight:'600',color:'var(--gold)'}}>Casa ●</span>
+                <span style={{padding:'4px 10px',background:'transparent',border:'1px solid #222',borderRadius:'100px',fontSize:'10px',color:'#444'}}>Local</span>
+                <span style={{padding:'4px 10px',background:'transparent',border:'1px solid #222',borderRadius:'100px',fontSize:'10px',color:'#444'}}>Deptos</span>
+              </div>
+              {/* Estado */}
+              <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'10px',color:'#555',marginBottom:'10px'}}>
+                <svg width="9" height="11" viewBox="0 0 9 11" fill="none" stroke="#555" strokeWidth="1"><circle cx="4.5" cy="4" r="2"/><path d="M4.5 10.5C4.5 10.5 1 7 1 4a3.5 3.5 0 0 1 7 0c0 3-3.5 6.5-3.5 6.5z"/></svg>
+                Tlaxcala
+              </div>
+              {/* Número grande */}
+              <div style={{fontFamily:'monospace',fontSize:'26px',fontWeight:'700',color:'var(--gold)',letterSpacing:'-0.02em',marginBottom:'10px'}}>$1,112,100</div>
+              {/* Barras de escenarios */}
+              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                {[
+                  {label:'Económico',val:'$834,075',w:'65%',active:false},
+                  {label:'Estándar',val:'$1,112,100',w:'82%',active:true},
+                  {label:'Premium',val:'$1,557,540',w:'100%',active:false},
+                ].map(({label,val,w,active}) => (
+                  <div key={label}>
+                    <div style={{display:'flex',justifyContent:'space-between',fontSize:'9px',marginBottom:'3px'}}>
+                      <span style={{color: active ? 'var(--gold)' : '#555',fontWeight: active ? 600 : 400}}>{label}</span>
+                      <span style={{fontFamily:'monospace',color: active ? 'var(--gold)' : '#333'}}>{val}</span>
+                    </div>
+                    <div style={{height:'3px',background:'#1A1A1A',borderRadius:'2px'}}>
+                      <div style={{height:'100%',width:w,background: active ? 'var(--gold)' : '#2A2A2A',borderRadius:'2px'}}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+            <div className="card-body">
+              <div className="tool-tag">Presupuestador Pro</div>
+              <h3 className="card-title">Presupuesto en minutos</h3>
+              <p className="card-desc">Precios CMIC 2026 con factores SICT diferenciados por los 33 estados. Genera tres escenarios y exporta a PDF LOPSRM.</p>
+            </div>
+          </a>
+
+          {/* ── CARD 2: Calculadora de Materiales ── */}
+          <a href="/materiales" className="card tool-card snap-reveal snap-d2" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              <div style={{fontSize:'9px',fontWeight:'600',letterSpacing:'0.1em',textTransform:'uppercase',color:'#555',marginBottom:'10px'}}>Lista de materiales</div>
+              <div style={{display:'flex',flexDirection:'column',gap:'5px',marginBottom:'10px'}}>
+                {[
+                  ['Cemento CPC 30R','48 bolsas'],
+                  ['Varilla 3/8"','24 piezas'],
+                  ['Block 15×20×40','890 piezas'],
+                  ['Arena de río','2.4 m³'],
+                  ['Vigueta T-12','36 piezas'],
+                ].map(([mat,qty]) => (
+                  <div key={mat} style={{display:'flex',justifyContent:'space-between',fontFamily:'monospace',fontSize:'10px',borderBottom:'1px solid #111',paddingBottom:'4px'}}>
+                    <span style={{color:'#AEAEAE'}}>{mat}</span>
+                    <span style={{color:'var(--gold)'}}>{qty}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{padding:'5px 10px',background:'rgba(200,151,58,0.08)',border:'1px solid rgba(200,151,58,0.2)',borderRadius:'6px',fontSize:'10px',fontWeight:'600',color:'var(--gold)',textAlign:'center'}}>
+                Lista de 12 materiales generada
+              </div>
+            </div>
+            <div className="card-body">
+              <div className="tool-tag">Calculadora</div>
+              <h3 className="card-title">Lista de materiales exacta</h3>
+              <p className="card-desc">Cantidades calculadas por partida con precios unitarios CEICO-CMIC. Exporta a Excel o comparte por WhatsApp.</p>
+            </div>
+          </a>
+
+          {/* ── CARD 3: Checklist de Permisos ── */}
+          <a href="/checklist" className="card tool-card snap-reveal snap-d3" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              <div style={{display:'inline-flex',alignItems:'center',gap:'6px',padding:'4px 10px',background:'#111',border:'1px solid #1E1E1E',borderRadius:'6px',fontSize:'9px',color:'#666',marginBottom:'12px'}}>
+                <svg width="8" height="10" viewBox="0 0 8 10" fill="none" stroke="#555" strokeWidth="1"><circle cx="4" cy="3.5" r="1.8"/><path d="M4 9.5C4 9.5 0.5 6.5 0.5 3.5a3.5 3.5 0 0 1 7 0c0 3-3.5 6-3.5 6z"/></svg>
+                Tlaxcala
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:'7px',marginBottom:'12px'}}>
+                {[
+                  {done:true,text:'Licencia de construcción'},
+                  {done:true,text:'Planos estructurales autorizados'},
+                  {done:true,text:'Manifestación de construcción'},
+                  {done:false,text:'Dictamen de uso de suelo'},
+                  {done:false,text:'Alineamiento y número oficial'},
+                ].map(({done,text}) => (
+                  <div key={text} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'10px',color: done ? 'var(--desc)' : '#444'}}>
+                    <span style={{width:'13px',height:'13px',borderRadius:'50%',border:`1px solid ${done ? 'var(--gold)' : '#2A2A2A'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color: done ? 'var(--gold)' : '#2A2A2A'}}>
+                      {done ? '✓' : ''}
+                    </span>
+                    {text}
+                  </div>
+                ))}
+              </div>
+              <span style={{padding:'3px 8px',background:'rgba(200,151,58,0.08)',border:'1px solid rgba(200,151,58,0.2)',borderRadius:'4px',fontSize:'9px',fontWeight:'600',color:'var(--gold)'}}>32 documentos identificados</span>
+            </div>
+            <div className="card-body">
+              <div className="tool-tag">Permisos</div>
+              <h3 className="card-title">Checklist de permisos</h3>
+              <p className="card-desc">Documentos requeridos por estado y tipo de obra. Actualizado con normativa municipal 2026.</p>
+            </div>
+          </a>
+
+          {/* ── CARD 4: Simulador de Remodelación ── */}
+          <a href="/simulador" className="card tool-card snap-reveal snap-d1" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              <div style={{display:'flex',gap:'5px',flexWrap:'wrap',marginBottom:'10px'}}>
+                {[['Cocina',false],['Baño',true],['Fachada',false],['Piso',false]].map(([chip,active]) => (
+                  <span key={String(chip)} style={{padding:'3px 7px',background: active ? 'rgba(200,151,58,0.15)' : '#111',border:`1px solid ${active ? 'rgba(200,151,58,0.3)' : '#1E1E1E'}`,borderRadius:'100px',fontSize:'9px',color: active ? 'var(--gold)' : '#555'}}>
+                    {String(chip)}{active ? ' ●' : ''}
+                  </span>
+                ))}
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                <div style={{background:'#1A1A1A',borderRadius:'10px 10px 2px 10px',padding:'7px 10px',fontSize:'10px',color:'#AEAEAE',alignSelf:'flex-end',maxWidth:'80%'}}>
+                  Quiero remodelar mi baño de 4m²
+                </div>
+                <div style={{background:'#111',border:'1px solid #1E1E1E',borderRadius:'2px 10px 10px 10px',padding:'9px 11px',fontSize:'10px',color:'#AEAEAE'}}>
+                  <div style={{fontSize:'9px',fontWeight:'600',color:'var(--gold)',marginBottom:'3px'}}>Baño completo 4m² · Monterrey</div>
+                  <div style={{fontFamily:'monospace',fontSize:'14px',fontWeight:'700',color:'var(--white)',marginBottom:'2px'}}>$28,000 — $42,000</div>
+                  <div style={{fontSize:'9px',color:'#555'}}>Tiempo estimado: 2-3 semanas</div>
+                </div>
+              </div>
+            </div>
+            <div className="card-body">
+              <div className="tool-tag">Simulador</div>
+              <h3 className="card-title">Estima tu remodelación</h3>
+              <p className="card-desc">Describe el espacio y el simulador IA devuelve un rango de costo con materiales y tiempo de ejecución.</p>
+            </div>
+          </a>
+
+          {/* ── CARD 5: Agente ConstruIA ── */}
+          <a href="/agente" className="card tool-card snap-reveal snap-d2" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px'}}>
+                <div style={{width:'26px',height:'26px',borderRadius:'50%',background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.35)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:'700',color:'var(--gold)',flexShrink:0}}>C</div>
+                <div>
+                  <div style={{fontSize:'9px',fontWeight:'600',color:'var(--white)'}}>Agente ConstruIA</div>
+                  <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
+                    <span style={{width:'5px',height:'5px',borderRadius:'50%',background:'#4CAF50',display:'inline-block'}}></span>
+                    <span style={{fontSize:'8px',color:'#4CAF50'}}>En línea</span>
+                  </div>
+                </div>
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <div style={{background:'#1A1A1A',borderRadius:'10px 10px 2px 10px',padding:'7px 10px',fontSize:'9px',color:'#AEAEAE',alignSelf:'flex-end',maxWidth:'85%'}}>
+                  ¿Cuánto cuesta el cemento Cruz Azul en Tlaxcala?
+                </div>
+                <div style={{background:'#111',border:'1px solid #1E1E1E',borderRadius:'2px 10px 10px 10px',padding:'9px 11px'}}>
+                  <div style={{fontFamily:'monospace',fontSize:'15px',fontWeight:'700',color:'var(--gold)',marginBottom:'2px'}}>$255/bolsa</div>
+                  <div style={{fontSize:'9px',color:'#666',marginBottom:'7px'}}>CMIC mar 2026 · Factor Tlaxcala aplicado</div>
+                  <div style={{display:'flex',gap:'4px'}}>
+                    {['CMIC','NTC-RCDF','LOPSRM'].map(src => (
+                      <span key={src} style={{padding:'2px 5px',background:'#1A1A1A',border:'1px solid #2A2A2A',borderRadius:'3px',fontSize:'8px',color:'#555',fontFamily:'monospace'}}>{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="card-body">
+              <div className="tool-tag">Agente IA</div>
+              <h3 className="card-title">Consulta técnica en segundos</h3>
+              <p className="card-desc">Precios de materiales, normativa NTC-RCDF, interpretación LOPSRM. El agente responde con fuentes verificadas.</p>
+            </div>
+          </a>
+
+          {/* ── CARD 6: Asistente de Tesis ── */}
+          <a href="/tesis" className="card tool-card snap-reveal snap-d3" style={{textDecoration:'none',display:'block'}}>
+            <div className="tool-vis">
+              <div style={{display:'flex',gap:'5px',marginBottom:'10px',flexWrap:'wrap'}}>
+                {['Tesis','Memorias de cálculo','Residencia'].map(tag => (
+                  <span key={tag} style={{padding:'3px 7px',background:'#111',border:'1px solid #1E1E1E',borderRadius:'4px',fontSize:'8px',color:'#555'}}>{tag}</span>
+                ))}
+              </div>
+              <div style={{background:'#0D0D0D',border:'1px solid #1A1A1A',borderRadius:'8px',padding:'11px',marginBottom:'8px',flex:1}}>
+                <div style={{fontSize:'8px',fontWeight:'700',letterSpacing:'0.1em',textTransform:'uppercase',color:'#444',marginBottom:'5px'}}>TESIS DE ARQUITECTURA</div>
+                <div style={{fontSize:'9px',fontWeight:'600',color:'var(--desc)',marginBottom:'3px'}}>Capítulo 3: Marco Normativo</div>
+                <div style={{fontSize:'8px',color:'#3A3A3A',lineHeight:'1.5',marginBottom:'8px'}}>NTC-RCDF 2023 · Sección 4.2 — Cargas gravitacionales en estructuras de mampostería. Factor FS=1.5...</div>
+                <div style={{height:'1px',background:'#1A1A1A',marginBottom:'6px'}}></div>
+                <div style={{fontSize:'8px',color:'#2E2E2E'}}>• LOPSRM Art. 24 · • NOM-008 · • CENAPRED-2022</div>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:'7px',background:'#111',border:'1px solid #1A1A1A',borderRadius:'7px',padding:'5px 9px'}}>
+                <span style={{fontSize:'9px',color:'#2A2A2A',flex:1}}>Ayúdame con mi protocolo...</span>
+                <div style={{width:'16px',height:'16px',borderRadius:'50%',background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.25)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',color:'var(--gold)'}}>→</div>
+              </div>
+            </div>
+            <div className="card-body">
+              <div className="tool-tag">Academia</div>
+              <h3 className="card-title">Asistente de tesis</h3>
+              <p className="card-desc">Memorias de cálculo, protocolos de investigación y marcos normativos para estudiantes y residentes.</p>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      {/* ═══ CÓMO FUNCIONA — 3 PASOS ═══ */}
+      <section className="sec" id="how">
+        <div className="sec-header-center">
+          <h2 className="sec-h2 snap-reveal">C&#243;mo funciona</h2>
+          <p className="sec-h2-sub snap-reveal snap-d1">Del brief al resultado en 3 pasos</p>
+        </div>
+        <div className="steps-grid">
+          <div className="step-card snap-reveal snap-d1">
+            <div className="step-num">01</div>
+            <h3 className="step-title">Selecciona tu herramienta</h3>
+            <p className="step-desc">6 herramientas especializadas para cada etapa de tu obra. Desde el presupuesto hasta los permisos.</p>
+          </div>
+          <div className="step-card snap-reveal snap-d2">
+            <div className="step-num">02</div>
+            <h3 className="step-title">Ingresa tus datos</h3>
+            <p className="step-desc">Estado, tipo de obra y especificaciones. El motor aplica precios CMIC 2026 con factores FIC SICT diferenciados por los 33 estados.</p>
+          </div>
+          <div className="step-card snap-reveal snap-d3">
+            <div className="step-num">03</div>
+            <h3 className="step-title">Obt&#233;n tu resultado</h3>
+            <p className="step-desc">Presupuesto, lista de materiales, checklist de permisos o estimado de remodelaci&#243;n. Todo en segundos, descargable en PDF.</p>
           </div>
         </div>
       </section>
@@ -529,34 +707,17 @@ export default function Home() {
       </section>
 
       {/* ═══ PULLQUOTE TESTIMONIAL ═══ */}
-      <section className="sec" style={{
-        padding:'100px 40px',
-        borderTop:'1px solid var(--line)',
-        borderBottom:'1px solid var(--line)'
-      }}>
+      <section className="sec" style={{padding:'100px 40px',borderTop:'1px solid var(--line)',borderBottom:'1px solid var(--line)'}}>
         <div style={{maxWidth:'800px',margin:'0 auto',textAlign:'center'}}>
-          <div style={{
-            fontSize:'80px',lineHeight:0.6,color:'var(--gold)',opacity:0.25,
-            fontFamily:'Georgia, serif',marginBottom:'28px',display:'block'
-          }}>&ldquo;</div>
-          <p className="snap-reveal" style={{
-            fontSize:'clamp(22px,3.2vw,38px)',fontWeight:400,fontStyle:'italic',
-            color:'#fff',lineHeight:1.45,marginBottom:'36px',letterSpacing:'-0.01em'
-          }}>
+          <div style={{fontSize:'80px',lineHeight:0.6,color:'var(--gold)',opacity:0.25,fontFamily:'Georgia, serif',marginBottom:'28px',display:'block'}}>&ldquo;</div>
+          <p className="snap-reveal" style={{fontSize:'clamp(22px,3.2vw,38px)',fontWeight:400,fontStyle:'italic',color:'#fff',lineHeight:1.45,marginBottom:'36px',letterSpacing:'-0.01em'}}>
             ConstruIA nos permiti&oacute; ganar una licitaci&oacute;n
             municipal en Tlaxcala. El PDF sali&oacute; en formato
             LOPSRM correcto al primer intento &mdash; algo que
             antes nos tomaba dos d&iacute;as con Excel.
           </p>
-          <div className="snap-reveal snap-d1" style={{
-            display:'flex',alignItems:'center',justifyContent:'center',gap:'12px'
-          }}>
-            <div style={{
-              width:'36px',height:'36px',borderRadius:'50%',
-              background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.3)',
-              display:'flex',alignItems:'center',justifyContent:'center',
-              fontSize:'14px',fontWeight:'700',color:'var(--gold)'
-            }}>R</div>
+          <div className="snap-reveal snap-d1" style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'12px'}}>
+            <div style={{width:'36px',height:'36px',borderRadius:'50%',background:'rgba(200,151,58,0.15)',border:'1px solid rgba(200,151,58,0.3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',fontWeight:'700',color:'var(--gold)'}}>R</div>
             <div style={{textAlign:'left'}}>
               <div style={{fontSize:'14px',fontWeight:600,color:'#fff'}}>Arq. Roberto P.</div>
               <div style={{fontSize:'12px',color:'var(--muted)'}}>Despacho RPA Arquitectos &middot; Tlaxcala</div>
@@ -591,11 +752,12 @@ export default function Home() {
           <div>
             <p className="footer-col-title">Herramientas</p>
             <ul className="footer-links">
-              <li><a href="#">Presupuestador</a></li>
-              <li><a href="#">Simulador IA</a></li>
-              <li><a href="#">Agente ConstruIA</a></li>
-              <li><a href="#">Tesis y Academia</a></li>
-              <li><a href="#">Precios por Estado</a></li>
+              <li><a href="/presupuesto">Presupuestador Pro</a></li>
+              <li><a href="/materiales">Calculadora de Materiales</a></li>
+              <li><a href="/checklist">Checklist de Permisos</a></li>
+              <li><a href="/simulador">Simulador de Remodelaci&#243;n</a></li>
+              <li><a href="/agente">Agente ConstruIA</a></li>
+              <li><a href="/tesis">Asistente de Tesis</a></li>
             </ul>
           </div>
           <div>
