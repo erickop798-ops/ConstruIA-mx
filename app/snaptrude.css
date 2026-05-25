@@ -145,48 +145,65 @@ body {
   margin-bottom: 40px;
 }
 
-/* INPUT HERO — igual al de omma */
+/* INPUT HERO — valores exactos medidos de omma.build */
+/* container: bg #1E1E1E, border-radius 20px, sin border */
 .cia-hero-input-wrap {
   width: 100%;
   max-width: 640px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 12px;
-  padding: 20px 24px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
+  background: rgb(30, 30, 30);
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
   margin-bottom: 80px;
-  transition: border-color 0.2s;
 }
-.cia-hero-input-wrap:focus-within {
-  border-color: rgba(200,151,58,0.35);
+.cia-hero-input-inner {
+  padding: 20px 20px 0;
 }
 .cia-hero-input {
-  flex: 1;
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 400;
   color: var(--white);
   resize: none;
-  min-height: 48px;
+  min-height: 24px;
+  max-height: 120px;
   font-family: inherit;
   line-height: 1.5;
+  display: block;
 }
 .cia-hero-input::placeholder {
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.30);
 }
 .cia-hero-input-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: 8px;
+  padding: 12px 20px 14px;
+  gap: 8px;
 }
+.cia-hero-plus {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.55);
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  padding: 0;
+}
+.cia-hero-plus:hover { background: rgba(255,255,255,0.14); }
 .cia-hero-input-hint {
+  flex: 1;
   font-size: 12px;
   color: var(--text-dimmed);
 }
@@ -207,6 +224,12 @@ body {
 .cia-hero-send:hover {
   background: var(--gold);
   color: #000;
+}
+
+/* Keyframe para agente "Calculando" */
+@keyframes progress-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
 }
 
 /* APP SCREENSHOT HERO — omma exacto */
