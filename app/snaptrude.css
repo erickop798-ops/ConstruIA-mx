@@ -122,7 +122,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 100px;
+  padding-top: 72px;
   padding-bottom: 0;
   text-align: center;
   background: transparent;
@@ -149,7 +149,7 @@ body {
 .cia-hero-input-wrap {
   width: 100%;
   max-width: 640px;
-  background: rgba(255,255,255,0.05);
+  background: #1a1a1a;
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 12px;
   padding: 20px 24px;
@@ -271,40 +271,39 @@ body {
   position: relative;
   cursor: pointer;
   transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 .cia-tool-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 .cia-tool-card-visual {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 20px 16px 0;
   overflow: hidden;
 }
 .cia-tool-card-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 16px;
+  padding: 20px 16px 16px;
   background: linear-gradient(
     to top,
-    rgba(18,18,18,0.97) 0%,
-    rgba(18,18,18,0.85) 50%,
+    rgba(0,0,0,0.95) 0%,
+    rgba(0,0,0,0.80) 50%,
     transparent 100%
   );
 }
 .cia-tool-card-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--white);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 4px;
+  line-height: 1.2;
 }
 .cia-tool-card-desc {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.55);
   margin-bottom: 8px;
 }
 .cia-tool-card-tags {
