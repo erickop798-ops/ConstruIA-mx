@@ -1,21 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Roboto_Mono } from "next/font/google";
+import { Geist } from 'next/font/google';
 import "./globals.css";
 import "./snaptrude.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
-});
+const geist = Geist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "ConstruIA.mx — Copiloto Arquitectónico para México",
@@ -29,11 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="es"
-      className={`${inter.variable} ${robotoMono.variable}`}
-    >
-      <body className="antialiased">{children}</body>
+    <html lang="es">
+      <body className={`${geist.className} antialiased`}>{children}</body>
     </html>
   );
 }
