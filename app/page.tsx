@@ -31,115 +31,71 @@ export default function Home() {
   }, []);
 
   const tools = [
-    { name: 'Presupuestador Pro',         desc: 'CMIC 2026 · 3 escenarios · PDF LOPSRM',    href: '/presupuesto', tags: ['CMIC 2026', 'PDF', '33 estados'], visual: 'presupuesto' },
-    { name: 'Calculadora de Materiales',  desc: 'Lista exacta con factor de desperdicio',     href: '/materiales',  tags: ['Precios 2026', 'PDF', '8 tipos'], visual: 'materiales' },
-    { name: 'Checklist de Permisos',      desc: 'Documentos por estado y tipo de obra',       href: '/checklist',   tags: ['32 estados', 'Oficial', 'PDF'],    visual: 'checklist' },
-    { name: 'Simulador de Remodelación', desc: 'Estimado en minutos con IA',             href: '/simulador',   tags: ['IA', '10 tipos', 'Desglose'],      visual: 'simulador' },
-    { name: 'Agente ConstruIA',           desc: 'Copiloto IA para tu obra',                   href: '/agente',      tags: ['IA', 'CMIC', 'NTC-RCDF'],          visual: 'agente' },
-    { name: 'Asistente de Tesis',         desc: 'Tesis, memorias y residencia profesional',   href: '/tesis',       tags: ['Tesis', 'Memorias', 'NTC-RCDF'],   visual: 'tesis' }
+    { name: 'Presupuestador Pro',         desc: 'CMIC 2026 · 3 escenarios · PDF LOPSRM',    href: '/presupuesto', tags: ['CMIC 2026', 'PDF', '33 estados'], visual: 'presupuesto', photo: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=480&fit=crop&q=85' },
+    { name: 'Calculadora de Materiales',  desc: 'Lista exacta con factor de desperdicio',     href: '/materiales',  tags: ['Precios 2026', 'PDF', '8 tipos'], visual: 'materiales',  photo: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=480&fit=crop&q=85' },
+    { name: 'Checklist de Permisos',      desc: 'Documentos por estado y tipo de obra',       href: '/checklist',   tags: ['32 estados', 'Oficial', 'PDF'],    visual: 'checklist',   photo: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=480&fit=crop&q=85' },
+    { name: 'Simulador de Remodelación', desc: 'Estimado en minutos con IA',             href: '/simulador',   tags: ['IA', '10 tipos', 'Desglose'],      visual: 'simulador',   photo: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=480&fit=crop&q=85' },
+    { name: 'Agente ConstruIA',           desc: 'Copiloto IA para tu obra',                   href: '/agente',      tags: ['IA', 'CMIC', 'NTC-RCDF'],          visual: 'agente',      photo: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=480&fit=crop&q=85' },
+    { name: 'Asistente de Tesis',         desc: 'Tesis, memorias y residencia profesional',   href: '/tesis',       tags: ['Tesis', 'Memorias', 'NTC-RCDF'],   visual: 'tesis',       photo: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&h=480&fit=crop&q=85' }
   ];
 
-  const ToolVisual = ({ type }: { type: string }) => {
-    const gradients: Record<string, string> = {
-      presupuesto: 'linear-gradient(135deg, #1a0f00 0%, #2d1a00 40%, #1a0f00 100%)',
-      materiales:  'linear-gradient(135deg, #001a2d 0%, #002d4a 40%, #001a2d 100%)',
-      checklist:   'linear-gradient(135deg, #001a12 0%, #002d1f 40%, #001a12 100%)',
-      simulador:   'linear-gradient(135deg, #0f0020 0%, #1a0035 40%, #0f0020 100%)',
-      agente:      'linear-gradient(135deg, #1a0010 0%, #2d001a 40%, #1a0010 100%)',
-      tesis:       'linear-gradient(135deg, #0f1000 0%, #1a1a00 40%, #0f1000 100%)'
-    };
-    const accentColors: Record<string, string> = {
-      presupuesto: '#C8973A', materiales: '#3B82F6', checklist: '#10A37F',
-      simulador: '#8B5CF6',   agente: '#EC4899',      tesis: '#F59E0B'
-    };
-    const color    = accentColors[type] || '#C8973A';
-    const gradient = gradients[type]    || gradients['presupuesto'];
-
-    return (
-      <div style={{ position: 'absolute', inset: 0, background: gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', width: '200px', height: '200px', borderRadius: '50%', background: `radial-gradient(circle, ${color}22 0%, transparent 70%)`, top: '10%', left: '50%', transform: 'translateX(-50%)' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: `linear-gradient(${color}08 1px, transparent 1px), linear-gradient(90deg, ${color}08 1px, transparent 1px)`, backgroundSize: '24px 24px' }} />
-        <div style={{ position: 'relative', zIndex: 1, width: '80%', maxWidth: '200px' }}>
-
-          {type === 'presupuesto' && (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '8px' }}>PRESUPUESTO</div>
-              <div style={{ fontSize: '42px', fontWeight: 900, fontFamily: 'monospace', color, lineHeight: 1, letterSpacing: '-2px' }}>$1.1M</div>
-              <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', marginTop: '6px' }}>CMIC 2026 · 3 escenarios</div>
-              <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column' as const, gap: '5px' }}>
-                {[['Materiales', '58%'], ['Mano de obra', '27%'], ['Indirectos', '15%']].map(([l, w]) => (
-                  <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.4)', width: '72px', textAlign: 'right' as const, flexShrink: 0 }}>{l}</span>
-                    <div style={{ flex: 1, height: '3px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px' }}>
-                      <div style={{ height: '100%', width: w, background: color, borderRadius: '2px' }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+  const ToolPanel = ({ type }: { type: string }) => {
+    if (type === 'presupuesto') return (
+      <div>
+        <div style={{ fontSize: '8px', letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'rgba(200,151,58,0.65)', marginBottom: '5px' }}>Estimado CMIC 2026</div>
+        <div style={{ fontSize: '22px', fontWeight: 700, fontFamily: 'monospace', color: '#C8973A', lineHeight: 1, marginBottom: '6px' }}>$1,368,000</div>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {[['Eco','$1.02M'],['Est','$1.37M'],['Pre','$1.92M']].map(([l,v]) => (
+            <div key={l} style={{ flex: 1, padding: '3px 4px', background: l==='Est'?'rgba(200,151,58,0.15)':'rgba(255,255,255,0.06)', border: `1px solid ${l==='Est'?'rgba(200,151,58,0.30)':'rgba(255,255,255,0.08)'}`, borderRadius: '4px', textAlign: 'center' as const }}>
+              <div style={{ fontSize: '7px', color: l==='Est'?'rgba(200,151,58,0.7)':'rgba(255,255,255,0.30)' }}>{l}</div>
+              <div style={{ fontSize: '9px', fontFamily: 'monospace', color: l==='Est'?'#C8973A':'rgba(255,255,255,0.40)', fontWeight: l==='Est'?700:400 }}>{v}</div>
             </div>
-          )}
-          {type === 'materiales' && (
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '10px' }}>MATERIALES</div>
-              {[['Cemento CPC 30R','48 bolsas'],['Varilla 3/8"','24 pzas'],['Block 15×20×40','890 pzas'],['Arena','2.4 m³'],['Grava','1.8 m³']].map(([m, c]) => (
-                <div key={m} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '5px', marginBottom: '5px' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.55)' }}>{m}</span>
-                  <span style={{ fontFamily: 'monospace', color, fontWeight: 600 }}>{c}</span>
-                </div>
-              ))}
-            </div>
-          )}
-          {type === 'checklist' && (
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '10px' }}>PERMISOS</div>
-              {[{done:true,t:'Licencia de construcción'},{done:true,t:'Planos estructurales'},{done:true,t:'Manifestación de obra'},{done:false,t:'Dictamen uso de suelo'},{done:false,t:'Alineamiento oficial'}].map(({ done, t }) => (
-                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: done ? `${color}20` : 'rgba(255,255,255,0.05)', border: `1px solid ${done ? color : 'rgba(255,255,255,0.15)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '7px', color: done ? color : 'rgba(255,255,255,0.2)', flexShrink: 0 }}>{done ? '✓' : ''}</div>
-                  <span style={{ fontSize: '10px', color: done ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.30)' }}>{t}</span>
-                </div>
-              ))}
-            </div>
-          )}
-          {type === 'simulador' && (
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '10px' }}>SIMULADOR IA</div>
-              <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '8px', padding: '8px 10px', fontSize: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '8px' }}>Quiero remodelar mi cocina...</div>
-              <div style={{ background: `${color}12`, border: `1px solid ${color}30`, borderRadius: '8px', padding: '10px 12px' }}>
-                <div style={{ fontSize: '9px', color: `${color}80`, marginBottom: '4px' }}>Estimado IA · Tu ciudad</div>
-                <div style={{ fontSize: '20px', fontWeight: 800, fontFamily: 'monospace', color, lineHeight: 1 }}>$45,000</div>
-                <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.3)', marginTop: '3px' }}>3-4 semanas de obra</div>
-              </div>
-            </div>
-          )}
-          {type === 'agente' && (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: `${color}20`, border: `1px solid ${color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, color }}>C</div>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.75)' }}>Agente ConstruIA</span>
-              </div>
-              <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px 6px 6px 2px', padding: '8px 10px', fontSize: '10px', color: 'rgba(255,255,255,0.55)', marginBottom: '6px' }}>¿Qué calibre de cable para instalación eléctrica?</div>
-              <div style={{ background: `${color}12`, border: `1px solid ${color}25`, borderRadius: '2px 6px 6px 6px', padding: '8px 10px', fontSize: '10px', color: 'rgba(255,255,255,0.70)' }}>
-                <strong style={{ color }}>Cal. 12 AWG</strong> mínimo para circuitos de 20A según NTC-ANCE 2023.
-              </div>
-            </div>
-          )}
-          {type === 'tesis' && (
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '10px' }}>ACADÉMICO</div>
-              <div style={{ background: `${color}10`, border: `1px solid ${color}25`, borderRadius: '8px', padding: '10px 12px', marginBottom: '8px' }}>
-                <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase' as const, color: `${color}80`, marginBottom: '6px' }}>TESIS DE ARQUITECTURA</div>
-                <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>Cap. 3: Marco Normativo</div>
-                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.30)', marginTop: '3px' }}>NTC-RCDF 2023 · §4.2</div>
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: '4px' }}>
-                {['Tesis','Memorias','Residencia'].map(t => (
-                  <span key={t} style={{ padding: '3px 7px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px', fontSize: '9px', color: 'rgba(255,255,255,0.35)' }}>{t}</span>
-                ))}
-              </div>
-            </div>
-          )}
-
+          ))}
         </div>
+      </div>
+    );
+    if (type === 'materiales') return (
+      <div>
+        <div style={{ fontSize: '8px', letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'rgba(59,130,246,0.65)', marginBottom: '6px' }}>Lista de materiales</div>
+        {[['Cemento CPC 30R','48 bolsas'],['Varilla 3/8"','24 pzas'],['Block 15×20×40','890 pzas']].map(([m,c]) => (
+          <div key={m} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '4px' }}>
+            <span style={{ color: 'rgba(255,255,255,0.55)' }}>{m}</span>
+            <span style={{ fontFamily: 'monospace', color: '#3B82F6', fontWeight: 600 }}>{c}</span>
+          </div>
+        ))}
+      </div>
+    );
+    if (type === 'checklist') return (
+      <div>
+        <div style={{ fontSize: '8px', letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'rgba(16,163,127,0.65)', marginBottom: '6px' }}>Permisos · Tu Estado</div>
+        {[{done:true,t:'Licencia de construcción'},{done:true,t:'Planos estructurales'},{done:false,t:'Dictamen uso de suelo'}].map(({done,t}) => (
+          <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '5px' }}>
+            <span style={{ fontSize: '9px', color: done?'#10A37F':'rgba(255,255,255,0.20)' }}>{done?'✓':'○'}</span>
+            <span style={{ fontSize: '10px', color: done?'rgba(255,255,255,0.65)':'rgba(255,255,255,0.30)' }}>{t}</span>
+          </div>
+        ))}
+      </div>
+    );
+    if (type === 'simulador') return (
+      <div>
+        <div style={{ fontSize: '8px', letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'rgba(139,92,246,0.65)', marginBottom: '5px' }}>Estimado IA · Tu ciudad</div>
+        <div style={{ fontSize: '22px', fontWeight: 700, fontFamily: 'monospace', color: '#8B5CF6', lineHeight: 1, marginBottom: '4px' }}>$45,000</div>
+        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>3–4 semanas de obra estimadas</div>
+      </div>
+    );
+    if (type === 'agente') return (
+      <div>
+        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.50)', marginBottom: '6px', fontStyle: 'italic' }}>¿Calibre de cable para 20A?</div>
+        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.4 }}>
+          <span style={{ color: '#EC4899', fontWeight: 600 }}>Cal. 12 AWG</span> según NTC-ANCE 2023
+        </div>
+      </div>
+    );
+    return (
+      <div>
+        <div style={{ fontSize: '8px', letterSpacing: '.1em', textTransform: 'uppercase' as const, color: 'rgba(245,158,11,0.65)', marginBottom: '5px' }}>Tesis de Arquitectura</div>
+        <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.4 }}>Cap. 3: Marco Normativo</div>
+        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.30)', marginTop: '3px' }}>NTC-RCDF 2023 · §4.2</div>
       </div>
     );
   };
@@ -422,10 +378,13 @@ export default function Home() {
           {tools.map((tool, i) => (
             <Link href={tool.href} key={tool.name} style={{ textDecoration: 'none' }}>
               <div className={`cia-tool-card reveal reveal-d${(i % 4) + 1}`}>
-                <div className="cia-tool-card-visual">
-                  <ToolVisual type={tool.visual} />
+                <div className="cia-tool-card-photo">
+                  <img src={tool.photo} alt={tool.name} />
+                  <div className="cia-tool-card-panel">
+                    <ToolPanel type={tool.visual} />
+                  </div>
                 </div>
-                <div className="cia-tool-card-overlay">
+                <div className="cia-tool-card-text">
                   <div className="cia-tool-card-name">{tool.name}</div>
                   <div className="cia-tool-card-desc">{tool.desc}</div>
                   <div className="cia-tool-card-tags">
@@ -445,7 +404,7 @@ export default function Home() {
         <div className="cia-feature">
           <div className="cia-feature-text reveal">
             <span className="cia-feature-label">PRESUPUESTO PRECISO</span>
-            <h2 className="cia-feature-h2">Precios reales,<br />por tu estado</h2>
+            <h2 className="cia-feature-h2"><em style={{ fontStyle: 'italic', fontFamily: 'Georgia,serif' }}>Precios</em> reales,<br />por tu estado</h2>
             <p className="cia-feature-p">
               No un promedio nacional. ConstruIA aplica el &#237;ndice FIC SICT 2025
               con factores diferenciados para materiales y mano de obra en los 33 estados.
@@ -509,7 +468,7 @@ export default function Home() {
           </div>
           <div className="cia-feature-text reveal reveal-d2">
             <span className="cia-feature-label">PLATAFORMA INTEGRADA</span>
-            <h2 className="cia-feature-h2">Todas tus herramientas,<br />en un modelo conectado</h2>
+            <h2 className="cia-feature-h2"><em style={{ fontStyle: 'italic', fontFamily: 'Georgia,serif' }}>Todas</em> tus herramientas,<br />en un modelo conectado</h2>
             <p className="cia-feature-p">
               El presupuestador alimenta al Agente IA. El Agente responde con
               contexto real de tu obra. El PDF toma los datos de ambos.
