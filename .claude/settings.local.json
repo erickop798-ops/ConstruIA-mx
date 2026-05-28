@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "WebFetch(domain:www.snaptrude.com)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(dir C:\\\\Users\\\\PC\\\\construia-mx\\\\public *)"
     ]
   }
 }
