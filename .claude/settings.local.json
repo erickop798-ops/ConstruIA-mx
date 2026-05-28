@@ -5,7 +5,8 @@
       "WebFetch(domain:www.snaptrude.com)",
       "Bash(netstat -ano)",
       "Bash(findstr \":3000\")",
-      "Bash(dir C:\\\\Users\\\\PC\\\\construia-mx\\\\public *)"
+      "Bash(dir C:\\\\Users\\\\PC\\\\construia-mx\\\\public *)",
+      "Bash(npx next *)"
     ]
   }
 }

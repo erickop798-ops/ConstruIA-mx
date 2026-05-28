@@ -12,7 +12,6 @@ export function DashboardSection() {
   return (
     <section
       style={{
-        background: '#121212',
         padding: '120px 60px',
       }}
     >
@@ -41,15 +40,15 @@ export function DashboardSection() {
           </p>
           <h2
             style={{
-              fontSize: 'clamp(28px, 3.5vw, 44px)',
+              fontSize: 'clamp(34px, 4vw, 56px)',
               fontWeight: 700,
               lineHeight: 1.1,
-              letterSpacing: '-0.022em',
+              letterSpacing: '-0.025em',
               color: '#ffffff',
               marginBottom: '20px',
             }}
           >
-            Todo tu flujo de obra en un solo lugar
+            <em className="serif-em">Todo</em> tu flujo de obra en un solo lugar
           </h2>
           <p
             style={{

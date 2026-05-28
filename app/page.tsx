@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { HeroScrollSection } from './_components/HeroScrollSection';
 import { DashboardSection } from './_components/DashboardSection';
 import { ToolCardsSection } from './_components/ToolCardsSection';
+import { FeaturePreciosSection } from './_components/FeaturePreciosSection';
+import { FeaturePlataformaSection } from './_components/FeaturePlataformaSection';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,7 +37,18 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="landing-page" ref={containerRef}>
+    <div
+      className="landing-page"
+      ref={containerRef}
+      style={{
+        background: `
+          radial-gradient(ellipse at 15% 85%, rgba(20,35,100,0.55) 0%, transparent 55%),
+          radial-gradient(ellipse at 85% 15%, rgba(15,28,85,0.40) 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, rgba(10,18,60,0.30) 0%, transparent 70%),
+          #080810
+        `,
+      }}
+    >
 
       {/* ═══ NAV ═══ */}
       <nav className="cia-nav">
@@ -60,89 +73,8 @@ export default function Home() {
       {/* ═══ HERRAMIENTAS ═══ */}
       <ToolCardsSection />
 
-      {/* ═══ FEATURE 1 ═══ */}
-      <section className="cia-section" id="precios">
-        <div className="cia-feature">
-          <div className="cia-feature-text reveal">
-            <span className="cia-feature-label">PRESUPUESTO PRECISO</span>
-            <h2 className="cia-feature-h2"><em style={{ fontStyle: 'italic', fontFamily: 'Georgia,serif' }}>Precios</em> reales,<br />por tu estado</h2>
-            <p className="cia-feature-p">
-              No un promedio nacional. ConstruIA aplica el &#237;ndice FIC SICT 2025
-              con factores diferenciados para materiales y mano de obra en los 33 estados.
-              Cada estado tiene su costo real.
-            </p>
-            <div className="cia-feature-tags">
-              {['CEICO-CMIC 2026','FIC SICT 2025','33 estados','Sin IVA'].map(t => (
-                <span key={t} className="cia-feature-tag">{t}</span>
-              ))}
-            </div>
-          </div>
-          <div className="cia-feature-visual reveal reveal-d2">
-            <div className="cia-feature-mockup" style={{ padding: '20px', minHeight: '260px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>FACTOR REGIONAL · TU ESTADO</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '4px' }}>
-                {[
-                  {l:'Factor materiales',  v:'0.98',d:'-2.0%'},
-                  {l:'Factor mano de obra',v:'0.94',d:'-6.0%'},
-                  {l:'Precio base CDMX',   v:'1.00',d:'referencia'},
-                  {l:'Variación vs media',v:'-3.8%',d:'por debajo'}
-                ].map(({ l, v, d }) => (
-                  <div key={l} style={{ padding: '12px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
-                    <div style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--text-dimmed)', marginBottom: '6px' }}>{l}</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, fontFamily: 'monospace', color: 'var(--gold)' }}>{v}</div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-dimmed)', marginTop: '2px' }}>{d}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop: '8px', padding: '10px 12px', background: 'rgba(200,151,58,0.06)', border: '1px solid rgba(200,151,58,0.15)', borderRadius: 'var(--radius-md)', fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>
-                Fuente: FIC SICT 2025 &nbsp;&#183;&nbsp; Actualizado mar 2026
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ FEATURE 2 ═══ */}
-      <section className="cia-section" id="nosotros">
-        <div className="cia-feature reverse">
-          <div className="cia-feature-visual reveal">
-            <div className="cia-feature-mockup" style={{ padding: '20px', minHeight: '260px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>AGENTES ACTIVOS</div>
-              {[
-                {name:'Presupuestador CMIC',  status:'Calculando',color:'#C8973A'},
-                {name:'Verificador Normativo', status:'Activo',    color:'#10A37F'},
-                {name:'Generador PDF',         status:'En espera', color:'#6E6E6E'},
-                {name:'Agente Consulta',       status:'Completado',color:'#3B82F6'}
-              ].map(({ name, status, color }) => (
-                <div key={name} style={{ padding: '10px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: color, flexShrink: 0 }} />
-                    <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>{name}</span>
-                  </div>
-                  <span style={{ fontSize: '11px', color, fontWeight: 500 }}>{status}</span>
-                </div>
-              ))}
-              <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-md)', fontSize: '11px', color: 'var(--text-dimmed)', textAlign: 'center' }}>
-                4 agentes &nbsp;&#183;&nbsp; 2 tareas activas
-              </div>
-            </div>
-          </div>
-          <div className="cia-feature-text reveal reveal-d2">
-            <span className="cia-feature-label">PLATAFORMA INTEGRADA</span>
-            <h2 className="cia-feature-h2"><em style={{ fontStyle: 'italic', fontFamily: 'Georgia,serif' }}>Todas</em> tus herramientas,<br />en un modelo conectado</h2>
-            <p className="cia-feature-p">
-              El presupuestador alimenta al Agente IA. El Agente responde con
-              contexto real de tu obra. El PDF toma los datos de ambos.
-              Todo conectado, sin copiar y pegar entre herramientas.
-            </p>
-            <div className="cia-feature-tags">
-              {['Presupuestador','Agente IA','Simulador','Checklist','Materiales','Tesis'].map(t => (
-                <span key={t} className="cia-feature-tag">{t}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <FeaturePreciosSection />
+      <FeaturePlataformaSection />
 
       {/* ═══ CTA FINAL ═══ */}
       <section className="cia-cta-section">
