@@ -2,8 +2,13 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { HeroScrollSection } from './_components/HeroScrollSection';
+import { ActivityTicker } from './_components/ActivityTicker';
+import { SocialProofBand } from './_components/SocialProofBand';
 import { DashboardSection } from './_components/DashboardSection';
 import { ToolCardsSection } from './_components/ToolCardsSection';
+import { HowItWorks } from './_components/HowItWorks';
+import { PricingPreview } from './_components/PricingPreview';
+import { FAQSection } from './_components/FAQSection';
 import { FeaturePreciosSection } from './_components/FeaturePreciosSection';
 import { FeaturePlataformaSection } from './_components/FeaturePlataformaSection';
 
@@ -66,13 +71,31 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ═══ HERO SCROLL + DASHBOARD ═══ */}
+      {/* 1. Hero */}
       <HeroScrollSection containerRef={containerRef} />
+
+      {/* 2. Activity Ticker */}
+      <ActivityTicker />
+
+      {/* 3. Social Proof */}
+      <SocialProofBand />
+
+      {/* 4. Dashboard */}
       <DashboardSection />
 
-      {/* ═══ HERRAMIENTAS ═══ */}
+      {/* 5. Tool Cards */}
       <ToolCardsSection />
 
+      {/* 6. Cómo Funciona */}
+      <HowItWorks />
+
+      {/* 7. Pricing */}
+      <PricingPreview />
+
+      {/* 8. FAQ */}
+      <FAQSection />
+
+      {/* 9 & 10. Cards grandes */}
       <FeaturePreciosSection />
       <FeaturePlataformaSection />
 

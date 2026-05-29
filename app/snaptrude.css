@@ -476,6 +476,19 @@ body {
   animation: flowDash 1.5s linear infinite;
 }
 
+/* ═══ ACTIVITY TICKER ═══ */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: marquee 28s linear infinite;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+
 /* ═══ TIPOGRAFÍA PLAYFAIR ═══ */
 em.serif-em {
   font-family: var(--font-playfair), 'Playfair Display', Georgia, serif !important;

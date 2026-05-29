@@ -14,7 +14,6 @@ interface Props {
 }
 
 const VH = 900;
-const BG = '#080810';
 
 export function HeroScrollSection({ containerRef }: Props) {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -66,8 +65,8 @@ export function HeroScrollSection({ containerRef }: Props) {
   const chatYAnim      = useTransform(scrollY, [VH * 0.20, VH * 0.38], [24, 0]);
 
   return (
-    <section ref={sectionRef} style={{ height: '200vh', position: 'relative' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'transparent' }}>
+    <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: '#000000' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#000000' }}>
 
         {/* ── Left image half ── */}
         <motion.div
@@ -99,12 +98,6 @@ export function HeroScrollSection({ containerRef }: Props) {
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
           />
         </motion.div>
-
-        {/* ── Edge gradient overlays ── */}
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '18%', background: `linear-gradient(to right, ${BG} 0%, transparent 100%)`, zIndex: 10, pointerEvents: 'none' }}/>
-        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '18%', background: `linear-gradient(to left, ${BG} 0%, transparent 100%)`, zIndex: 10, pointerEvents: 'none' }}/>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '15%', background: `linear-gradient(to bottom, ${BG} 0%, transparent 100%)`, zIndex: 10, pointerEvents: 'none' }}/>
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '20%', background: `linear-gradient(to top, ${BG} 0%, transparent 100%)`, zIndex: 10, pointerEvents: 'none' }}/>
 
         {/* ── Overlay: eyebrow + h1 + subtitle + CTA ── */}
         <motion.div
