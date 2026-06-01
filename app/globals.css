@@ -64,9 +64,12 @@ html {
 }
 
 body {
-  background-color: #0A0A0A;
+  background-color: #0a0b0c;
+  background-image:
+    linear-gradient(to right, #333 1px, transparent 1px),
+    linear-gradient(to bottom, #333 1px, transparent 1px);
+  background-size: 80px 80px;
   color: var(--color-ghost-white);
-  font-family: 'Inter', var(--font-body), sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -84,10 +87,41 @@ body {
    Snaptrude Design System — ConstruIA.mx
    ═══════════════════════════════════════════ */
 :root {
-  --bg:#000000;--surface:#131313;--white:#FFFFFF;--muted:#666666;--desc:#AAAAAA;
-  --gold:#C8973A;--golddim:rgba(200,151,58,0.12);--goldbdr:rgba(200,151,58,0.25);
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface-2: #161616;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.13);
+  --text-1: #f0f0f0;
+  --text-2: rgba(255,255,255,0.50);
+  --text-3: rgba(255,255,255,0.28);
+  --gold: #C8973A;
+  --gold-dim: rgba(200,151,58,0.12);
+  /* legacy aliases */
+  --white:#FFFFFF;--muted:#666666;--desc:#AAAAAA;
+  --golddim:rgba(200,151,58,0.12);--goldbdr:rgba(200,151,58,0.25);
   --cbdr:rgba(255,255,255,0.09);--cbdr2:rgba(255,255,255,0.15);
   --line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.05);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+body, p, span, button, input, li, td, th {
+  font-family: var(--font-body);
+}
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  display: block;
 }
 img{display:block;max-width:100%}a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}
 .snap-reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
@@ -271,7 +305,3 @@ img{display:block;max-width:100%}a{text-decoration:none;color:inherit}button{fon
   .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
 }
 
-html, body, * {
-  font-family: var(--font-geist-sans), 'Geist',
-    -apple-system, BlinkMacSystemFont, sans-serif !important;
-}

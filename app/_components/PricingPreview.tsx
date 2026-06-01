@@ -1,22 +1,5 @@
 'use client';
-import Link from 'next/link';
-
-const CHECK_G = '#34d399';
-const CHECK_GOLD = '#C8973A';
-const CROSS = 'rgba(255,255,255,0.25)';
-
-function Row({ done, text, gold }: { done: boolean; text: string; gold?: boolean }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '7px 0' }}>
-      <span style={{ fontSize: '15px', color: done ? (gold ? CHECK_GOLD : CHECK_G) : CROSS, flexShrink: 0, marginTop: '1px' }}>
-        {done ? '✓' : '✗'}
-      </span>
-      <span style={{ fontSize: '15px', color: done ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.3)', lineHeight: 1.4 }}>
-        {text}
-      </span>
-    </div>
-  );
-}
+import { Check, X } from 'lucide-react';
 
 const FREE_ITEMS = [
   { done: true,  text: 'Presupuesto básico (1 escenario)' },
@@ -24,7 +7,7 @@ const FREE_ITEMS = [
   { done: true,  text: 'Checklist básico (5 estados)' },
   { done: true,  text: 'Copiloto IA (10 consultas/mes)' },
   { done: false, text: 'PDF profesional LOPSRM' },
-  { done: false, text: 'Los 32 estados' },
+  { done: false, text: '32 estados completos' },
   { done: false, text: '3 escenarios comparativos' },
   { done: false, text: 'Excel descargable' },
   { done: false, text: 'Soporte prioritario' },
@@ -33,116 +16,157 @@ const FREE_ITEMS = [
 const PRO_ITEMS = [
   'Todo lo de Gratis incluido',
   'PDF profesional LOPSRM completo',
-  'Los 32 estados de México',
+  '32 estados de México',
   '3 escenarios comparativos',
   'Excel descargable y editable',
   'Copiloto IA ilimitado',
-  'Exportación a OPUS/Revit',
-  'Soporte prioritario',
+  'Exportación formato OPUS',
   'Actualizaciones CMIC automáticas',
+  'Soporte prioritario',
 ];
 
-const DIVIDER = <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', margin: '20px 0' }}/>;
-const DIVIDER_GOLD = <div style={{ height: '1px', background: 'rgba(200,151,58,0.25)', margin: '20px 0' }}/>;
+function Row({ done, text }: { done: boolean; text: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '7px 0' }}>
+      {done
+        ? <Check size={14} strokeWidth={2} color="var(--text-1)" style={{ flexShrink: 0, marginTop: '2px' }} />
+        : <X size={14} strokeWidth={2} color="var(--text-3)" style={{ flexShrink: 0, marginTop: '2px' }} />
+      }
+      <span style={{ fontSize: '15px', color: done ? 'var(--text-2)' : 'var(--text-3)', lineHeight: 1.4 }}>
+        {text}
+      </span>
+    </div>
+  );
+}
 
 export function PricingPreview() {
   return (
-    <section style={{ padding: '100px 40px', textAlign: 'center' }}>
-      <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '16px' }}>
-        Planes
-      </p>
-      <h2 style={{ fontSize: 'clamp(36px, 4.5vw, 62px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', color: '#ffffff', marginBottom: '48px' }}>
-        Empieza gratis. Escala cuando crezcas.
-      </h2>
+    <section style={{ padding: '100px 0', textAlign: 'center' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 40px' }}>
+        <p className="label" style={{ textAlign: 'center', marginBottom: '16px' }}>PLANES</p>
+        <h2 style={{ fontSize: '56px', fontWeight: 500, lineHeight: 1.1, color: 'var(--text-1)', marginBottom: '56px' }}>
+          Empieza gratis.
+        </h2>
 
-      <div style={{ display: 'flex', gap: '20px', maxWidth: '800px', margin: '0 auto 24px', alignItems: 'stretch' }}>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'stretch' }}>
 
-        {/* Free card */}
-        <div style={{
-          flex: 1,
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.10)',
-          borderRadius: '20px',
-          padding: '36px',
-          textAlign: 'left',
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
-          <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', display: 'block', marginBottom: '12px' }}>
-            Gratis
-          </span>
-          <div style={{ fontSize: '48px', fontWeight: 700, color: '#ffffff', lineHeight: 1, marginBottom: '4px' }}>$0</div>
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px' }}>Para siempre</div>
-          {DIVIDER}
-          <div style={{ flex: 1 }}>
-            {FREE_ITEMS.map((item) => <Row key={item.text} done={item.done} text={item.text}/>)}
-          </div>
-          {DIVIDER}
-          <Link href="/presupuesto" style={{ textDecoration: 'none', display: 'block', marginTop: 'auto' }}>
-            <button style={{
-              width: '100%', padding: '12px 24px',
-              background: 'transparent',
-              border: '1px solid rgba(255,255,255,0.20)',
-              borderRadius: '12px',
-              color: '#ffffff', fontSize: '15px', fontWeight: 600,
-              cursor: 'pointer', transition: 'border-color 0.2s',
-            }}>
-              Empezar gratis &#8594;
-            </button>
-          </Link>
-        </div>
-
-        {/* Pro card */}
-        <div style={{
-          flex: 1,
-          background: 'rgba(200,151,58,0.08)',
-          border: '2px solid rgba(200,151,58,0.40)',
-          borderRadius: '20px',
-          padding: '36px',
-          textAlign: 'left',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-        }}>
-          {/* Badge */}
+          {/* Free */}
           <div style={{
-            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-            background: '#C8973A', color: '#000',
-            padding: '4px 16px', borderRadius: '0 0 10px 10px',
-            fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
+            flex: 1,
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: '12px',
+            padding: '36px',
+            textAlign: 'left',
+            display: 'flex',
+            flexDirection: 'column',
           }}>
-            Más popular
-          </div>
-          <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8973A', display: 'block', marginBottom: '12px', marginTop: '8px' }}>
-            Pro
-          </span>
-          <div style={{ fontSize: '48px', fontWeight: 700, color: '#ffffff', lineHeight: 1, marginBottom: '4px' }}>$299</div>
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px' }}>MXN / mes · Cancela cuando quieras</div>
-          {DIVIDER_GOLD}
-          <div style={{ flex: 1 }}>
-            {PRO_ITEMS.map((text) => <Row key={text} done={true} text={text} gold={true}/>)}
-          </div>
-          {DIVIDER_GOLD}
-          <Link href="/presupuesto" style={{ textDecoration: 'none', display: 'block', marginTop: 'auto' }}>
-            <button style={{
-              width: '100%', padding: '14px 24px',
-              background: '#C8973A',
-              border: 'none',
-              borderRadius: '12px',
-              color: '#000', fontSize: '15px', fontWeight: 700,
-              cursor: 'pointer', transition: 'opacity 0.2s',
+            <span className="label" style={{ marginBottom: '8px' }}>Gratis</span>
+            <div style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '56px',
+              fontWeight: 400,
+              color: 'var(--text-1)',
+              lineHeight: 1,
+              marginBottom: '4px',
             }}>
-              Comenzar Pro &#8594;
+              $0
+            </div>
+            <div style={{ fontSize: '14px', fontStyle: 'italic', color: 'var(--text-3)', marginBottom: '24px' }}>
+              Para siempre
+            </div>
+            <div style={{ height: '1px', background: 'var(--border)', marginBottom: '24px' }} />
+            <div style={{ flex: 1 }}>
+              {FREE_ITEMS.map((item) => <Row key={item.text} done={item.done} text={item.text} />)}
+            </div>
+            <button style={{
+              width: '100%',
+              height: '44px',
+              border: '1px solid var(--border)',
+              background: 'transparent',
+              color: 'var(--text-1)',
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: 500,
+              cursor: 'pointer',
+              marginTop: '28px',
+              fontFamily: 'Inter, sans-serif',
+              transition: 'border-color 0.2s',
+            }}>
+              Empezar gratis
             </button>
-          </Link>
+          </div>
+
+          {/* Pro */}
+          <div style={{
+            flex: 1,
+            background: 'var(--surface)',
+            border: '1px solid var(--gold)',
+            borderRadius: '12px',
+            padding: '36px',
+            textAlign: 'left',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              background: 'var(--gold)',
+              color: '#000',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '10px',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              padding: '4px 14px',
+              borderRadius: '0 0 8px 8px',
+              whiteSpace: 'nowrap',
+            }}>
+              MAS POPULAR
+            </div>
+            <span className="label" style={{ marginBottom: '8px', color: 'var(--gold)' }}>Pro</span>
+            <div style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '56px',
+              fontWeight: 400,
+              color: 'var(--text-1)',
+              lineHeight: 1,
+              marginBottom: '4px',
+            }}>
+              $299
+            </div>
+            <div style={{ fontSize: '14px', fontStyle: 'italic', color: 'var(--text-3)', marginBottom: '24px' }}>
+              MXN / mes · Cancela cuando quieras
+            </div>
+            <div style={{ height: '1px', background: 'rgba(200,151,58,0.2)', marginBottom: '24px' }} />
+            <div style={{ flex: 1 }}>
+              {PRO_ITEMS.map((text) => <Row key={text} done={true} text={text} />)}
+            </div>
+            <button style={{
+              width: '100%',
+              height: '44px',
+              background: 'var(--gold)',
+              color: '#000',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              marginTop: '28px',
+              fontFamily: 'Inter, sans-serif',
+            }}>
+              Comenzar con Pro
+            </button>
+          </div>
         </div>
 
+        <p style={{ fontSize: '13px', color: 'var(--text-3)', marginTop: '20px', textAlign: 'center' }}>
+          Pago seguro · Facturación en MXN · Sin contratos anuales
+        </p>
       </div>
-
-      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }}>
-        &#128179; Pago seguro &nbsp;&#183;&nbsp; Facturación en MXN &nbsp;&#183;&nbsp; Sin contratos anuales forzados
-      </p>
     </section>
   );
 }

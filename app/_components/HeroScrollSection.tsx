@@ -65,7 +65,7 @@ export function HeroScrollSection({ containerRef }: Props) {
   const chatYAnim      = useTransform(scrollY, [VH * 0.20, VH * 0.38], [24, 0]);
 
   return (
-    <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: '#000000' }}>
+    <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: '#0a0a0a' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#000000' }}>
 
         {/* ── Left image half ── */}
@@ -74,10 +74,11 @@ export function HeroScrollSection({ containerRef }: Props) {
             position: 'absolute', inset: 0,
             clipPath: 'inset(0 50% 0 0)',
             x: leftX, zIndex: 2,
+            overflow: 'hidden',
           }}
         >
           <img
-            src="/hero-casa.png.png"
+            src="/hero-casa.png"
             alt="Casa ConstruIA"
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
           />
@@ -89,10 +90,11 @@ export function HeroScrollSection({ containerRef }: Props) {
             position: 'absolute', inset: 0,
             clipPath: 'inset(0 0 0 50%)',
             x: rightX, zIndex: 2,
+            overflow: 'hidden',
           }}
         >
           <img
-            src="/hero-casa.png.png"
+            src="/hero-casa.png"
             alt=""
             aria-hidden="true"
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}

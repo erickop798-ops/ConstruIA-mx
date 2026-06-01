@@ -37,7 +37,7 @@ export function DashboardSection() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '36px' }}>
             {bullets.map((text) => (
               <div key={text} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                <span style={{ color: '#C8973A', fontSize: '16px', marginTop: '1px', flexShrink: 0 }}>✦</span>
+                <span style={{ color: '#C8973A', fontSize: '16px', marginTop: '1px', flexShrink: 0 }}>—</span>
                 <span
                   dangerouslySetInnerHTML={{ __html: text }}
                   style={{ fontSize: '16px', color: 'rgba(255,255,255,0.70)', lineHeight: 1.5 }}

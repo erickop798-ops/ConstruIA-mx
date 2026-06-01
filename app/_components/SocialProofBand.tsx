@@ -1,12 +1,12 @@
 'use client';
 
 const LOGOS = [
-  { icon: '📋', label: 'CMIC 2026' },
-  { icon: '📄', label: 'NTC-RCDF' },
-  { icon: '🛡', label: 'LOPSRM' },
-  { icon: '📊', label: 'FIC SICT' },
-  { icon: '🏛', label: 'CEICO-CMIC' },
-  { icon: '📍', label: '33 Estados' },
+  { label: 'CMIC 2026' },
+  { label: 'NTC-RCDF' },
+  { label: 'LOPSRM' },
+  { label: 'FIC SICT' },
+  { label: 'CEICO-CMIC' },
+  { label: '33 Estados' },
 ];
 
 const BADGES = [
@@ -24,9 +24,8 @@ export function SocialProofBand() {
 
       {/* Logos row */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '40px', flexWrap: 'wrap', marginBottom: '24px' }}>
-        {LOGOS.map(({ icon, label }) => (
+        {LOGOS.map(({ label }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '14px' }}>{icon}</span>
             <span style={{ fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.45)' }}>{label}</span>
           </div>
         ))}

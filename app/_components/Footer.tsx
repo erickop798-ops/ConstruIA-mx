@@ -72,7 +72,7 @@ export default function Footer() {
             >
               © 2026 ConstruIA.mx
               <br />
-              Hecho en México 🇲🇽
+              Hecho en México
             </p>
           </div>
 

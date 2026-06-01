@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Playfair_Display } from 'next/font/google';
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from 'next/font/google';
 import "./globals.css";
 import "./snaptrude.css";
 
-const geist = Geist({ subsets: ['latin'] });
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: ['300', '400', '500', '600'],
   style: ['normal', 'italic'],
-  variable: '--font-playfair',
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -23,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${geist.className} ${playfair.variable} antialiased`}>
+    <html lang="es" className={`${cormorant.variable} ${inter.variable} ${mono.variable} antialiased`}>
       <body>{children}</body>
     </html>
   );

@@ -1,405 +1,315 @@
 'use client';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import {
+  Calculator, Package, ClipboardCheck, Check, Circle,
+  MessageSquare, Home, BookOpen, MapPin, Cpu, Zap, ArrowRight,
+} from 'lucide-react';
 
-interface CardProps {
-  accent: string;
-  accentA: string;
-  accentB: string;
+const CARD: React.CSSProperties = {
+  background: '#171717',
+  border: '1px solid #282828',
+  borderRadius: '10px',
+  overflow: 'hidden',
+};
+
+function CardLink({ href, label = 'Ver herramienta' }: { href: string; label?: string }) {
+  return (
+    <a href={href} className="bento-link" style={{ marginTop: '20px' }}>
+      {label} <ArrowRight size={13} />
+    </a>
+  );
 }
 
-const CARD_BASE: React.CSSProperties = {
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  borderRadius: '20px',
-  padding: '28px',
-  overflow: 'hidden',
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-};
-
-const EYEBROW: React.CSSProperties = {
-  fontSize: '13px',
-  fontWeight: 600,
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: 'rgba(255,255,255,0.4)',
-  marginBottom: '14px',
-};
-
-const BIG_NUM: React.CSSProperties = {
-  fontSize: '44px',
-  fontWeight: 800,
-  lineHeight: 1,
-  marginBottom: '4px',
-};
-
-const SUB: React.CSSProperties = {
-  fontSize: '15px',
-  color: 'rgba(255,255,255,0.4)',
-  marginBottom: '16px',
-};
-
-const DIVIDER: React.CSSProperties = {
-  height: '1px',
-  background: 'rgba(255,255,255,0.08)',
-  margin: '16px 0',
-};
-
-const CARD_TITLE: React.CSSProperties = {
-  fontSize: '20px',
-  fontWeight: 700,
-  color: '#ECECEC',
-  marginBottom: '5px',
-};
-
-const CARD_DESC: React.CSSProperties = {
-  fontSize: '15px',
-  color: 'rgba(255,255,255,0.45)',
-  marginBottom: '12px',
-  lineHeight: 1.5,
-};
-
-const TAG_BASE: React.CSSProperties = {
-  padding: '5px 14px',
-  border: '1px solid rgba(255,255,255,0.15)',
-  borderRadius: '20px',
-  fontSize: '13px',
-  color: 'rgba(255,255,255,0.5)',
-  fontWeight: 500,
-};
-
-function Tags({ tags }: { tags: string[] }) {
+/* ─── Row 1: Presupuestador ─── */
+function CardPresupuestador() {
   return (
-    <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginTop: 'auto', paddingTop: '2px' }}>
-      {tags.map((t) => <span key={t} style={TAG_BASE}>{t}</span>)}
+    <div className="bento-card" style={{ ...CARD, padding: '28px', display: 'flex', flexDirection: 'column' }}>
+      <Calculator size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '20px' }} />
+      <div style={{ fontSize: '20px', fontWeight: 500, color: '#f0f0f0', fontFamily: 'Inter, sans-serif', marginBottom: '10px' }}>
+        Presupuestador Pro
+      </div>
+      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.50)', lineHeight: 1.6, marginBottom: '24px', fontFamily: 'Inter, sans-serif' }}>
+        Presupuesto CMIC 2026 con 3 escenarios comparativos y exportación PDF LOPSRM.
+      </p>
+      <svg width="100%" height="70" viewBox="0 0 200 70" preserveAspectRatio="none">
+        {[
+          { x: 10, h: 32, opacity: 0.5 },
+          { x: 60, h: 46, opacity: 0.7 },
+          { x: 110, h: 60, opacity: 0.9 },
+          { x: 160, h: 39, opacity: 0.6 },
+        ].map(({ x, h, opacity }, i) => (
+          <rect key={i} x={x} y={70 - h} width={30} height={h}
+            fill={`rgba(200,120,60,${opacity})`} rx="3" ry="3" />
+        ))}
+      </svg>
+      <CardLink href="/presupuesto" />
     </div>
   );
 }
 
-/* ─── Card 1: Presupuestador Pro ─── */
-function Card1({ accent, accentA, accentB }: CardProps) {
-  const barH = 72;
-  const bars = [
-    { label: 'Eco', price: '$1.87M', pct: 55, fill: accentB,  w: 68, x: 15  },
-    { label: 'Est', price: '$2.34M', pct: 75, fill: accent,   w: 74, x: 115 },
-    { label: 'Pre', price: '$3.12M', pct: 100, fill: accentA, w: 68, x: 218 },
-  ];
-  return (
-    <>
-      <p style={EYEBROW}>Estimado CMIC 2026</p>
-      <div style={{ ...BIG_NUM, color: accent }}>$2,340,000</div>
-      <div style={SUB}>Residencial · 187 m² · Tlaxcala</div>
-      <svg width="100%" height="90" viewBox="0 0 300 90" preserveAspectRatio="xMidYMax meet" style={{ marginBottom: '12px' }}>
-        <line x1="0" y1={barH} x2="300" y2={barH} stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
-        {bars.map((bar) => {
-          const h = Math.round(bar.pct * barH / 100);
-          return (
-            <g key={bar.label}>
-              <rect x={bar.x} y={barH - h} width={bar.w} height={h} fill={bar.fill} rx="2"/>
-              <text x={bar.x + bar.w / 2} y="85" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">{bar.price}</text>
-            </g>
-          );
-        })}
-      </svg>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Presupuestador Pro</div>
-      <div style={CARD_DESC}>CMIC 2026 · 3 escenarios · PDF LOPSRM</div>
-      <Tags tags={['CMIC 2026', 'PDF', '33 estados']}/>
-    </>
-  );
-}
-
-/* ─── Card 2: Calculadora de Materiales ─── */
-function Card2({ accent, accentA, accentB }: CardProps) {
-  const r = 22;
-  const C = 2 * Math.PI * r;
-  const segs = [
-    { pct: 0.40, stroke: accent },
-    { pct: 0.35, stroke: accentA },
-    { pct: 0.25, stroke: accentB },
-  ];
-  const starts = [0, 0.40, 0.75];
-  const rows = [
+/* ─── Row 1: Materiales ─── */
+function CardMateriales() {
+  const rows: [string, string][] = [
     ['Cemento CPC 30R', '48 bolsas'],
-    ['Varilla 3/8"',    '24 pzas'],
-    ['Block 15×20×40', '890 pzas'],
+    ['Varilla #4',      '24 pzas'],
+    ['Block 15×20×40',  '890 pzas'],
   ];
   return (
-    <>
-      <p style={EYEBROW}>Lista de Materiales</p>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
-        <div style={{ flex: 1 }}>
-          {rows.map(([mat, cant], i) => (
-            <div key={mat}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '7px 0' }}>
-                <span style={{ fontSize: '15px', color: 'rgba(255,255,255,0.7)', flex: 1 }}>{mat}</span>
-                <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.15em' }}>···</span>
-                <span style={{ fontSize: '15px', color: accent, fontWeight: 600, marginLeft: '4px' }}>{cant}</span>
-              </div>
-              {i < rows.length - 1 && <div style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }}/>}
-            </div>
-          ))}
-        </div>
-        <svg width="60" height="60" viewBox="0 0 60 60" style={{ flexShrink: 0, marginTop: '4px' }}>
-          <circle cx="30" cy="30" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8"/>
-          {segs.map((seg, i) => (
-            <circle key={i} cx="30" cy="30" r={r} fill="none" stroke={seg.stroke} strokeWidth="8"
-              strokeDasharray={`${seg.pct * C} ${(1 - seg.pct) * C}`}
-              strokeDashoffset={i === 0 ? 0 : C * (1 - starts[i])}
-              transform="rotate(-90 30 30)"
-            />
-          ))}
-          <text x="30" y="35" textAnchor="middle" fill="white" fontSize="13" fontWeight="700">3</text>
-        </svg>
+    <div className="bento-card" style={{ ...CARD, padding: '28px', display: 'flex', flexDirection: 'column' }}>
+      <Package size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '20px' }} />
+      <div style={{ fontSize: '20px', fontWeight: 500, color: '#f0f0f0', fontFamily: 'Inter, sans-serif', marginBottom: '10px' }}>
+        Calculadora de Materiales
       </div>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Calculadora de Materiales</div>
-      <div style={CARD_DESC}>Lista exacta con factor de desperdicio</div>
-      <Tags tags={['Precios 2026', 'PDF', '8 tipos']}/>
-    </>
+      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.50)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>
+        Lista exacta de insumos con cantidades y factor de desperdicio incluido.
+      </p>
+      <div style={{ marginTop: '16px' }}>
+        {rows.map(([nombre, cantidad]) => (
+          <div key={nombre} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'rgba(255,255,255,0.5)' }}>{nombre}</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: '#f0f0f0', fontWeight: 500 }}>{cantidad}</span>
+          </div>
+        ))}
+      </div>
+      <CardLink href="/materiales" />
+    </div>
   );
 }
 
-/* ─── Card 3: Checklist de Permisos ─── */
-function Card3({ accent, accentB }: CardProps) {
+/* ─── Row 1: Checklist ─── */
+function CardChecklist() {
   const items = [
     { done: true,  t: 'Licencia de construcción' },
-    { done: true,  t: 'Planos estructurales' },
-    { done: false, t: 'Dictamen uso de suelo' },
-    { done: false, t: 'Manifestación de impacto' },
+    { done: true,  t: 'Planos firmados DRO' },
+    { done: false, t: 'Dictamen uso suelo' },
+    { done: false, t: 'Visto bueno PC' },
   ];
   return (
-    <>
-      <p style={EYEBROW}>Permisos · 32 Estados</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '9px', marginBottom: '14px' }}>
+    <div className="bento-card" style={{ ...CARD, padding: '28px', display: 'flex', flexDirection: 'column' }}>
+      <ClipboardCheck size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '20px' }} />
+      <div style={{ fontSize: '20px', fontWeight: 500, color: '#f0f0f0', fontFamily: 'Inter, sans-serif', marginBottom: '10px' }}>
+        Checklist de Permisos
+      </div>
+      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.50)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>
+        Requisitos actualizados para licencias en los 32 estados de México.
+      </p>
+      <div style={{ marginTop: '16px' }}>
         {items.map(({ done, t }) => (
-          <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px', color: done ? accent : 'rgba(255,255,255,0.25)', flexShrink: 0 }}>{done ? '✓' : '○'}</span>
-            <span style={{ fontSize: '15px', color: done ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.28)' }}>{t}</span>
+          <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            {done
+              ? <Check size={13} color="#f0f0f0" strokeWidth={2} style={{ flexShrink: 0 }} />
+              : <Circle size={13} color="rgba(255,255,255,0.25)" strokeWidth={1.5} style={{ flexShrink: 0 }} />
+            }
+            <span style={{ fontSize: '13px', color: done ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.25)', fontFamily: 'Inter, sans-serif' }}>{t}</span>
           </div>
         ))}
       </div>
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden', marginBottom: '6px' }}>
-          <div style={{ height: '100%', width: '50%', background: accent, borderRadius: '3px' }}/>
-        </div>
-        <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)' }}>2 de 4 completados</span>
+      <div style={{ height: '2px', background: 'rgba(255,255,255,0.08)', borderRadius: '1px', marginTop: '16px', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: '50%', background: '#f0f0f0', borderRadius: '1px' }} />
       </div>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Checklist de Permisos</div>
-      <div style={CARD_DESC}>Documentos por estado y tipo de obra</div>
-      <Tags tags={['32 estados', 'Oficial', 'PDF']}/>
-    </>
+      <CardLink href="/checklist" />
+    </div>
   );
 }
 
-/* ─── Card 4: Simulador de Remodelación ─── */
-function Card4({ accent, accentA, accentB }: CardProps) {
+/* ─── Row 2: Copiloto IA (2 cols) ─── */
+function CardCopiloto() {
+  return (
+    <div className="bento-card" style={{ ...CARD, gridColumn: 'span 2', padding: '32px', display: 'flex', flexDirection: 'column' }}>
+      <MessageSquare size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '16px' }} />
+      <div style={{ fontSize: '24px', fontWeight: 500, color: '#f0f0f0', fontFamily: 'Inter, sans-serif', marginBottom: '8px' }}>
+        Copiloto IA
+      </div>
+      <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.50)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>
+        Respuestas técnicas con normativa mexicana NTC-RCDF 2023 y CMIC 2026 vigente.
+      </p>
+      <div style={{ background: 'rgba(0,0,0,0.35)', borderRadius: '10px', padding: '20px', marginTop: '20px' }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', marginBottom: '14px' }}>
+          CONSULTA NORMATIVA
+        </p>
+        <div style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'rgba(255,255,255,0.55)', padding: '0 0 10px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', marginBottom: '10px' }}>
+          &iquest;Calibre de cable para circuito de 20A?
+        </div>
+        <div style={{ borderLeft: '2px solid rgba(200,151,58,0.6)', paddingLeft: '12px', marginBottom: '10px' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: '#f0f0f0', fontWeight: 500 }}>Cal. 12 AWG</div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'rgba(255,255,255,0.35)' }}>NTC-ANCE 2023 &middot; Tabla 310.15</div>
+        </div>
+        <div style={{ textAlign: 'right', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'rgba(255,255,255,0.55)', padding: '0 0 10px 0', borderBottom: '1px solid rgba(255,255,255,0.06)', marginBottom: '10px' }}>
+          &iquest;Resistencia m&iacute;nima concreto habitacional?
+        </div>
+        <div style={{ borderLeft: '2px solid rgba(200,151,58,0.6)', paddingLeft: '12px' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: '#f0f0f0', fontWeight: 500 }}>f&prime;c = 250 kg/cm&sup2;</div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'rgba(255,255,255,0.35)' }}>NTC-RCDF 2023 &middot; Art. 4.2.1</div>
+        </div>
+      </div>
+      <CardLink href="/agente" />
+    </div>
+  );
+}
+
+/* ─── Row 2: Simulador (1 col) ─── */
+function CardSimulador() {
   const bars = [
-    { l: 'Demolición',    pct: 20,  fill: accentB },
-    { l: 'Instalaciones', pct: 55,  fill: accent  },
-    { l: 'Acabados',      pct: 100, fill: accentA },
+    { l: 'Demolición',    pct: 20 },
+    { l: 'Instalaciones', pct: 55 },
+    { l: 'Acabados',      pct: 100 },
   ];
   return (
-    <>
-      <p style={EYEBROW}>Estimado Remodelación</p>
-      <div style={{ ...BIG_NUM, color: accent }}>$45,000</div>
-      <div style={SUB}>Cocina integral · 3–4 semanas</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
-        {bars.map(({ l, pct, fill }) => (
-          <div key={l}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ fontSize: '15px', color: 'rgba(255,255,255,0.5)' }}>{l}</span>
-              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}>{pct}%</span>
-            </div>
-            <div style={{ height: '5px', background: 'rgba(255,255,255,0.07)', borderRadius: '2px', overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${pct}%`, background: fill, borderRadius: '2px' }}/>
-            </div>
+    <div className="bento-card" style={{ ...CARD, padding: '28px', display: 'flex', flexDirection: 'column' }}>
+      <Home size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '16px' }} />
+      <p className="label" style={{ marginBottom: '8px' }}>ESTIMADO REMODELACION</p>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '52px', fontWeight: 400, color: '#f0f0f0', lineHeight: 1, marginBottom: '6px' }}>
+        $45,000
+      </div>
+      <p style={{ fontSize: '14px', fontStyle: 'italic', color: 'rgba(255,255,255,0.40)', fontFamily: 'Inter, sans-serif', marginBottom: '24px' }}>
+        Cocina integral &middot; 3&ndash;4 semanas
+      </p>
+      {bars.map(({ l, pct }) => (
+        <div key={l} style={{ marginBottom: '10px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.40)', fontFamily: 'Inter, sans-serif' }}>{l}</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'rgba(255,255,255,0.40)' }}>{pct}%</span>
           </div>
-        ))}
-      </div>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Simulador de Remodelación</div>
-      <div style={CARD_DESC}>Costos reales por espacio y acabado</div>
-      <Tags tags={['IA', 'Instantáneo', 'PDF']}/>
-    </>
-  );
-}
-
-/* ─── Card 5: Copiloto IA ─── */
-function Card5({ accent, accentA, accentB }: CardProps) {
-  const msgs = [
-    { user: true,  main: '¿Calibre de cable para 20A?' },
-    { user: false, main: 'Cal. 12 AWG', sub: 'según NTC-ANCE 2023' },
-    { user: true,  main: '¿Resistencia mínima concreto habitacional?' },
-    { user: false, main: "f'c = 200 kg/cm²", sub: 'NTC-RCDF uso habitacional' },
-  ];
-  return (
-    <>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-        <p style={{ ...EYEBROW, marginBottom: 0 }}>Copiloto IA</p>
-        <span style={{ fontSize: '11px', color: accent, border: `1px solid ${accentA}`, borderRadius: '4px', padding: '2px 7px', fontWeight: 600, letterSpacing: '0.05em' }}>Claude</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
-        {msgs.map((msg, i) => (
-          <div key={i} style={{ display: 'flex', justifyContent: msg.user ? 'flex-end' : 'flex-start' }}>
-            <div style={{
-              maxWidth: '90%', padding: '8px 12px',
-              borderRadius: msg.user ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-              background: msg.user ? 'rgba(255,255,255,0.08)' : accentB,
-              border: `1px solid ${msg.user ? 'rgba(255,255,255,0.07)' : accentA}`,
-            }}>
-              <div style={{ fontSize: msg.user ? '13px' : '15px', color: msg.user ? 'rgba(255,255,255,0.8)' : accent, fontWeight: msg.user ? 400 : 600 }}>
-                {msg.main}
-              </div>
-              {msg.sub && <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>{msg.sub}</div>}
-            </div>
+          <div style={{ height: '2px', background: 'rgba(255,255,255,0.08)', borderRadius: '1px' }}>
+            <div style={{ height: '100%', width: `${pct}%`, background: 'rgba(200,151,58,0.7)', borderRadius: '1px' }} />
           </div>
-        ))}
-      </div>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Copiloto IA</div>
-      <div style={CARD_DESC}>Respuestas técnicas normativas al instante</div>
-      <Tags tags={['Claude AI', 'NTC 2023', 'CMIC 2026']}/>
-    </>
-  );
-}
-
-/* ─── Card 6: Asistente de Tesis ─── */
-function Card6({ accent, accentA }: CardProps) {
-  const caps = [100, 100, 60, 0, 0];
-  return (
-    <>
-      <p style={EYEBROW}>Tesis de Arquitectura</p>
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: '6px' }}>
-          Capítulo en proceso
         </div>
-        <div style={{ fontSize: '15px', fontWeight: 600, color: '#ECECEC', marginBottom: '3px' }}>Cap. 3 — Marco Normativo</div>
-        <div style={{ fontSize: '14px', color: accent }}>NTC-RCDF 2023 · §4.2</div>
-      </div>
-      <div style={{ display: 'flex', gap: '2px', marginBottom: '12px' }}>
-        {caps.map((fill, i) => (
-          <div key={i} style={{ flex: 1, height: '6px', borderRadius: '3px', background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${fill}%`, background: accent, borderRadius: '3px' }}/>
-          </div>
-        ))}
-      </div>
-      <div style={{ marginBottom: '12px' }}>
-        {[
-          'NTC · RCDF · normativa · reglamento · artículo · fracción · disposición',
-          'construcción · habitacional · resistencia · concreto · NTC-RCDF 2023',
-          'fracción IV · artículo 78 · uso de suelo · dictamen normativo',
-        ].map((line, i) => (
-          <div key={i} style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)', lineHeight: 1.6, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{line}</div>
-        ))}
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '14px' }}>
-        <motion.span
-          animate={{ opacity: [1, 0.3, 1], scale: [1, 1.3, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ width: '7px', height: '7px', borderRadius: '50%', background: accent, display: 'inline-block', flexShrink: 0 }}
-        />
-        <span style={{ fontSize: '13px', color: accentA }}>Generando...</span>
-      </div>
-      <div style={DIVIDER}/>
-      <div style={CARD_TITLE}>Asistente de Tesis</div>
-      <div style={CARD_DESC}>Redacción académica con normativa vigente</div>
-      <Tags tags={['APA 7', 'NTC 2023', 'Plagio 0%']}/>
-    </>
+      ))}
+      <CardLink href="/simulador" />
+    </div>
   );
 }
 
-const CARDS_CONFIG = [
-  {
-    href: '/presupuesto',
-    bg: 'rgba(59,130,246,0.10)',
-    border: 'rgba(59,130,246,0.25)',
-    hoverBorder: 'rgba(59,130,246,0.50)',
-    accent: '#60a5fa',
-    accentA: 'rgba(96,165,250,0.6)',
-    accentB: 'rgba(96,165,250,0.25)',
-    Content: Card1,
-  },
-  {
-    href: '/materiales',
-    bg: 'rgba(16,185,129,0.10)',
-    border: 'rgba(16,185,129,0.25)',
-    hoverBorder: 'rgba(16,185,129,0.50)',
-    accent: '#34d399',
-    accentA: 'rgba(52,211,153,0.6)',
-    accentB: 'rgba(52,211,153,0.25)',
-    Content: Card2,
-  },
-  {
-    href: '/checklist',
-    bg: 'rgba(139,92,246,0.10)',
-    border: 'rgba(139,92,246,0.25)',
-    hoverBorder: 'rgba(139,92,246,0.50)',
-    accent: '#a78bfa',
-    accentA: 'rgba(167,139,250,0.6)',
-    accentB: 'rgba(167,139,250,0.25)',
-    Content: Card3,
-  },
-  {
-    href: '/simulador',
-    bg: 'rgba(249,115,22,0.10)',
-    border: 'rgba(249,115,22,0.25)',
-    hoverBorder: 'rgba(249,115,22,0.50)',
-    accent: '#fb923c',
-    accentA: 'rgba(251,146,60,0.6)',
-    accentB: 'rgba(251,146,60,0.25)',
-    Content: Card4,
-  },
-  {
-    href: '/agente',
-    bg: 'rgba(6,182,212,0.10)',
-    border: 'rgba(6,182,212,0.25)',
-    hoverBorder: 'rgba(6,182,212,0.50)',
-    accent: '#22d3ee',
-    accentA: 'rgba(34,211,238,0.6)',
-    accentB: 'rgba(34,211,238,0.25)',
-    Content: Card5,
-  },
-  {
-    href: '/tesis',
-    bg: 'rgba(244,63,94,0.10)',
-    border: 'rgba(244,63,94,0.25)',
-    hoverBorder: 'rgba(244,63,94,0.50)',
-    accent: '#fb7185',
-    accentA: 'rgba(251,113,133,0.6)',
-    accentB: 'rgba(251,113,133,0.25)',
-    Content: Card6,
-  },
-];
+/* ─── Row 3: Tesis (1 col) ─── */
+function CardTesis() {
+  return (
+    <div className="bento-card" style={{ ...CARD, padding: '28px', display: 'flex', flexDirection: 'column' }}>
+      <BookOpen size={22} color="rgba(255,255,255,0.5)" strokeWidth={1.5} style={{ marginBottom: '20px' }} />
+      <div style={{ fontSize: '20px', fontWeight: 500, color: '#f0f0f0', fontFamily: 'Inter, sans-serif', marginBottom: '10px' }}>
+        Asistente de Tesis
+      </div>
+      <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.50)', lineHeight: 1.6, fontFamily: 'Inter, sans-serif' }}>
+        Marco normativo y redacci&oacute;n acad&eacute;mica con APA 7 y normativa vigente.
+      </p>
+      <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '8px', padding: '16px', marginTop: '20px' }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'rgba(255,255,255,0.3)', marginBottom: '10px' }}>
+          CAP. 3 &mdash; MARCO NORMATIVO
+        </p>
+        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '16px', fontWeight: 500, color: '#f0f0f0', marginBottom: '12px' }}>
+          An&aacute;lisis del Reglamento de Construcciones
+        </div>
+        {['100%', '88%', '62%'].map((w, i) => (
+          <div key={i} style={{ height: '5px', background: 'rgba(255,255,255,0.07)', borderRadius: '3px', margin: '6px 0', width: w }} />
+        ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
+          <span className="zap-pulse" style={{ display: 'flex' }}>
+            <Zap size={11} color="rgba(255,255,255,0.3)" />
+          </span>
+          <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.30)', fontFamily: 'Inter, sans-serif' }}>
+            Redactando &sect;4.2.1
+          </span>
+        </div>
+      </div>
+      <CardLink href="/tesis" />
+    </div>
+  );
+}
+
+/* ─── Row 3: Mini Card Precios ─── */
+function MiniCardPrecios() {
+  return (
+    <div className="bento-card" style={{ ...CARD, padding: '24px', display: 'flex', flexDirection: 'column' }}>
+      <MapPin size={18} color="rgba(255,255,255,0.4)" strokeWidth={1.5} style={{ marginBottom: '12px' }} />
+      <p className="label" style={{ marginBottom: '8px' }}>ESTADOS CUBIERTOS</p>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '44px', fontWeight: 400, color: '#f0f0f0', lineHeight: 1 }}>
+        33
+      </div>
+      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.40)', fontFamily: 'Inter, sans-serif', marginTop: '8px', lineHeight: 1.5 }}>
+        Precios CMIC diferenciados por regi&oacute;n
+      </p>
+      <svg width="100%" height="50" viewBox="0 0 320 50" preserveAspectRatio="none" style={{ marginTop: '16px' }}>
+        <path
+          d="M 0,40 C 30,35 50,20 80,25 S 130,10 160,15 S 210,30 240,20 S 290,5 320,10"
+          stroke="rgba(200,151,58,0.6)"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      </svg>
+      <a href="/presupuesto" className="bento-link" style={{ marginTop: '16px' }}>
+        Ver precios <ArrowRight size={13} />
+      </a>
+    </div>
+  );
+}
+
+/* ─── Row 3: Mini Card Agentes ─── */
+function MiniCardAgentes() {
+  const agents = [
+    { color: '#C8973A', pulse: true,  name: 'Presupuestador CMIC', status: 'Calculando',  statusColor: 'rgba(200,151,58,0.8)' },
+    { color: '#4ade80', pulse: false, name: 'Verificador Normativo', status: 'Activo',     statusColor: 'rgba(74,222,128,0.8)' },
+    { color: 'rgba(255,255,255,0.2)', pulse: false, name: 'Generador PDF',   status: 'En espera',  statusColor: 'rgba(255,255,255,0.35)' },
+    { color: '#60a5fa', pulse: false, name: 'Agente Consulta',   status: 'Completado', statusColor: 'rgba(96,165,250,0.8)' },
+  ];
+  return (
+    <div className="bento-card" style={{ ...CARD, padding: '24px', display: 'flex', flexDirection: 'column' }}>
+      <Cpu size={18} color="rgba(255,255,255,0.4)" strokeWidth={1.5} style={{ marginBottom: '12px' }} />
+      <p className="label" style={{ marginBottom: '8px' }}>AGENTES ACTIVOS</p>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '44px', fontWeight: 400, color: '#f0f0f0', lineHeight: 1 }}>
+        4
+      </div>
+      <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.40)', fontFamily: 'Inter, sans-serif', marginTop: '8px', marginBottom: '12px', lineHeight: 1.5 }}>
+        IA trabajando en tu proyecto ahora
+      </p>
+      {agents.map(({ color, pulse, name, status, statusColor }) => (
+        <div key={name} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <span
+            className={pulse ? 'dot-pulse' : undefined}
+            style={{ width: '6px', height: '6px', borderRadius: '50%', background: color, display: 'inline-block', flexShrink: 0 }}
+          />
+          <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)', fontFamily: 'Inter, sans-serif', flex: 1 }}>{name}</span>
+          <span style={{ fontSize: '12px', color: statusColor, fontFamily: 'Inter, sans-serif', flexShrink: 0 }}>{status}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function ToolCardsSection() {
   return (
-    <section id="herramientas" style={{ padding: '100px 40px' }}>
-      <p style={{ textAlign: 'center', fontSize: '13px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '16px' }}>
-        Plataforma
-      </p>
-      <h2 style={{ textAlign: 'center', fontSize: 'clamp(36px, 4.5vw, 62px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', color: '#ffffff', marginBottom: '56px' }}>
-        Todo lo que necesitas para tu obra
-      </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', maxWidth: '1200px', margin: '0 auto' }}>
-        {CARDS_CONFIG.map(({ href, bg, border, hoverBorder, accent, accentA, accentB, Content }, i) => (
-          <Link href={href} key={href} style={{ textDecoration: 'none' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.10 }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -6, borderColor: hoverBorder, transition: { duration: 0.3 } }}
-              style={{ ...CARD_BASE, background: bg, border: `1px solid ${border}` }}
-            >
-              <Content accent={accent} accentA={accentA} accentB={accentB}/>
-            </motion.div>
-          </Link>
-        ))}
+    <section id="herramientas" style={{ padding: '80px 40px' }}>
+      <style>{`
+        .bento-card { transition: border-color 0.25s, background 0.25s; }
+        .bento-card:hover { background: #1f1f1f !important; border-color: #3a3a3a !important; }
+        .bento-link { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-family: Inter, sans-serif; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+        .bento-link:hover { color: rgba(255,255,255,0.80); }
+        @keyframes dot-pulse-bento { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .dot-pulse { animation: dot-pulse-bento 1.5s ease-in-out infinite; }
+        @keyframes zap-pulse-bento { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+        .zap-pulse { animation: zap-pulse-bento 0.9s ease-in-out infinite; }
+      `}</style>
+
+      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+        <p className="label" style={{ textAlign: 'center', marginBottom: '12px' }}>HERRAMIENTAS</p>
+        <h2 style={{ textAlign: 'center', fontSize: '56px', fontWeight: 500, color: 'var(--text-1)', lineHeight: 1.1, marginBottom: '56px' }}>
+          Construye m&aacute;s. Presupuesta mejor.
+        </h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+          {/* Row 1 */}
+          <CardPresupuestador />
+          <CardMateriales />
+          <CardChecklist />
+
+          {/* Row 2 */}
+          <CardCopiloto />
+          <CardSimulador />
+
+          {/* Row 3 */}
+          <CardTesis />
+          <div style={{ gridColumn: 'span 2', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            <MiniCardPrecios />
+            <MiniCardAgentes />
+          </div>
+        </div>
       </div>
     </section>
   );

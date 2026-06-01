@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus } from 'lucide-react';
 
 const FAQS = [
   {
@@ -41,31 +42,36 @@ export function FAQSection() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section style={{ padding: '100px 40px' }}>
-      <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-        <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: '16px', textAlign: 'center' }}>
-          FAQ
-        </p>
-        <h2 style={{ fontSize: 'clamp(36px, 4.5vw, 56px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.025em', color: '#ffffff', marginBottom: '48px', textAlign: 'center' }}>
+    <section style={{ padding: '100px 0' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 40px' }}>
+        <p className="label" style={{ textAlign: 'center', marginBottom: '16px' }}>FAQ</p>
+        <h2 style={{ fontSize: '56px', fontWeight: 500, lineHeight: 1.1, color: 'var(--text-1)', marginBottom: '48px', textAlign: 'center' }}>
           Preguntas frecuentes
         </h2>
 
         {FAQS.map((faq, i) => (
-          <div key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <button
-              onClick={() => setOpen(open === i ? null : i)}
-              style={{
-                width: '100%', padding: '20px 0',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-                background: 'none', border: 'none', cursor: 'pointer', gap: '16px',
-                textAlign: 'left', color: 'inherit', fontFamily: 'inherit',
-              }}
-            >
-              <span style={{ fontSize: '17px', fontWeight: 600, color: '#ECECEC', lineHeight: 1.4 }}>{faq.q}</span>
-              <span style={{ color: '#C8973A', fontSize: '22px', flexShrink: 0, lineHeight: 1, marginTop: '2px', fontWeight: 300 }}>
-                {open === i ? '−' : '+'}
+          <div
+            key={i}
+            style={{ borderBottom: '1px solid var(--border)', padding: '22px 0', cursor: 'pointer' }}
+            onClick={() => setOpen(open === i ? null : i)}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+              <span style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '17px',
+                fontWeight: 500,
+                color: 'var(--text-1)',
+                lineHeight: 1.4,
+              }}>
+                {faq.q}
               </span>
-            </button>
+              <span style={{ flexShrink: 0, color: 'var(--text-3)', marginTop: '2px' }}>
+                {open === i
+                  ? <Minus size={16} strokeWidth={1.5} />
+                  : <Plus size={16} strokeWidth={1.5} />
+                }
+              </span>
+            </div>
             <AnimatePresence initial={false}>
               {open === i && (
                 <motion.div
@@ -75,7 +81,7 @@ export function FAQSection() {
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <p style={{ fontSize: '15px', lineHeight: 1.75, color: 'rgba(255,255,255,0.60)', paddingBottom: '20px' }}>
+                  <p style={{ fontSize: '17px', lineHeight: 1.75, color: 'var(--text-2)', paddingTop: '14px' }}>
                     {faq.a}
                   </p>
                 </motion.div>
