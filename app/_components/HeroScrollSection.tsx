@@ -66,7 +66,7 @@ export function HeroScrollSection({ containerRef }: Props) {
 
   return (
     <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: '#0a0a0a' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#000000' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#0a0a0a' }}>
 
         {/* ── Left image half ── */}
         <motion.div
@@ -74,7 +74,7 @@ export function HeroScrollSection({ containerRef }: Props) {
             position: 'absolute', inset: 0,
             clipPath: 'inset(0 50% 0 0)',
             x: leftX, zIndex: 2,
-            overflow: 'hidden',
+            overflow: 'hidden', background: '#0a0a0a',
           }}
         >
           <img
@@ -90,7 +90,7 @@ export function HeroScrollSection({ containerRef }: Props) {
             position: 'absolute', inset: 0,
             clipPath: 'inset(0 0 0 50%)',
             x: rightX, zIndex: 2,
-            overflow: 'hidden',
+            overflow: 'hidden', background: '#0a0a0a',
           }}
         >
           <img
