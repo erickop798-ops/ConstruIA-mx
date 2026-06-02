@@ -4,39 +4,46 @@ import Link from 'next/link';
 
 const features = [
   {
-    eyebrow: 'PRESUPUESTADOR PRO · CMIC 2026',
+    eyebrow: 'Presupuestador Pro · CMIC 2026',
     title: '¿Sigues calculando en Excel y saliendo del presupuesto?',
     desc: 'El 78% de los proyectos de construcción en México superan el presupuesto inicial. ConstruIA elimina ese riesgo: genera automáticamente el desglose completo de partidas con precios CMIC 2026 diferenciados por estado, tres escenarios de costo comparativos y el PDF en formato LOPSRM listo para presentar a clientes y dependencias. De concepto a entregable profesional en 2 minutos.',
     cta: 'Generar mi primer presupuesto',
     href: '/presupuesto',
     imageLeft: false,
+    bg: '#0a0a0a',
   },
   {
-    eyebrow: 'CHECKLIST DE PERMISOS · 32 ESTADOS',
+    eyebrow: 'Checklist de Permisos · 32 Estados',
     title: '¿Cuánto tiempo pierdes averiguando qué trámites necesitas?',
     desc: 'Cada estado tiene requisitos diferentes y las dependencias los cambian constantemente. ConstruIA mantiene actualizado el checklist oficial de licencias, dictámenes y visto buenos para los 32 estados — con los documentos exactos, las instancias correctas y el orden en que debes presentarlos. Arranca tu obra sin sorpresas.',
     cta: 'Ver checklist de mi estado',
     href: '/checklist',
     imageLeft: true,
+    bg: '#111111',
   },
   {
-    eyebrow: 'COPILOTO IA · NORMATIVA MEXICANA',
+    eyebrow: 'Copiloto IA · Normativa Mexicana',
     title: '¿Buscas respuestas técnicas que confías en manos del cliente?',
     desc: 'El Copiloto está entrenado en NTC-RCDF 2023, CMIC 2026, NTC-ANCE, LOPSRM y los reglamentos de construcción estatales. Calibres de cable por circuito, resistencias mínimas de concreto, factores de desperdicio por material, costos por metro cuadrado por región — respuestas verificadas y citadas al instante, sin buscar en manuales.',
     cta: 'Hacer mi primera pregunta',
     href: '/agente',
     imageLeft: false,
+    bg: '#0a0a0a',
   },
 ];
 
+const SPRING_EASE = [0.16, 1, 0.3, 1] as const;
+
 export function FeatureSections() {
   return (
-    <div style={{ background: '#0a0a0a' }}>
+    <div>
       {features.map((f, i) => (
         <section
           key={f.eyebrow}
           style={{
-            borderTop: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)',
+            background: f.bg,
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+            overflowX: 'hidden',
           }}
         >
           <div style={{
@@ -44,46 +51,54 @@ export function FeatureSections() {
             margin: '0 auto',
             padding: '100px 40px',
           }}>
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '0px 0px -60px 0px' }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '80px',
-                alignItems: 'center',
-              }}
-            >
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '80px',
+              alignItems: 'center',
+            }}>
               {/* Text block */}
-              <div style={{ order: f.imageLeft ? 1 : 0 }}>
-                <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.16em',
-                  color: 'rgba(255,255,255,0.35)',
-                  marginBottom: '12px',
-                }}>
+              <motion.div
+                initial={{ opacity: 0, x: f.imageLeft ? 24 : -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+                transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+                style={{ order: f.imageLeft ? 1 : 0 }}
+              >
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.05 }}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    letterSpacing: '0.06em',
+                    color: '#C8973A',
+                    marginBottom: '16px',
+                  }}
+                >
                   {f.eyebrow}
-                </p>
+                </motion.p>
                 <h2 style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: '48px',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   color: '#ECECEC',
-                  lineHeight: 1.1,
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.02em',
                   maxWidth: '460px',
+                  margin: 0,
                 }}>
                   {f.title}
                 </h2>
                 <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '17px',
-                  color: 'rgba(255,255,255,0.55)',
-                  lineHeight: 1.75,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '18px',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.60)',
+                  lineHeight: 1.65,
                   margin: '20px 0 28px',
                 }}>
                   {f.desc}
@@ -91,40 +106,52 @@ export function FeatureSections() {
                 <Link
                   href={f.href}
                   style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '15px',
-                    fontWeight: 500,
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 600,
                     color: '#C8973A',
                     textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
-                    transition: 'opacity 0.15s',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
                   onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
                 >
                   {f.cta} →
                 </Link>
-              </div>
+              </motion.div>
 
-              {/* Image block */}
+              {/* Image block — floats from above like Monograph */}
               <div style={{
                 order: f.imageLeft ? 0 : 1,
-                borderRadius: '8px',
-                overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.08)',
-                aspectRatio: '16/10',
                 position: 'relative',
+                overflow: 'visible',
               }}>
-                <Image
-                  src="/dashboard-preview.jpg.jpg"
-                  alt={f.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
+                <motion.div
+                  initial={{ opacity: 0, y: -40, scale: 0.97 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+                  transition={{ duration: 0.65, ease: SPRING_EASE }}
+                  style={{
+                    marginTop: '-60px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 32px 64px rgba(0,0,0,0.5)',
+                    overflow: 'hidden',
+                    aspectRatio: '16/10',
+                    position: 'relative',
+                  }}
+                >
+                  <Image
+                    src="/dashboard-preview.jpg.jpg"
+                    alt={f.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
       ))}

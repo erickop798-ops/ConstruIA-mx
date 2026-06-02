@@ -122,7 +122,7 @@ export function FAQSection() {
   const toggle = (i: number) => setOpen(open === i ? null : i);
 
   return (
-    <section style={{ background: '#0f0f14', padding: '100px 40px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <section style={{ background: '#111111', padding: '100px 40px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
         {/* Header */}

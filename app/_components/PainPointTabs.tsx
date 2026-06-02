@@ -27,7 +27,7 @@ export function PainPointTabs() {
 
   return (
     <section style={{
-      background: '#0a0a0a',
+      background: '#111111',
       borderTop: '1px solid rgba(255,255,255,0.06)',
     }}>
       <div style={{

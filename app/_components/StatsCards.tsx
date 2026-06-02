@@ -123,7 +123,7 @@ export function StatsCards() {
   return (
     <section
       ref={sectionRef}
-      style={{ background: '#0f0f14', padding: '80px 40px' }}
+      style={{ background: '#111111', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '80px 40px' }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
 

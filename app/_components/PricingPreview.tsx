@@ -41,7 +41,7 @@ function Row({ done, text }: { done: boolean; text: string }) {
 
 export function PricingPreview() {
   return (
-    <section style={{ padding: '100px 0', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <section style={{ background: '#0a0a0a', padding: '100px 0', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 40px' }}>
         <p className="label" style={{ textAlign: 'center', marginBottom: '16px' }}>PLANES</p>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '48px', fontWeight: 500, lineHeight: 1.1, color: 'var(--text-1)', marginBottom: '56px' }}>
