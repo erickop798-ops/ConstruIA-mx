@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { HeroScrollSection } from './_components/HeroScrollSection';
 import { ActivityTicker } from './_components/ActivityTicker';
-import { AnimatedStats } from './_components/AnimatedStats';
+import { StatsCards } from './_components/StatsCards';
 import { FeatureSections } from './_components/FeatureSections';
 import { PainPointTabs } from './_components/PainPointTabs';
 import { PricingPreview } from './_components/PricingPreview';
@@ -57,25 +57,25 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* 1. Hero */}
+      {/* 1. Hero — fondo #0a0a0a */}
       <HeroScrollSection containerRef={containerRef} />
 
       {/* 2. Activity Ticker */}
       <ActivityTicker />
 
-      {/* 3. Stats animados */}
-      <AnimatedStats />
+      {/* 3. Stats cards — fondo #0f0f14 */}
+      <StatsCards />
 
-      {/* 4. Feature Sections */}
+      {/* 4. Feature Sections — fondo #0a0a0a */}
       <FeatureSections />
 
-      {/* 5. Pain Point Tabs */}
+      {/* 5. Pain Point Tabs — fondo #0a0a0a */}
       <PainPointTabs />
 
-      {/* 6. Pricing */}
+      {/* 6. Pricing — fondo hereda de sección */}
       <PricingPreview />
 
-      {/* 7. FAQ */}
+      {/* 7. FAQ — fondo #0f0f14 */}
       <FAQSection />
 
       {/* ═══ CTA FINAL ═══ */}

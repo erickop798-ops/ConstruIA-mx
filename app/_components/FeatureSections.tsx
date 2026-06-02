@@ -4,26 +4,26 @@ import Link from 'next/link';
 
 const features = [
   {
-    eyebrow: 'PRESUPUESTADOR PRO',
-    title: '¿Sigues presupuestando en Excel?',
-    desc: 'Genera presupuestos CMIC 2026 completos en menos de 2 minutos. Tres escenarios comparativos — Económico, Estándar y Premium — con PDF LOPSRM listo para entregar. Sin fórmulas, sin errores, sin horas perdidas.',
-    cta: 'Ver Presupuestador',
+    eyebrow: 'PRESUPUESTADOR PRO · CMIC 2026',
+    title: '¿Sigues calculando en Excel y saliendo del presupuesto?',
+    desc: 'El 78% de los proyectos de construcción en México superan el presupuesto inicial. ConstruIA elimina ese riesgo: genera automáticamente el desglose completo de partidas con precios CMIC 2026 diferenciados por estado, tres escenarios de costo comparativos y el PDF en formato LOPSRM listo para presentar a clientes y dependencias. De concepto a entregable profesional en 2 minutos.',
+    cta: 'Generar mi primer presupuesto',
     href: '/presupuesto',
     imageLeft: false,
   },
   {
-    eyebrow: 'CHECKLIST DE PERMISOS',
-    title: '¿Confundido con los trámites de tu estado?',
-    desc: 'Requisitos actualizados para los 32 estados de México. Licencia de construcción, dictamen de uso de suelo, visto bueno de Protección Civil. Sabe exactamente qué presentar y dónde. Sin buscar en internet.',
-    cta: 'Ver Checklist',
+    eyebrow: 'CHECKLIST DE PERMISOS · 32 ESTADOS',
+    title: '¿Cuánto tiempo pierdes averiguando qué trámites necesitas?',
+    desc: 'Cada estado tiene requisitos diferentes y las dependencias los cambian constantemente. ConstruIA mantiene actualizado el checklist oficial de licencias, dictámenes y visto buenos para los 32 estados — con los documentos exactos, las instancias correctas y el orden en que debes presentarlos. Arranca tu obra sin sorpresas.',
+    cta: 'Ver checklist de mi estado',
     href: '/checklist',
     imageLeft: true,
   },
   {
-    eyebrow: 'COPILOTO IA',
-    title: '¿Tus preguntas técnicas sin respuesta inmediata?',
-    desc: 'El Copiloto conoce el NTC-RCDF 2023, CMIC 2026, NTC-ANCE y LOPSRM. Pregunta calibres de cable, resistencias mínimas de concreto, factores de desperdicio o costos por m². Respuesta técnica verificada en segundos.',
-    cta: 'Ver Copiloto IA',
+    eyebrow: 'COPILOTO IA · NORMATIVA MEXICANA',
+    title: '¿Buscas respuestas técnicas que confías en manos del cliente?',
+    desc: 'El Copiloto está entrenado en NTC-RCDF 2023, CMIC 2026, NTC-ANCE, LOPSRM y los reglamentos de construcción estatales. Calibres de cable por circuito, resistencias mínimas de concreto, factores de desperdicio por material, costos por metro cuadrado por región — respuestas verificadas y citadas al instante, sin buscar en manuales.',
+    cta: 'Hacer mi primera pregunta',
     href: '/agente',
     imageLeft: false,
   },
@@ -76,7 +76,6 @@ export function FeatureSections() {
                   color: '#ECECEC',
                   lineHeight: 1.1,
                   maxWidth: '460px',
-                  marginBottom: '0',
                 }}>
                   {f.title}
                 </h2>

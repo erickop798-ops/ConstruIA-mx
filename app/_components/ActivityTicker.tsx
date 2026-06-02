@@ -1,16 +1,20 @@
 'use client';
 
 const ITEMS = [
-  { text: 'Presupuesto generado en Guadalajara', time: ' · hace 8s' },
-  { text: 'Permiso validado en CDMX', time: ' · hace 23s' },
-  { text: '14 hrs/semana ahorradas en promedio', time: '' },
-  { text: '12,400 obras gestionadas en México', time: '' },
-  { text: 'Materiales calculados en Monterrey', time: ' · hace 41s' },
-  { text: '847 profesionales activos en este momento', time: '' },
-  { text: 'Checklist completado en Puebla', time: ' · hace 1min' },
-  { text: '$180,000 MXN ahorro promedio por proyecto', time: '' },
-  { text: 'Tesis generada en Tlaxcala', time: ' · hace 2min' },
-  { text: '99.8% precisión vs catálogo CMIC oficial', time: '' },
+  'Presupuesto vivienda 120m² · Tlaxcala · CMIC 2026',
+  'Checklist permisos licencia construcción · Jalisco',
+  'Calcular varilla y concreto para cimentación 200m²',
+  'Presupuesto remodelación cocina · 3 escenarios',
+  '¿Resistencia mínima concreto habitacional? · f\'c 250',
+  'Lista materiales losa vigueta T-12 · 94m²',
+  'Checklist uso de suelo comercial · CDMX',
+  'Presupuesto nave industrial 800m² · Querétaro',
+  'Calibre cable circuito 20A · NTC-ANCE 2023',
+  'Presupuesto acabados premium · 187m²',
+  'Tesis marco normativo NTC-RCDF 2023 · Cap. 3',
+  'Checklist obra nueva unifamiliar · Puebla',
+  'Factor desperdicio tabique rojo · 312m²',
+  'Presupuesto instalaciones eléctricas · 24 circuitos',
 ];
 
 const doubled = [...ITEMS, ...ITEMS];
@@ -30,7 +34,7 @@ export function ActivityTicker() {
         .ticker-marquee {
           display: inline-flex;
           align-items: center;
-          animation: ticker-scroll 30s linear infinite;
+          animation: ticker-scroll 45s linear infinite;
           white-space: nowrap;
         }
         .dot-live {
@@ -38,7 +42,7 @@ export function ActivityTicker() {
         }
       `}</style>
       <div style={{
-        height: '40px',
+        height: '52px',
         background: 'var(--surface)',
         borderTop: '1px solid var(--border)',
         borderBottom: '1px solid var(--border)',
@@ -47,10 +51,10 @@ export function ActivityTicker() {
         overflow: 'hidden',
       }}>
         <div style={{
-          width: '110px',
+          width: '120px',
           flexShrink: 0,
           borderRight: '1px solid var(--border)',
-          padding: '0 18px',
+          padding: '0 24px',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
@@ -72,15 +76,12 @@ export function ActivityTicker() {
 
         <div style={{ flex: 1, overflow: 'hidden', height: '100%', display: 'flex', alignItems: 'center' }}>
           <div className="ticker-marquee">
-            {doubled.map((item, i) => (
+            {doubled.map((text, i) => (
               <span key={i} style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <span style={{ fontSize: '13px', color: 'var(--text-2)', whiteSpace: 'nowrap' }}>
-                  {item.text}
-                  {item.time && (
-                    <span style={{ color: 'var(--text-3)' }}>{item.time}</span>
-                  )}
+                <span style={{ fontSize: '14px', color: 'var(--text-2)', whiteSpace: 'nowrap' }}>
+                  {text}
                 </span>
-                <span style={{ color: 'var(--border-hover)', padding: '0 20px', flexShrink: 0 }}>·</span>
+                <span style={{ color: '#C8973A', padding: '0 24px', flexShrink: 0 }}>·</span>
               </span>
             ))}
           </div>
