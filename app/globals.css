@@ -64,11 +64,7 @@ html {
 }
 
 body {
-  background-color: #0a0b0c;
-  background-image:
-    linear-gradient(to right, #333 1px, transparent 1px),
-    linear-gradient(to bottom, #333 1px, transparent 1px);
-  background-size: 80px 80px;
+  background-color: #0a0a0a;
   color: var(--color-ghost-white);
   font-size: 16px;
   line-height: 1.5;
