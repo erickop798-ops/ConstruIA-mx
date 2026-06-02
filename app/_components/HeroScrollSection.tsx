@@ -111,11 +111,16 @@ export function HeroScrollSection({ containerRef }: Props) {
             opacity: overlayOpacity, pointerEvents: 'none',
           }}
         >
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.70) 100%)',
+            borderRadius: '16px', padding: '32px 40px',
+          }}>
           <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(200,151,58,0.85)', marginBottom: '20px', textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>
             Plataforma IA para Construcci&#243;n Mexicana
           </p>
-          <h1 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(44px, 6vw, 72px)', fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.02em', color: '#ffffff', marginBottom: '20px', textShadow: '0 2px 32px rgba(0,0,0,0.95)' }}>
-            Tu obra m&#225;s rentable<br />empieza aqu&#237;
+          <h1 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(44px, 6vw, 72px)', fontWeight: 700, lineHeight: 1.04, letterSpacing: '-0.02em', color: '#ffffff', marginBottom: '20px', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+            Del boceto al presupuesto CMIC.<br />En menos de 2 minutos.
           </h1>
           <p style={{ fontSize: '19px', color: 'rgba(255,255,255,0.72)', maxWidth: '520px', lineHeight: 1.65, marginBottom: '32px', textShadow: '0 1px 12px rgba(0,0,0,0.95)' }}>
             Presupuesta en minutos con precios CMIC 2026,
@@ -131,6 +136,7 @@ export function HeroScrollSection({ containerRef }: Props) {
           <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
             Sin registro &nbsp;&#183;&nbsp; Sin tarjeta de cr&#233;dito
           </p>
+          </div>
         </motion.div>
 
         {/* ── Bounce arrow ── */}
