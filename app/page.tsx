@@ -11,6 +11,9 @@ import { PricingPreview } from './_components/PricingPreview';
 import { FAQSection } from './_components/FAQSection';
 import { FeaturePreciosSection } from './_components/FeaturePreciosSection';
 import { FeaturePlataformaSection } from './_components/FeaturePlataformaSection';
+import { MonographStats } from './_components/MonographStats';
+import { MonographFeatures } from './_components/MonographFeatures';
+import { MonographTabs } from './_components/MonographTabs';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -73,6 +76,11 @@ export default function Home() {
 
       {/* 1. Hero */}
       <HeroScrollSection containerRef={containerRef} />
+
+      {/* — Monograph sections — */}
+      <MonographStats />
+      <MonographFeatures />
+      <MonographTabs />
 
       {/* 2. Activity Ticker */}
       <ActivityTicker />
