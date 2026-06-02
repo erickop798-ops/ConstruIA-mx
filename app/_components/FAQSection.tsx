@@ -42,10 +42,10 @@ export function FAQSection() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section style={{ padding: '100px 0' }}>
+    <section style={{ padding: '100px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 40px' }}>
         <p className="label" style={{ textAlign: 'center', marginBottom: '16px' }}>FAQ</p>
-        <h2 style={{ fontSize: '56px', fontWeight: 500, lineHeight: 1.1, color: 'var(--text-1)', marginBottom: '48px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '48px', fontWeight: 500, lineHeight: 1.1, color: 'var(--text-1)', marginBottom: '48px', textAlign: 'center' }}>
           Preguntas frecuentes
         </h2>
 

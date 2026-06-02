@@ -3,17 +3,11 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { HeroScrollSection } from './_components/HeroScrollSection';
 import { ActivityTicker } from './_components/ActivityTicker';
-import { SocialProofBand } from './_components/SocialProofBand';
-import { DashboardSection } from './_components/DashboardSection';
-import { ToolCardsSection } from './_components/ToolCardsSection';
-import { HowItWorks } from './_components/HowItWorks';
+import { AnimatedStats } from './_components/AnimatedStats';
+import { FeatureSections } from './_components/FeatureSections';
+import { PainPointTabs } from './_components/PainPointTabs';
 import { PricingPreview } from './_components/PricingPreview';
 import { FAQSection } from './_components/FAQSection';
-import { FeaturePreciosSection } from './_components/FeaturePreciosSection';
-import { FeaturePlataformaSection } from './_components/FeaturePlataformaSection';
-import { MonographStats } from './_components/MonographStats';
-import { MonographFeatures } from './_components/MonographFeatures';
-import { MonographTabs } from './_components/MonographTabs';
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,18 +39,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      className="landing-page"
-      ref={containerRef}
-      style={{
-        background: `
-          radial-gradient(ellipse at 15% 85%, rgba(20,35,100,0.55) 0%, transparent 55%),
-          radial-gradient(ellipse at 85% 15%, rgba(15,28,85,0.40) 0%, transparent 50%),
-          radial-gradient(ellipse at 50% 50%, rgba(10,18,60,0.30) 0%, transparent 70%),
-          #080810
-        `,
-      }}
-    >
+    <div className="landing-page" ref={containerRef} style={{ background: '#0a0a0a' }}>
 
       {/* ═══ NAV ═══ */}
       <nav className="cia-nav">
@@ -77,38 +60,26 @@ export default function Home() {
       {/* 1. Hero */}
       <HeroScrollSection containerRef={containerRef} />
 
-      {/* — Monograph sections — */}
-      <MonographStats />
-      <MonographFeatures />
-      <MonographTabs />
-
       {/* 2. Activity Ticker */}
       <ActivityTicker />
 
-      {/* 3. Social Proof */}
-      <SocialProofBand />
+      {/* 3. Stats animados */}
+      <AnimatedStats />
 
-      {/* 4. Dashboard */}
-      <DashboardSection />
+      {/* 4. Feature Sections */}
+      <FeatureSections />
 
-      {/* 5. Tool Cards */}
-      <ToolCardsSection />
+      {/* 5. Pain Point Tabs */}
+      <PainPointTabs />
 
-      {/* 6. Cómo Funciona */}
-      <HowItWorks />
-
-      {/* 7. Pricing */}
+      {/* 6. Pricing */}
       <PricingPreview />
 
-      {/* 8. FAQ */}
+      {/* 7. FAQ */}
       <FAQSection />
 
-      {/* 9 & 10. Cards grandes */}
-      <FeaturePreciosSection />
-      <FeaturePlataformaSection />
-
       {/* ═══ CTA FINAL ═══ */}
-      <section className="cia-cta-section">
+      <section className="cia-cta-section" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <span className="reveal" style={{ display: 'block', fontSize: '12px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dimmed)', marginBottom: '16px' }}>
           Sin tarjeta de cr&#233;dito &nbsp;&#183;&nbsp; Gratis para empezar
         </span>
@@ -130,7 +101,7 @@ export default function Home() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer style={{ borderTop: '1px solid var(--border-subtle)', padding: '40px', maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '40px', maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div className="cia-nav-logo">CONSTRUIA<span>.</span></div>
         <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
           {[['Presupuestador','/presupuesto'],['Materiales','/materiales'],['Checklist','/checklist'],['Simulador','/simulador'],['Agente','/agente'],['Tesis','/tesis']].map(([label,href]) => (
