@@ -65,7 +65,7 @@ export function HeroScrollSection({ containerRef }: Props) {
   const chatYAnim      = useTransform(scrollY, [VH * 0.20, VH * 0.38], [24, 0]);
 
   return (
-    <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: '#0a0a0a' }}>
+    <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: 'transparent' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#0a0a0a' }}>
 
         {/* ── Left image half ── */}
