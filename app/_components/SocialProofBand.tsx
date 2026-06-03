@@ -10,7 +10,7 @@ const LOGOS = [
 ];
 
 const BADGES = [
-  { num: '99.8%', label: 'Precisión CMIC' },
+  { num: 'CMIC',  label: 'Referencia CMIC' },
   { num: '32',    label: 'Estados cubiertos' },
   { num: '< 2min', label: 'Tiempo promedio' },
 ];

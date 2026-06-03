@@ -5,20 +5,20 @@ import Image from 'next/image';
 
 const tabs = [
   {
-    question: '¿Te vas de presupuesto siempre?',
-    answer: 'Controla partidas, cantidades y costos CMIC por estado. Detecta desvíos antes de que ocurran.',
+    question: '¿Siempre terminas gastando más de lo que presupuestaste?',
+    answer: 'El Presupuestador usa precios CMIC 2026 reales por estado. Antes de iniciar obra ya sabes el costo aproximado en tres escenarios — económico, estándar y premium — para que puedas tomar decisiones con información real, no con estimados a ojo.',
   },
   {
-    question: '¿Pierdes tiempo en trámites?',
-    answer: 'Checklist completo para los 32 estados. Sabe exactamente qué presentar y en qué orden.',
+    question: '¿Pierdes semanas averiguando qué trámite va primero?',
+    answer: 'El Checklist organiza los requisitos por dependencia y en el orden correcto de presentación para tu estado. Saber qué pedir, dónde y cuándo puede ser la diferencia entre iniciar obra en 2 semanas o en 3 meses.',
   },
   {
-    question: '¿Tu material siempre sale mal calculado?',
-    answer: 'Lista exacta de insumos con factor de desperdicio incluido. Nunca te falte material.',
+    question: '¿Tu lista de materiales nunca cuadra con lo que realmente usas en obra?',
+    answer: 'La Calculadora estima las cantidades de cada insumo incluyendo el factor de desperdicio por tipo de material. Es un punto de partida sólido para tu orden de compra, basado en los rendimientos estándar del CMIC.',
   },
   {
-    question: '¿Sin respuestas normativas rápidas?',
-    answer: 'Copiloto IA con NTC, CMIC y LOPSRM vigentes. Respuestas técnicas verificadas al instante.',
+    question: '¿Buscas en varios manuales para responder una pregunta técnica?',
+    answer: 'El Copiloto consulta NTC-RCDF 2023, CMIC 2026, NTC-ANCE y LOPSRM para darte una respuesta de referencia en segundos. Úsala como punto de partida y verifica siempre con el especialista responsable del proyecto.',
   },
 ];
 
@@ -27,8 +27,9 @@ export function PainPointTabs() {
 
   return (
     <section style={{
-      background: '#111111',
+      background: '#0d1117',
       borderTop: '1px solid rgba(255,255,255,0.06)',
+      borderBottom: '1px solid rgba(255,255,255,0.06)',
     }}>
       <div style={{
         maxWidth: '1100px',
@@ -45,24 +46,24 @@ export function PainPointTabs() {
           style={{ marginBottom: '64px' }}
         >
           <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '11px',
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '13px',
             fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.16em',
-            color: 'rgba(255,255,255,0.35)',
-            marginBottom: '12px',
+            letterSpacing: '0.06em',
+            color: '#C8973A',
+            marginBottom: '16px',
           }}>
-            SOLUCIONES
+            ENCUENTRA TU SOLUCIÓN
           </p>
           <h2 style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: "'Inter', sans-serif",
             fontSize: '48px',
-            fontWeight: 500,
+            fontWeight: 700,
             color: '#ECECEC',
-            lineHeight: 1.1,
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
           }}>
-            Respuestas para cada problema de obra.
+            Cada problema de obra<br />tiene una respuesta aquí.
           </h2>
         </motion.div>
 
@@ -90,9 +91,9 @@ export function PainPointTabs() {
                 }}
               >
                 <p style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '22px',
-                  fontWeight: 500,
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '20px',
+                  fontWeight: 600,
                   color: active === i ? '#ECECEC' : 'rgba(255,255,255,0.35)',
                   lineHeight: 1.3,
                   transition: 'color 0.2s',
@@ -109,8 +110,8 @@ export function PainPointTabs() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '15px',
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '16px',
                         color: 'rgba(255,255,255,0.55)',
                         lineHeight: 1.65,
                         marginTop: '10px',

@@ -157,10 +157,10 @@ export function ToolCards() {
           {CARDS.map((card, i) => (
             <motion.div
               key={card.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '0px 0px -40px 0px' }}
-              transition={{ duration: 0.4, ease: 'easeOut', delay: i * 0.08 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: i * 0.07 }}
               style={CARD_STYLE}
             >
               {/* Top */}

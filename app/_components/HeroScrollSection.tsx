@@ -51,18 +51,22 @@ export function HeroScrollSection({ containerRef }: Props) {
     return () => { active = false; clearTimeout(timeout); };
   }, []);
 
-  const { scrollY } = useScroll({ container: containerRef as React.RefObject<HTMLElement> });
+  const { scrollYProgress } = useScroll({ container: containerRef as React.RefObject<HTMLElement>, target: sectionRef, offset: ['start start', 'end end'] });
 
-  const rawLeftX  = useTransform(scrollY, [0, VH * 0.5], [0, -420]);
-  const rawRightX = useTransform(scrollY, [0, VH * 0.5], [0,  420]);
-  const leftX  = useSpring(rawLeftX,  { stiffness: 80, damping: 20 });
-  const rightX = useSpring(rawRightX, { stiffness: 80, damping: 20 });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 25,
+    restDelta: 0.001,
+  });
 
-  const overlayOpacity = useTransform(scrollY, [0, VH * 0.28], [1, 0]);
-  const arrowOpacity   = useTransform(scrollY, [0, VH * 0.08], [1, 0]);
-  const chatOpacity    = useTransform(scrollY, [VH * 0.20, VH * 0.38], [0, 1]);
-  const chatScale      = useTransform(scrollY, [VH * 0.20, VH * 0.38], [0.95, 1]);
-  const chatYAnim      = useTransform(scrollY, [VH * 0.20, VH * 0.38], [24, 0]);
+  const leftX  = useTransform(smoothProgress, [0, 0.5], ['0%', '-45%'], { clamp: true });
+  const rightX = useTransform(smoothProgress, [0, 0.5], ['0%',  '45%'], { clamp: true });
+
+  const overlayOpacity = useTransform(smoothProgress, [0, 0.25], [1, 0]);
+  const textY          = useTransform(smoothProgress, [0, 0.25], [0, -30]);
+  const arrowOpacity   = useTransform(smoothProgress, [0, 0.08], [1, 0]);
+  const chatOpacity    = useTransform(smoothProgress, [0.15, 0.40], [0, 1]);
+  const chatScale      = useTransform(smoothProgress, [0.15, 0.40], [0.92, 1]);
 
   return (
     <section ref={sectionRef} style={{ height: '200vh', position: 'relative', background: 'transparent' }}>
@@ -108,7 +112,7 @@ export function HeroScrollSection({ containerRef }: Props) {
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
             padding: '0 24px', textAlign: 'center',
-            opacity: overlayOpacity, pointerEvents: 'none',
+            opacity: overlayOpacity, y: textY, pointerEvents: 'none',
           }}
         >
           <p style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8973A', marginBottom: '20px', textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>
@@ -147,7 +151,7 @@ export function HeroScrollSection({ containerRef }: Props) {
         {/* ── Floating chat widget ── */}
         <div style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 5, pointerEvents: 'none', width: 'min(720px, calc(100vw - 40px))' }}>
           <motion.div
-            style={{ opacity: chatOpacity, scale: chatScale, y: chatYAnim, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            style={{ opacity: chatOpacity, scale: chatScale, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
           >
 
             {/* A: Slogan */}

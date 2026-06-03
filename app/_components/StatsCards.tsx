@@ -72,9 +72,10 @@ function StatCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut', delay }}
       style={{
         background: '#141418',
         border: '1px solid rgba(255,255,255,0.08)',
@@ -182,7 +183,7 @@ export function StatsCards() {
             miniStats={[
               { value: '847', label: 'Activos hoy' },
               { value: '+180k', label: 'MXN ahorrados' },
-              { value: '99.8%', label: 'Precisión CMIC' },
+              { value: 'CMIC', label: 'Oficial 2026' },
             ]}
           />
         </div>

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { HeroScrollSection } from './_components/HeroScrollSection';
 import { ActivityTicker } from './_components/ActivityTicker';
 import { StatsCards } from './_components/StatsCards';
-import { ToolCards } from './_components/ToolCards';
 import { FeatureSections } from './_components/FeatureSections';
+import { ToolCards } from './_components/ToolCards';
 import { PainPointTabs } from './_components/PainPointTabs';
 import { PricingPreview } from './_components/PricingPreview';
 import { FAQSection } from './_components/FAQSection';
@@ -64,16 +64,16 @@ export default function Home() {
       {/* 2. Activity Ticker */}
       <ActivityTicker />
 
-      {/* 3. Tool Cards — fondo #111111 */}
-      <ToolCards />
-
-      {/* 4. Stats cards — fondo #111111 */}
+      {/* 3. Stats Section */}
       <StatsCards />
 
-      {/* 5. Feature Sections — fondo alternado */}
+      {/* 4. Feature Sections */}
       <FeatureSections />
 
-      {/* 5. Pain Point Tabs — fondo #0a0a0a */}
+      {/* 5. Tool Cards */}
+      <ToolCards />
+
+      {/* 6. Pain Point Tabs */}
       <PainPointTabs />
 
       {/* 6. Pricing — fondo hereda de sección */}
